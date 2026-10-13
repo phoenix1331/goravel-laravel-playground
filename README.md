@@ -1,99 +1,84 @@
-<div align="center">
+# Goravel for Laravel devs
 
-<img src="https://www.goravel.dev/logo.png?v=1.14.x" width="300" alt="Logo">
+A side-by-side guide for Laravel developers learning Go. It maps 24 Laravel concepts to their Goravel equivalents and is backed by a working grassroots football club API.
 
-[![Doc](https://pkg.go.dev/badge/github.com/goravel/framework)](https://pkg.go.dev/github.com/goravel/framework)
-[![Go](https://img.shields.io/github/go-mod/go-version/goravel/framework)](https://go.dev/)
-[![Release](https://img.shields.io/github/release/goravel/framework.svg)](https://github.com/goravel/framework/releases)
-[![Test](https://github.com/goravel/framework/actions/workflows/test.yml/badge.svg)](https://github.com/goravel/framework/actions)
-[![Report Card](https://goreportcard.com/badge/github.com/goravel/framework)](https://goreportcard.com/report/github.com/goravel/framework)
-[![Codecov](https://codecov.io/gh/goravel/framework/branch/master/graph/badge.svg)](https://codecov.io/gh/goravel/framework)
-![License](https://img.shields.io/github/license/goravel/framework)
+**Docs site:** https://phoenix1331.github.io/goravel-for-laravel-devs
 
-</div>
+## Who it is for
 
-English | [中文](./README_zh.md)
+- Laravel developers curious about Go who want to start from something familiar
+- Anyone evaluating Goravel against Laravel for a backend service
 
-## About Goravel
+Each chapter shows the Laravel way, the Goravel way, and what is different and why: explicit errors, structs instead of classes, no magic methods, compile-time wiring. The Go snippets on the site are pulled from this repo's source at build time, so they are real, tested code.
 
-Goravel is a full-featured, scalable web application framework that provides a starting scaffold to help Gophers quickly build their applications.
+## Stack
 
-The framework style is consistent with [Laravel](https://laravel.com/), so PHP developers don’t need to learn a new framework and can still enjoy playing around with Golang, in tribute to Laravel!
+| Concern | Choice |
+|---|---|
+| Language | Go 1.26 |
+| Framework | [Goravel](https://www.goravel.dev) 1.18 with the Gin HTTP driver |
+| Database | MySQL 8.4 (dev), SQLite in memory (tests) |
+| Cache / queue | Redis |
+| Runtime | Docker Compose, with [air](https://github.com/air-verse/air) for live reload |
+| Docs | VitePress on GitHub Pages |
+| CI | GitHub Actions: gofmt, go vet, tests on SQLite and MySQL |
 
-We welcome stars, PRs, and issues!
+## Quick start
 
-## Documentation
+### Prerequisites
 
-Online documentation [https://www.goravel.dev](https://www.goravel.dev)
+- Docker with Docker Compose
+- Node.js (for the docs site and git hooks); run `npm install` once to activate the Husky hooks
+- [osv-scanner](https://github.com/google/osv-scanner) for the pre-commit audit: `go install github.com/google/osv-scanner/cmd/osv-scanner@latest`
+- Claude Code MCP servers (optional, configured in `.mcp.json`):
+  - GitHub MCP authenticates via `gh auth token`; run `gh auth login` once per machine
+  - MySQL MCP reads `MYSQL_HOST`, `MYSQL_PORT`, `MYSQL_USER`, `MYSQL_PASSWORD`, `MYSQL_DATABASE`. For this project export `MYSQL_HOST=127.0.0.1 MYSQL_PORT=3307 MYSQL_USER=goravel MYSQL_PASSWORD=secret MYSQL_DATABASE=goravel`
+  - Playwright and Context7 need only `npx`
 
-Example [https://github.com/goravel/example](https://github.com/goravel/example)
+### Run it
 
-> To optimize the documentation, please submit a PR to the documentation
-> repository [https://github.com/goravel/docs](https://github.com/goravel/docs)
+```bash
+cp .env.example .env
+make up                          # app on http://localhost:8000, MySQL on 3307
+make artisan cmd="key:generate"  # sets APP_KEY in .env
+make run                         # restart the app with the new key
+make migrate
+make test                        # SQLite in memory
+make test-mysql                  # same suite on MySQL, to catch dialect drift
+make docs-dev                    # docs on http://localhost:5173
+```
 
-## Main Features
+`make help` lists every target. Try `GET http://localhost:8000/health`, or open `request.http` in VS Code REST Client or a JetBrains IDE.
 
-| Module Name | Description |
-|-------------|-------------|
-| [Artisan Console](https://www.goravel.dev/digging-deeper/artisan-console.html) | CLI command-line interface for application management and automation |
-| [Authentication](https://www.goravel.dev/security/authentication.html) | User identity verification with JWT and Session drivers |
-| [Authorization](https://www.goravel.dev/security/authorization.html) | Permission-based access control using policies and gates |
-| [Cache](https://www.goravel.dev/digging-deeper/cache.html) | Store and retrieve data using memory, Redis, or custom drivers |
-| [Carbon](https://www.goravel.dev/digging-deeper/helpers.html) | Helper functions for date and time manipulation |
-| [Config](https://www.goravel.dev/getting-started/configuration.html) | Application configuration management from files and environment |
-| [Crypt](https://www.goravel.dev/security/encryption.html) | Secure data encryption and decryption utilities |
-| [DB](https://www.goravel.dev/database/getting-started.html) | Database query builder |
-| [Event](https://www.goravel.dev/digging-deeper/event.html) | Application event dispatching and listening system |
-| [Factory](https://www.goravel.dev/orm/factories.html) | Generate fake model data for testing purposes |
-| [FileStorage](https://www.goravel.dev/digging-deeper/filesystem.html) | File upload, download, and storage across multiple drivers |
-| [Grpc](https://www.goravel.dev/the-basics/grpc.html) | High-performance gRPC server and client implementation |
-| [Hash](https://www.goravel.dev/security/hashing.html) | Secure password hashing |
-| [Http](https://www.goravel.dev/the-basics/routing.html) | HTTP routing, controllers, and middleware management |
-| [Http Client](https://www.goravel.dev/digging-deeper/http-client.html) | Make HTTP requests to external APIs and services |
-| [Localization](https://www.goravel.dev/digging-deeper/localization.html) | Multi-language translation and locale management |
-| [Logger](https://www.goravel.dev/the-basics/logging.html) | Application logging to files, console, or external services |
-| [Mail](https://www.goravel.dev/digging-deeper/mail.html) | Send emails via SMTP or queue-based delivery |
-| [Mock](https://www.goravel.dev/testing/mock.html) | Create test mocks for facades and dependencies |
-| [Migrate](https://www.goravel.dev/database/migrations.html) | Version control for database schema changes |
-| [Orm](https://www.goravel.dev/orm/getting-started.html) | Elegant Orm implementation for database operations |
-| [Package Development](https://www.goravel.dev/digging-deeper/package-development.html) | Build reusable packages to extend framework functionality |
-| [Process](https://www.goravel.dev/digging-deeper/process.html) | An expressive and elegant API around Go's standard os/exec package |
-| [Queue](https://www.goravel.dev/digging-deeper/queues.html) | Defer time-consuming tasks to background job processing |
-| [Seeder](https://www.goravel.dev/database/seeding.html) | Populate database tables with test or initial data |
-| [Session](https://www.goravel.dev/the-basics/session.html) | Manage user session data across HTTP requests |
-| [Task Scheduling](https://www.goravel.dev/digging-deeper/task-scheduling.html) | Schedule recurring tasks using cron-like expressions |
-| [Testing](https://www.goravel.dev/testing/getting-started.html) | HTTP testing, mocking, and assertion utilities |
-| [Validation](https://www.goravel.dev/the-basics/validation.html) | Validate incoming request data using rules |
-| [View](https://www.goravel.dev/the-basics/views.html) | Template rendering engine for HTML responses |
+## Chapters
 
-## Compare With Laravel
+| # | Chapter | Laravel | Goravel |
+|---|---|---|---|
+| 01 | [Installation and structure](https://phoenix1331.github.io/goravel-for-laravel-devs/chapters/01-installation) | `laravel new`, `artisan`, directory structure | `goravel new`, `./artisan`, layout |
+| 02 | [Configuration](https://phoenix1331.github.io/goravel-for-laravel-devs/chapters/02-configuration) | `.env` and `config/*.php` | `.env`, `config/*.go`, `facades.Config()` |
+| 03 | [Routing](https://phoenix1331.github.io/goravel-for-laravel-devs/chapters/03-routing) | `routes/web.php`, `routes/api.php` | `routes/*.go`, route groups |
+| 04 | [Controllers](https://phoenix1331.github.io/goravel-for-laravel-devs/chapters/04-controllers) | Controller classes | Controller structs |
+| 05 | [Service container and providers](https://phoenix1331.github.io/goravel-for-laravel-devs/chapters/05-service-container) | Service container, `register()` / `boot()` | Container bindings, `Register` / `Boot` |
+| 06 | [Facades](https://phoenix1331.github.io/goravel-for-laravel-devs/chapters/06-facades) | Static proxies via `__callStatic` | `app/facades` package functions |
+| 07 | [Form requests and validation](https://phoenix1331.github.io/goravel-for-laravel-devs/chapters/07-validation) | Form requests, `$request->validate()` | Form requests, validation rules |
+| 08 | [Middleware](https://phoenix1331.github.io/goravel-for-laravel-devs/chapters/08-middleware) | Middleware classes with `handle()` | Middleware functions |
+| 09 | [ORM models](https://phoenix1331.github.io/goravel-for-laravel-devs/chapters/09-models) | Eloquent models | ORM models |
+| 10 | [Relationships](https://phoenix1331.github.io/goravel-for-laravel-devs/chapters/10-relationships) | Eloquent relationships, `with()` | ORM relationships, `With()` |
+| 11 | [Migrations](https://phoenix1331.github.io/goravel-for-laravel-devs/chapters/11-migrations) | Migrations with the schema builder | Migrations in Go |
+| 12 | [Factories and seeders](https://phoenix1331.github.io/goravel-for-laravel-devs/chapters/12-factories-seeders) | Model factories and seeders | Factories and seeders |
+| 13 | [Query builder and raw SQL](https://phoenix1331.github.io/goravel-for-laravel-devs/chapters/13-query-builder) | `DB::table()`, `DB::select()` | `facades.Orm().Query()`, `facades.DB()` |
+| 14 | [Artisan commands](https://phoenix1331.github.io/goravel-for-laravel-devs/chapters/14-console-commands) | `make:command`, `handle()` | Console commands (`make:command`) |
+| 15 | [Events and listeners](https://phoenix1331.github.io/goravel-for-laravel-devs/chapters/15-events) | Events, listeners, `event()` | Events and listeners |
+| 16 | [Jobs and queues](https://phoenix1331.github.io/goravel-for-laravel-devs/chapters/16-queues) | Jobs, `dispatch()`, queue workers | Jobs and queues |
+| 17 | [Task scheduling](https://phoenix1331.github.io/goravel-for-laravel-devs/chapters/17-scheduling) | `routes/console.php` schedule | Scheduler |
+| 18 | [Cache](https://phoenix1331.github.io/goravel-for-laravel-devs/chapters/18-cache) | `Cache::remember()` | Cache facade |
+| 19 | [Authentication](https://phoenix1331.github.io/goravel-for-laravel-devs/chapters/19-authentication) | Session guard, Sanctum | Auth with the JWT guard |
+| 20 | [Gates and policies](https://phoenix1331.github.io/goravel-for-laravel-devs/chapters/20-authorisation) | Gates and policies | Authorisation |
+| 21 | [HTTP client](https://phoenix1331.github.io/goravel-for-laravel-devs/chapters/21-http-client) | `Http::get()`, `Http::fake()` | HTTP client |
+| 22 | [Logging](https://phoenix1331.github.io/goravel-for-laravel-devs/chapters/22-logging) | `Log::info()`, channels | Logging |
+| 23 | [Testing](https://phoenix1331.github.io/goravel-for-laravel-devs/chapters/23-testing) | PHPUnit / Pest, HTTP tests, fakes | testify suites, HTTP tests, mocks |
+| 24 | [Error handling](https://phoenix1331.github.io/goravel-for-laravel-devs/chapters/24-error-handling) | Exceptions, `try` / `catch`, handler | Go errors |
 
-[For Detail](https://www.goravel.dev/prologue/compare-with-laravel.html)
+## Licence
 
-## Roadmap
-
-[For Detail](https://github.com/goravel/goravel/issues?q=is%3Aissue+is%3Aopen)
-
-## Excellent Extend Packages
-
-[For Detail](https://www.goravel.dev/getting-started/packages.html)
-
-## Contributors
-
-This project exists thanks to all the people who contribute, to participate in the contribution, please see [Contribution Guide](https://www.goravel.dev/prologue/contributions.html).
-
-## Sponsor
-
-Better development of the project is inseparable from your support, reward us by [Open Collective](https://opencollective.com/goravel).
-
-<p align="left"><img src="https://www.goravel.dev/reward.png" width="200"></p>
-
-## Group
-
-Welcome more discussion in Discord.
-
-[https://discord.gg/cFc5csczzS](https://discord.gg/cFc5csczzS)
-
-## License
-
-The Goravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+MIT
