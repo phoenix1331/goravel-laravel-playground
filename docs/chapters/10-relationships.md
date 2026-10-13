@@ -43,7 +43,13 @@ A fixture has a home club and an away club, both in `clubs`. The field names do 
 
 ### Eager loading while querying: `With`
 
-<<< @/../app/http/controllers/fixture_controller.go#index{go}
+::: code-group
+
+<<< @/snippets/laravel/ch10/controllers.php [Laravel]
+
+<<< @/../app/http/controllers/fixture_controller.go#index{go} [Goravel]
+
+:::
 
 `With("HomeClub")` takes the **struct field name**, capitalised, not a method name. `With("homeClub")` fails at runtime. Nested relations use dots, as in Laravel: `With("HomeClub.Players")`.
 
