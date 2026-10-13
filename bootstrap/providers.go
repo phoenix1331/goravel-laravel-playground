@@ -27,6 +27,7 @@ import (
 	"github.com/goravel/mysql"
 	"github.com/goravel/redis"
 	"github.com/goravel/sqlite"
+	"goravel/app/providers"
 )
 
 func Providers() []foundation.ServiceProvider {
@@ -56,5 +57,6 @@ func Providers() []foundation.ServiceProvider {
 		&mysql.ServiceProvider{},
 		&sqlite.ServiceProvider{},
 		&redis.ServiceProvider{},
+		&providers.LeagueServiceProvider{},
 	}
 }

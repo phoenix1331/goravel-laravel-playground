@@ -31,6 +31,9 @@ Teaching repo mapping Laravel concepts to Goravel, one chapter per concept, back
 | `config/` | One Go file per concern, each registers via `facades.Config().Add()` in `init()` |
 | `app/facades/` | Thin facade functions, one per service |
 | `app/http/` | Controllers, middleware, requests |
+| `app/models/` | ORM models |
+| `app/services/` | Plain Go services (e.g. `LeagueTable`), bound in the container by `app/providers/` |
+| `app/providers/` | Service providers, listed in `bootstrap/providers.go` |
 | `routes/` | Route registration (`web.go`) |
 | `database/` | Migrations, seeders, factories (Go code, not SQL) |
 | `tests/` | testify suites |
@@ -46,6 +49,7 @@ Teaching repo mapping Laravel concepts to Goravel, one chapter per concept, back
 | `air` live reload in the `app` container | Go compiles to a binary; air rebuilds and restarts on save. `database/` is watched because migrations are Go code |
 | Container runs as host user | Files created in the bind mount (go.sum, tmp, storage) stay owned by the developer |
 | Licence MIT | Matches Goravel |
+| Container keys are string constants beside the service (`services.LeagueTableBinding`) | Goravel binds by string, not interface name; a constant prevents typos |
 | No `env_file` in `docker-compose.yml` | Goravel's config uses viper `AutomaticEnv`, so OS env vars override any `.env` file. Injecting `.env` as container env would silently override `.env.testing` in tests. The app reads `.env` from the bind mount instead |
 | Pool size from `.env` (`DB_MAX_OPEN_CONNS`, `DB_MAX_IDLE_CONNS`) | Lets environments tune the pool without editing `config/database.go` |
 | `gofmt` + `go vet` instead of Pint | Built into the Go toolchain, no config file. `make lint` checks, `make fmt` fixes. Go has no `strict_types` equivalent because it is statically typed |
