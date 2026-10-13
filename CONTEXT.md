@@ -46,6 +46,7 @@ Teaching repo mapping Laravel concepts to Goravel, one chapter per concept, back
 | `air` live reload in the `app` container | Go compiles to a binary; air rebuilds and restarts on save. `database/` is watched because migrations are Go code |
 | Container runs as host user | Files created in the bind mount (go.sum, tmp, storage) stay owned by the developer |
 | Licence MIT | Matches Goravel |
+| `gofmt` + `go vet` instead of Pint | Built into the Go toolchain, no config file. `make lint` checks, `make fmt` fixes. Go has no `strict_types` equivalent because it is statically typed |
 
 ## Chapter conventions
 
