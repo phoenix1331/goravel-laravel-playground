@@ -23,3 +23,47 @@ Accept: application/json
 # Unknown URL: the fallback route returns a JSON 404
 GET {{baseUrl}}/does-not-exist
 Accept: application/json
+
+### Clubs
+
+# List clubs, ordered by name
+GET {{baseUrl}}/api/clubs
+Accept: application/json
+
+###
+
+# Create a club
+POST {{baseUrl}}/api/clubs
+Content-Type: application/json
+Accept: application/json
+
+{
+  "name": "Hillside United",
+  "ground": "Hillside Rec",
+  "founded_year": 1987
+}
+
+###
+
+# Show one club (404 JSON if it does not exist)
+GET {{baseUrl}}/api/clubs/1
+Accept: application/json
+
+###
+
+# Update a club
+PUT {{baseUrl}}/api/clubs/1
+Content-Type: application/json
+Accept: application/json
+
+{
+  "name": "Hillside United FC",
+  "ground": "Hillside Recreation Ground",
+  "founded_year": 1987
+}
+
+###
+
+# Delete a club
+DELETE {{baseUrl}}/api/clubs/1
+Accept: application/json

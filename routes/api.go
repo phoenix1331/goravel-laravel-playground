@@ -6,6 +6,7 @@ import (
 	"github.com/goravel/framework/contracts/route"
 
 	"goravel/app/facades"
+	"goravel/app/http/controllers"
 )
 
 // #region api
@@ -21,6 +22,12 @@ func Api() {
 		// A named function works anywhere a closure does: a handler is just
 		// any func(http.Context) http.Response
 		router.Get("league/points", leaguePoints)
+
+		// #region resource
+		// One line registers index, store, show, update and destroy,
+		// like Route::apiResource('clubs', ClubController::class)
+		router.Resource("clubs", controllers.NewClubController())
+		// #endregion resource
 	})
 }
 
