@@ -171,10 +171,14 @@ func validationFailed(ctx http.Context, validationErrors validation.Errors) http
 
 // #endregion failed
 
+// #region server-error
 // serverError logs the real error and returns a generic 500, so database
-// details never reach the client.
+// details never reach the client. Request() attaches the method, path and
+// headers to the log entry, the context Laravel's exception handler adds.
 func serverError(ctx http.Context, err error) http.Response {
-	facades.Log().Error(err)
+	facades.Log().Request(ctx.Request()).Error(err)
 
 	return ctx.Response().Json(http.StatusInternalServerError, http.Json{"message": "Server Error"})
 }
+
+// #endregion server-error

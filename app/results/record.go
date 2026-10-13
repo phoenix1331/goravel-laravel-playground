@@ -26,6 +26,17 @@ func Record(fixture *models.Fixture, homeScore, awayScore int) error {
 		return fmt.Errorf("record fixture %d: %w", fixture.ID, err)
 	}
 
+	// #region log
+	// Structured context instead of a formatted string: each key becomes a
+	// JSON field in the results channel, like Log::channel('results')
+	// ->info('Result recorded', [...])
+	facades.Log().Channel("results").With(map[string]any{
+		"fixture_id": fixture.ID,
+		"home_score": homeScore,
+		"away_score": awayScore,
+	}).Info("result recorded")
+	// #endregion log
+
 	// #region dispatch
 	// Tell the rest of the app. Like event(new FixtureResultRecorded($fixture)),
 	// but the payload is a list of typed arguments.

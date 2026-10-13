@@ -40,6 +40,18 @@ func init() {
 				"print":     false,
 				"formatter": "text",
 			},
+			// #region channel
+			// One JSON object per line, just for recorded results. Like a
+			// Laravel channel with a JsonFormatter: easy to grep, easy to
+			// ship to a log service.
+			"results": map[string]any{
+				"driver":    "single",
+				"path":      config.Env("RESULTS_LOG_PATH", "storage/logs/results.log"),
+				"level":     "info",
+				"print":     false,
+				"formatter": "json",
+			},
+			// #endregion channel
 			"otel": map[string]any{
 				"driver":          "otel",
 				"instrument_name": config.GetString("APP_NAME", "goravel/log"),
