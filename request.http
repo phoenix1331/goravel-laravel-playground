@@ -170,7 +170,9 @@ Accept: application/json
 
 ###
 
-# Record a final score: fires FixtureResultRecorded, which notifies both clubs' admins
+# Record a final score: fires FixtureResultRecorded, which notifies both clubs' admins.
+# Only the home club's admin may do this: adminN@example.com runs club N, so check
+# home_club_id in GET /api/fixtures and log in as that admin first (403 otherwise)
 POST {{baseUrl}}/api/fixtures/9/result
 Content-Type: application/json
 Accept: application/json
