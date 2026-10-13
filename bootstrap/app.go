@@ -34,6 +34,7 @@ func Boot() contractsfoundation.Application {
 			}
 		}).
 		// #endregion events
+		WithSchedule(Schedule).
 		WithProviders(Providers).
 		WithConfig(config.Boot).
 		Create()
