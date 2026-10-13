@@ -98,9 +98,9 @@ Each chapter delivers working Go code, tests, a docs page and a Laravel comparis
 | Workflow | Trigger | Jobs |
 |---|---|---|
 | `.github/workflows/ci.yml` | push to `main`, PRs | `lint` (gofmt, vet), `test-sqlite`, `test-mysql` (MySQL 8.4 service). Go version from `go.mod` |
-| `.github/workflows/docs.yml` | push to `main`, manual | `npm ci`, `docs:build`, deploy via the official Pages actions |
+| `.github/workflows/docs.yml` | push to `main`, manual | `npm ci`, `docs:build`. Pages deploy steps are commented out while the repo is private |
 
-Pages needs a one-off manual step: repo Settings > Pages > Source: **GitHub Actions**. The repo is private, which needs a paid GitHub plan for Pages, or make it public.
+To publish: make the repo public, set Settings > Pages > Source: **GitHub Actions**, and uncomment the marked lines in `docs.yml`.
 
 ## Commands
 

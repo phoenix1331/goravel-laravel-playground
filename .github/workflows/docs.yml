@@ -5,10 +5,15 @@ on:
     branches: [main]
   workflow_dispatch:
 
+# Pages deployment is switched off while the repo is private (Pages on a
+# private repo needs a paid plan). The build still runs so a broken docs site
+# fails CI. To publish: make the repo public, set Settings > Pages > Source to
+# "GitHub Actions", then uncomment the marked lines below.
+
 permissions:
   contents: read
-  pages: write
-  id-token: write
+  # pages: write
+  # id-token: write
 
 # One deployment at a time; let an in-progress deploy finish
 concurrency:
@@ -26,21 +31,21 @@ jobs:
         with:
           node-version: 24
           cache: npm
-      - uses: actions/configure-pages@v5
+      # - uses: actions/configure-pages@v5
       - name: Install dependencies
         run: npm ci
       - name: Build docs
         run: npm run docs:build
-      - uses: actions/upload-pages-artifact@v4
-        with:
-          path: docs/.vitepress/dist
+      # - uses: actions/upload-pages-artifact@v4
+      #   with:
+      #     path: docs/.vitepress/dist
 
-  deploy:
-    needs: build
-    runs-on: ubuntu-latest
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-    steps:
-      - id: deployment
-        uses: actions/deploy-pages@v4
+  # deploy:
+  #   needs: build
+  #   runs-on: ubuntu-latest
+  #   environment:
+  #     name: github-pages
+  #     url: ${{ steps.deployment.outputs.page_url }}
+  #   steps:
+  #     - id: deployment
+  #       uses: actions/deploy-pages@v4
