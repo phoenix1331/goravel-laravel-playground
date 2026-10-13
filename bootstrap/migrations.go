@@ -10,5 +10,8 @@ func Migrations() []schema.Migration {
 	return []schema.Migration{
 		&migrations.M20210101000001CreateJobsTable{},
 		&migrations.M20261013182221CreateClubsTable{},
+		&migrations.M20261013183449CreatePlayersTable{},
+		&migrations.M20261013183455CreateFixturesTable{},
+		&migrations.M20261013183501CreateUsersTable{},
 	}
 }
