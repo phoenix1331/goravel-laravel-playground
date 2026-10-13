@@ -2,7 +2,10 @@
 package models
 
 import (
+	"github.com/goravel/framework/contracts/database/factory"
 	"github.com/goravel/framework/database/orm"
+
+	"goravel/database/factories"
 )
 
 // #region model
@@ -21,3 +24,11 @@ type Club struct {
 }
 
 // #endregion model
+
+// #region factory
+// Factory links the model to its factory, like the HasFactory trait.
+func (c *Club) Factory() factory.Factory {
+	return &factories.ClubFactory{}
+}
+
+// #endregion factory

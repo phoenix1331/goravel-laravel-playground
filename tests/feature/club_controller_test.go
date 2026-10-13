@@ -26,10 +26,10 @@ func (s *ClubControllerTestSuite) SetupTest() {
 	s.Require().NoError(s.TruncateTables())
 }
 
-// createClub inserts a club directly. Chapter 12 replaces this with a factory.
+// createClub makes a club with the factory, overriding only the name.
 func (s *ClubControllerTestSuite) createClub(name string) models.Club {
-	club := models.Club{Name: name, Ground: name + " Park"}
-	s.Require().NoError(facades.Orm().Query().Create(&club))
+	var club models.Club
+	s.Require().NoError(facades.Orm().Factory().Create(&club, map[string]any{"Name": name}))
 
 	return club
 }

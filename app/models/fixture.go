@@ -4,10 +4,12 @@ package models
 import (
 	"time"
 
+	"github.com/goravel/framework/contracts/database/factory"
 	contractsorm "github.com/goravel/framework/contracts/database/orm"
 	"github.com/goravel/framework/database/orm"
 
 	"goravel/app/services"
+	"goravel/database/factories"
 )
 
 type FixtureStatus string
@@ -86,3 +88,8 @@ func (f *Fixture) DispatchesEvents() map[contractsorm.EventType]func(contractsor
 }
 
 // #endregion events
+
+// Factory links the model to its factory, like the HasFactory trait.
+func (f *Fixture) Factory() factory.Factory {
+	return &factories.FixtureFactory{}
+}

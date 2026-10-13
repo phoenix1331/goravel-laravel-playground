@@ -2,7 +2,10 @@
 package models
 
 import (
+	"github.com/goravel/framework/contracts/database/factory"
 	"github.com/goravel/framework/database/orm"
+
+	"goravel/database/factories"
 )
 
 // #region position
@@ -35,3 +38,8 @@ type Player struct {
 }
 
 // #endregion player
+
+// Factory links the model to its factory, like the HasFactory trait.
+func (p *Player) Factory() factory.Factory {
+	return &factories.PlayerFactory{}
+}

@@ -2,7 +2,10 @@
 package models
 
 import (
+	"github.com/goravel/framework/contracts/database/factory"
 	"github.com/goravel/framework/database/orm"
+
+	"goravel/database/factories"
 )
 
 // #region user
@@ -17,3 +20,8 @@ type User struct {
 }
 
 // #endregion user
+
+// Factory links the model to its factory, like the HasFactory trait.
+func (u *User) Factory() factory.Factory {
+	return &factories.UserFactory{}
+}

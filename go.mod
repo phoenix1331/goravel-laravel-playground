@@ -3,6 +3,7 @@ module goravel
 go 1.26.9
 
 require (
+	github.com/brianvoe/gofakeit/v7 v7.15.0
 	github.com/goravel/framework v1.18.0
 	github.com/goravel/gin v1.18.0
 	github.com/goravel/mysql v1.18.0

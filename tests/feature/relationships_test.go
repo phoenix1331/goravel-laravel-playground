@@ -29,8 +29,8 @@ func (s *RelationshipsTestSuite) SetupTest() {
 }
 
 func (s *RelationshipsTestSuite) club(name string) models.Club {
-	club := models.Club{Name: name, Ground: name + " Park"}
-	s.Require().NoError(facades.Orm().Query().Create(&club))
+	var club models.Club
+	s.Require().NoError(facades.Orm().Factory().Create(&club, map[string]any{"Name": name}))
 
 	return club
 }

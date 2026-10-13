@@ -37,6 +37,7 @@ Teaching repo mapping Laravel concepts to Goravel, one chapter per concept, back
 | `routes/` | Route registration (`web.go`) |
 | `database/` | Migrations, seeders, factories (Go code, not SQL) |
 | `tests/` | testify suites |
+| `database/factories/`, `database/seeders/` | gofakeit-based factories (keys are struct field names); `DatabaseSeeder` builds a 6-club demo league, admins `admin1..6@example.com` / `password` |
 | `docs/` | VitePress site |
 
 ## Decisions
@@ -49,6 +50,7 @@ Teaching repo mapping Laravel concepts to Goravel, one chapter per concept, back
 | `air` live reload in the `app` container | Go compiles to a binary; air rebuilds and restarts on save. `database/` is watched because migrations are Go code |
 | Container runs as host user | Files created in the bind mount (go.sum, tmp, storage) stay owned by the developer |
 | Licence MIT | Matches Goravel |
+| Fixture `saving` event converts `kick_off_at` to UTC | SQLite keeps the original offset as text, MySQL converts to UTC; the event makes both return UTC (found by the UTC test failing on SQLite only) |
 | Container keys are string constants beside the service (`services.LeagueTableBinding`) | Goravel binds by string, not interface name; a constant prevents typos |
 | No `env_file` in `docker-compose.yml` | Goravel's config uses viper `AutomaticEnv`, so OS env vars override any `.env` file. Injecting `.env` as container env would silently override `.env.testing` in tests. The app reads `.env` from the bind mount instead |
 | Pool size from `.env` (`DB_MAX_OPEN_CONNS`, `DB_MAX_IDLE_CONNS`) | Lets environments tune the pool without editing `config/database.go` |
