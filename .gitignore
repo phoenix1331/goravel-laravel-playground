@@ -1,0 +1,13 @@
+.idea
+.vscode
+.DS_Store
+.env
+.env.*
+!.env.example
+!.env.testing
+storage
+tmp
+node_modules
+docs/.vitepress/cache
+docs/.vitepress/dist
+.claude/

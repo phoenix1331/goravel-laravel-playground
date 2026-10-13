@@ -1,0 +1,99 @@
+<div align="center">
+
+<img src="https://www.goravel.dev/logo.png?v=1.14.x" width="300" alt="Logo">
+
+[![Doc](https://pkg.go.dev/badge/github.com/goravel/framework)](https://pkg.go.dev/github.com/goravel/framework)
+[![Go](https://img.shields.io/github/go-mod/go-version/goravel/framework)](https://go.dev/)
+[![Release](https://img.shields.io/github/release/goravel/framework.svg)](https://github.com/goravel/framework/releases)
+[![Test](https://github.com/goravel/framework/actions/workflows/test.yml/badge.svg)](https://github.com/goravel/framework/actions)
+[![Report Card](https://goreportcard.com/badge/github.com/goravel/framework)](https://goreportcard.com/report/github.com/goravel/framework)
+[![Codecov](https://codecov.io/gh/goravel/framework/branch/master/graph/badge.svg)](https://codecov.io/gh/goravel/framework)
+![License](https://img.shields.io/github/license/goravel/framework)
+
+</div>
+
+English | [中文](./README_zh.md)
+
+## About Goravel
+
+Goravel is a full-featured, scalable web application framework that provides a starting scaffold to help Gophers quickly build their applications.
+
+The framework style is consistent with [Laravel](https://laravel.com/), so PHP developers don’t need to learn a new framework and can still enjoy playing around with Golang, in tribute to Laravel!
+
+We welcome stars, PRs, and issues!
+
+## Documentation
+
+Online documentation [https://www.goravel.dev](https://www.goravel.dev)
+
+Example [https://github.com/goravel/example](https://github.com/goravel/example)
+
+> To optimize the documentation, please submit a PR to the documentation
+> repository [https://github.com/goravel/docs](https://github.com/goravel/docs)
+
+## Main Features
+
+| Module Name | Description |
+|-------------|-------------|
+| [Artisan Console](https://www.goravel.dev/digging-deeper/artisan-console.html) | CLI command-line interface for application management and automation |
+| [Authentication](https://www.goravel.dev/security/authentication.html) | User identity verification with JWT and Session drivers |
+| [Authorization](https://www.goravel.dev/security/authorization.html) | Permission-based access control using policies and gates |
+| [Cache](https://www.goravel.dev/digging-deeper/cache.html) | Store and retrieve data using memory, Redis, or custom drivers |
+| [Carbon](https://www.goravel.dev/digging-deeper/helpers.html) | Helper functions for date and time manipulation |
+| [Config](https://www.goravel.dev/getting-started/configuration.html) | Application configuration management from files and environment |
+| [Crypt](https://www.goravel.dev/security/encryption.html) | Secure data encryption and decryption utilities |
+| [DB](https://www.goravel.dev/database/getting-started.html) | Database query builder |
+| [Event](https://www.goravel.dev/digging-deeper/event.html) | Application event dispatching and listening system |
+| [Factory](https://www.goravel.dev/orm/factories.html) | Generate fake model data for testing purposes |
+| [FileStorage](https://www.goravel.dev/digging-deeper/filesystem.html) | File upload, download, and storage across multiple drivers |
+| [Grpc](https://www.goravel.dev/the-basics/grpc.html) | High-performance gRPC server and client implementation |
+| [Hash](https://www.goravel.dev/security/hashing.html) | Secure password hashing |
+| [Http](https://www.goravel.dev/the-basics/routing.html) | HTTP routing, controllers, and middleware management |
+| [Http Client](https://www.goravel.dev/digging-deeper/http-client.html) | Make HTTP requests to external APIs and services |
+| [Localization](https://www.goravel.dev/digging-deeper/localization.html) | Multi-language translation and locale management |
+| [Logger](https://www.goravel.dev/the-basics/logging.html) | Application logging to files, console, or external services |
+| [Mail](https://www.goravel.dev/digging-deeper/mail.html) | Send emails via SMTP or queue-based delivery |
+| [Mock](https://www.goravel.dev/testing/mock.html) | Create test mocks for facades and dependencies |
+| [Migrate](https://www.goravel.dev/database/migrations.html) | Version control for database schema changes |
+| [Orm](https://www.goravel.dev/orm/getting-started.html) | Elegant Orm implementation for database operations |
+| [Package Development](https://www.goravel.dev/digging-deeper/package-development.html) | Build reusable packages to extend framework functionality |
+| [Process](https://www.goravel.dev/digging-deeper/process.html) | An expressive and elegant API around Go's standard os/exec package |
+| [Queue](https://www.goravel.dev/digging-deeper/queues.html) | Defer time-consuming tasks to background job processing |
+| [Seeder](https://www.goravel.dev/database/seeding.html) | Populate database tables with test or initial data |
+| [Session](https://www.goravel.dev/the-basics/session.html) | Manage user session data across HTTP requests |
+| [Task Scheduling](https://www.goravel.dev/digging-deeper/task-scheduling.html) | Schedule recurring tasks using cron-like expressions |
+| [Testing](https://www.goravel.dev/testing/getting-started.html) | HTTP testing, mocking, and assertion utilities |
+| [Validation](https://www.goravel.dev/the-basics/validation.html) | Validate incoming request data using rules |
+| [View](https://www.goravel.dev/the-basics/views.html) | Template rendering engine for HTML responses |
+
+## Compare With Laravel
+
+[For Detail](https://www.goravel.dev/prologue/compare-with-laravel.html)
+
+## Roadmap
+
+[For Detail](https://github.com/goravel/goravel/issues?q=is%3Aissue+is%3Aopen)
+
+## Excellent Extend Packages
+
+[For Detail](https://www.goravel.dev/getting-started/packages.html)
+
+## Contributors
+
+This project exists thanks to all the people who contribute, to participate in the contribution, please see [Contribution Guide](https://www.goravel.dev/prologue/contributions.html).
+
+## Sponsor
+
+Better development of the project is inseparable from your support, reward us by [Open Collective](https://opencollective.com/goravel).
+
+<p align="left"><img src="https://www.goravel.dev/reward.png" width="200"></p>
+
+## Group
+
+Welcome more discussion in Discord.
+
+[https://discord.gg/cFc5csczzS](https://discord.gg/cFc5csczzS)
+
+## License
+
+The Goravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
