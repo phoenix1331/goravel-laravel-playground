@@ -8,19 +8,19 @@ import (
 	"github.com/spf13/cast"
 
 	"goravel/app/facades"
-	"goravel/app/models"
+	"goravel/app/jobs"
 )
 
 // #region listener
-// NotifyClubAdmins tells the admins of both clubs about a new result.
+// NotifyClubAdmins reacts to a new result by queueing the notifications job.
 type NotifyClubAdmins struct{}
 
 func (l *NotifyClubAdmins) Signature() string {
 	return "notify_club_admins"
 }
 
-// Queue says whether to run on a queue. Enable: false runs it immediately, in
-// the same request, like a Laravel listener without ShouldQueue.
+// Queue says whether to run the listener itself on a queue. It does not need
+// to: it only dispatches a job, which is quick, and the job is what queues.
 func (l *NotifyClubAdmins) Queue(args ...any) event.Queue {
 	return event.Queue{Enable: false}
 }
@@ -33,28 +33,14 @@ func (l *NotifyClubAdmins) Handle(args ...any) error {
 	}
 	fixtureID := cast.ToUint(args[0])
 
-	var fixture models.Fixture
-	err := facades.Orm().Query().With("HomeClub").With("AwayClub").FindOrFail(&fixture, fixtureID)
-	if err != nil {
+	// #region dispatch
+	// Like SendResultNotifications::dispatch($fixture). The job goes on the
+	// connection named by QUEUE_CONNECTION: sync in tests, redis in dev.
+	job := &jobs.SendResultNotifications{}
+	if err := facades.Queue().Job(job, job.Args(fixtureID)).Dispatch(); err != nil {
 		return fmt.Errorf("notify club admins: %w", err)
 	}
-
-	var admins []models.User
-	err = facades.Orm().Query().
-		WhereIn("club_id", []any{fixture.HomeClubID, fixture.AwayClubID}).
-		Get(&admins)
-	if err != nil {
-		return fmt.Errorf("notify club admins: %w", err)
-	}
-
-	message := fmt.Sprintf("Result: %s %d-%d %s",
-		fixture.HomeClub.Name, *fixture.HomeScore, *fixture.AwayScore, fixture.AwayClub.Name)
-	for _, admin := range admins {
-		notification := models.ResultNotification{UserID: admin.ID, FixtureID: fixture.ID, Message: message}
-		if err := facades.Orm().Query().Create(&notification); err != nil {
-			return fmt.Errorf("notify club admins: %w", err)
-		}
-	}
+	// #endregion dispatch
 
 	return nil
 }

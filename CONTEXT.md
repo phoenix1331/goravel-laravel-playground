@@ -11,7 +11,7 @@ Teaching repo mapping Laravel concepts to Goravel, one chapter per concept, back
 | HTTP driver | `goravel/gin` |
 | Database (dev) | MySQL 8.4 via `goravel/mysql` |
 | Database (tests) | SQLite in memory via `goravel/sqlite` |
-| Cache / queue / session | Redis via `goravel/redis`; queue defaults to `sync` |
+| Cache / queue / session | Redis via `goravel/redis`. Queue: `redis` in dev, `sync` in tests |
 | Docs | VitePress in `docs/`, deployed to GitHub Pages |
 
 ## Services and ports
@@ -52,6 +52,8 @@ Teaching repo mapping Laravel concepts to Goravel, one chapter per concept, back
 | `air` live reload in the `app` container | Go compiles to a binary; air rebuilds and restarts on save. `database/` is watched because migrations are Go code |
 | Container runs as host user | Files created in the bind mount (go.sum, tmp, storage) stay owned by the developer |
 | Licence MIT | Matches Goravel |
+| Queue worker and scheduler run inside the app process | Goravel starts runners (`goravel:http`, `goravel:queue`, `goravel:schedule`) from `app.Start()`; no `queue:work`. `APP_DISABLED_RUNNERS` (space separated) splits them into separate processes |
+| Events and jobs carry IDs as typed args | Goravel payloads are `[]event.Arg` / `[]queue.Arg`, not objects; handlers reload from the database |
 | Fixture `saving` event converts `kick_off_at` to UTC | SQLite keeps the original offset as text, MySQL converts to UTC; the event makes both return UTC (found by the UTC test failing on SQLite only) |
 | Container keys are string constants beside the service (`services.LeagueTableBinding`) | Goravel binds by string, not interface name; a constant prevents typos |
 | No `env_file` in `docker-compose.yml` | Goravel's config uses viper `AutomaticEnv`, so OS env vars override any `.env` file. Injecting `.env` as container env would silently override `.env.testing` in tests. The app reads `.env` from the bind mount instead |
