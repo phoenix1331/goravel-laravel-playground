@@ -8,9 +8,10 @@ import (
 // #region model
 type Club struct {
 	orm.Model
-	Name        string `json:"name"`
-	Ground      string `json:"ground"`
-	FoundedYear *int   `json:"founded_year"`
+	Name        string  `json:"name"`
+	Ground      string  `json:"ground"`
+	FoundedYear *int    `json:"founded_year"`
+	ShortName   *string `json:"short_name"`
 
 	// #region has-many
 	// Has many: a slice of the related model. Empty until loaded with

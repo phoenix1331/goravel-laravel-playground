@@ -4,6 +4,7 @@ package models
 import (
 	"time"
 
+	contractsorm "github.com/goravel/framework/contracts/database/orm"
 	"github.com/goravel/framework/database/orm"
 
 	"goravel/app/services"
@@ -64,3 +65,24 @@ func (f *Fixture) Result() (services.Result, bool) {
 }
 
 // #endregion methods
+
+// #region events
+// DispatchesEvents hooks into the model's life cycle, like a mutator or a
+// saving() listener in Laravel. Saving runs before every create and update.
+//
+// It converts kick-off to UTC. MySQL does this on its own, but SQLite stores
+// the time as text with its original offset, so without this a 3pm BST
+// kick-off reads back as 15:00+01:00 on SQLite and 14:00 UTC on MySQL.
+func (f *Fixture) DispatchesEvents() map[contractsorm.EventType]func(contractsorm.Event) error {
+	return map[contractsorm.EventType]func(contractsorm.Event) error{
+		contractsorm.EventSaving: func(event contractsorm.Event) error {
+			if kickOff, ok := event.GetAttribute("kick_off_at").(time.Time); ok {
+				event.SetAttribute("kick_off_at", kickOff.UTC())
+			}
+
+			return nil
+		},
+	}
+}
+
+// #endregion events
