@@ -1,5 +1,11 @@
 @baseUrl = http://localhost:8000
 
+### Index
+
+# Lists every endpoint (the app is API only)
+GET {{baseUrl}}/
+Accept: application/json
+
 ### Health
 
 # Reports whether the app can reach its database (200 when up, 503 when down)

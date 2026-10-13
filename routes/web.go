@@ -3,18 +3,14 @@ package routes
 
 import (
 	"github.com/goravel/framework/contracts/http"
-	"github.com/goravel/framework/support"
 
 	"goravel/app/facades"
 	"goravel/app/http/controllers"
 )
 
 func Web() {
-	facades.Route().Get("/", func(ctx http.Context) http.Response {
-		return ctx.Response().View().Make("welcome.tmpl", map[string]any{
-			"version": support.Version,
-		})
-	})
+	// The app is API only, so / lists the endpoints instead of rendering a page
+	facades.Route().Get("/", controllers.NewIndexController().Index)
 
 	facades.Route().Static("public", "./public")
 

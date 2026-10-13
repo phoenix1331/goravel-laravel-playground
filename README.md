@@ -4,6 +4,8 @@ A side-by-side guide for Laravel developers learning Go. It maps 24 Laravel conc
 
 **Docs site:** https://phoenix1331.github.io/goravel-for-laravel-devs
 
+> **API only.** There is no front end: every endpoint returns JSON. Open http://localhost:8000/ for a live list of endpoints, and use `request.http` to send requests.
+
 ## Who it is for
 
 - Laravel developers curious about Go who want to start from something familiar
@@ -48,7 +50,18 @@ make test-mysql                  # same suite on MySQL, to catch dialect drift
 make docs-dev                    # docs on http://localhost:5173
 ```
 
-`make help` lists every target. Try `GET http://localhost:8000/health`, or open `request.http` in VS Code REST Client or a JetBrains IDE.
+`make help` lists every target.
+
+### Trying the API
+
+| How | What |
+|---|---|
+| Browser | http://localhost:8000/ lists every endpoint. GET endpoints such as `/api/league/table`, `/api/clubs` and `/api/fixtures` open directly |
+| `request.http` | Every endpoint with example bodies, including POST, PUT and DELETE. Open it in VS Code (REST Client extension) or a JetBrains IDE and click "Send Request" |
+| curl | `curl -X POST localhost:8000/api/fixtures/9/result -H 'Content-Type: application/json' -d '{"home_score":2,"away_score":1}'` |
+| Artisan | `make artisan cmd="sync:fixtures --dry-run"`, `make artisan cmd="route:list"`, `make artisan cmd="schedule:list"` |
+
+`make fresh` resets the demo league: six clubs, 96 players, 15 fixtures (seven played) and an admin per club (`admin1@example.com` to `admin6@example.com`, password `password`).
 
 ## Chapters
 

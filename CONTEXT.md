@@ -1,6 +1,6 @@
 # Context
 
-Teaching repo mapping Laravel concepts to Goravel, one chapter per concept, backed by a working Goravel API for a grassroots football club (clubs, players, fixtures, club-admin users). Audience: Laravel developers learning Go. Clarity beats cleverness.
+Teaching repo mapping Laravel concepts to Goravel, one chapter per concept, backed by a working Goravel API for a grassroots football club (clubs, players, fixtures, club-admin users). Audience: Laravel developers learning Go. Clarity beats cleverness. API only: no front end; `GET /` returns a JSON endpoint index built from `facades.Route().GetRoutes()`.
 
 ## Stack
 
