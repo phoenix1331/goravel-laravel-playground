@@ -5,9 +5,17 @@
   "description": "Laravel concepts mapped to Goravel, side by side",
   "license": "MIT",
   "scripts": {
-    "prepare": "husky"
+    "prepare": "husky",
+    "docs:dev": "vitepress dev docs",
+    "docs:build": "vitepress build docs",
+    "docs:preview": "vitepress preview docs"
   },
   "devDependencies": {
-    "husky": "^9.1.7"
+    "husky": "^9.1.7",
+    "vitepress": "^1.6.4",
+    "vue": "^3.5.44"
+  },
+  "overrides": {
+    "vite": "^6.4.3"
   }
 }

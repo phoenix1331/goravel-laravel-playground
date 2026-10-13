@@ -76,6 +76,16 @@ Each chapter delivers working Go code, tests, a docs page and a Laravel comparis
 | Dialect drift | `make test-mysql` / CI `test-mysql` job rerun the same suite on MySQL by overriding `DB_*` env vars (OS env beats `.env.testing`). Uses the `goravel_test` database (`docker/mysql/init.sql`) and `-p 1`, since packages share one MySQL database |
 | Base suite | `tests.TestCase` embeds Goravel's `testing.TestCase` (`Http()`, `Seed()`) and adds `TruncateTables()` |
 
+## Docs site
+
+| Item | Detail |
+|---|---|
+| Tool | VitePress 1.6 at the repo root `package.json`, `vite` overridden to `^6.4.3` (Vite 5 dev-server advisories have no 5.x fix) |
+| Config | `docs/.vitepress/config.mts`, base `/goravel-for-laravel-devs/` for GitHub Pages |
+| Pages | `index.md`, `go-for-php-devs.md` (first in nav), `reading-the-comparisons.md` (worked example on `/health`), `cheat-sheet.md`, `chapters/NN-<slug>.md` |
+| Go imports | `<<< @/../path/to/file.go#region{go}` pulls a `// #region` block from the real source at build time |
+| Runs on | Host Node (`make docs-dev`, `make docs-build`), not the Go container |
+
 ## CI
 
 `.github/workflows/ci.yml` on push to `main` and on PRs: `lint` (gofmt, vet), `test-sqlite`, `test-mysql` (MySQL 8.4 service container). Go version comes from `go.mod` via `setup-go`.
