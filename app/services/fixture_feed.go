@@ -5,6 +5,8 @@ import (
 	"encoding/json"
 	"fmt"
 	"os"
+
+	"github.com/goravel/framework/contracts/http/client"
 )
 
 // FeedResult is one result as published by the league.
@@ -42,3 +44,32 @@ func (f FileFeed) Results() ([]FeedResult, error) {
 }
 
 // #endregion feed
+
+// #region http
+// HttpFeed reads results from the league's API. It is given a ready-made
+// request builder, so it never reads config itself and tests can fake it.
+type HttpFeed struct {
+	Request client.Request
+}
+
+func (f HttpFeed) Results() ([]FeedResult, error) {
+	response, err := f.Request.AcceptJSON().Get("/results")
+	if err != nil {
+		// The request never completed: DNS, connection refused, timeout
+		return nil, fmt.Errorf("fetch fixture feed: %w", err)
+	}
+	if response.Failed() {
+		// The request completed with a 4xx or 5xx. Unlike Guzzle, the client
+		// does not treat that as an error, so check the status yourself.
+		return nil, fmt.Errorf("fetch fixture feed: status %d", response.Status())
+	}
+
+	var results []FeedResult
+	if err := response.Bind(&results); err != nil {
+		return nil, fmt.Errorf("parse fixture feed: %w", err)
+	}
+
+	return results, nil
+}
+
+// #endregion http

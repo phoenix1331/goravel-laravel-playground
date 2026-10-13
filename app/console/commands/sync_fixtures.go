@@ -41,13 +41,7 @@ func (r *SyncFixtures) Extend() command.Extend {
 // #region handle
 // Handle runs the command. Returning an error makes the command exit non-zero.
 func (r *SyncFixtures) Handle(ctx console.Context) error {
-	path := ctx.Option("file")
-	if path == "" {
-		path = facades.Config().GetString("club.feed.path")
-	}
-
-	feed := services.FileFeed{Path: path}
-	feedResults, err := feed.Results()
+	feedResults, err := newFeed(ctx.Option("file")).Results()
 	if err != nil {
 		ctx.Error(err.Error())
 		return err
@@ -79,6 +73,22 @@ func (r *SyncFixtures) Handle(ctx console.Context) error {
 }
 
 // #endregion handle
+
+// #region feed
+// newFeed picks where results come from: --file wins, then the configured
+// driver. Both feeds satisfy services.FixtureFeed, so Handle does not care.
+func newFeed(file string) services.FixtureFeed {
+	if file != "" {
+		return services.FileFeed{Path: file}
+	}
+	if facades.Config().GetString("club.feed.driver") == "http" {
+		return services.HttpFeed{Request: facades.Http().Client("fixtures")}
+	}
+
+	return services.FileFeed{Path: facades.Config().GetString("club.feed.path")}
+}
+
+// #endregion feed
 
 // findOpenFixture finds the unfinished fixture between two clubs, by name.
 // Each pair of clubs meets once per season with the same home side, so home

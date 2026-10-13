@@ -8,6 +8,7 @@ import (
 	"goravel/app/facades"
 	"goravel/app/http/controllers"
 	"goravel/app/http/middleware"
+	"goravel/app/services"
 )
 
 // #region api
@@ -64,6 +65,17 @@ func publicRoutes(router route.Router) {
 	router.Get("fixtures", controllers.NewFixtureController().Index)
 
 	router.Post("auth/login", controllers.NewAuthController().Login)
+
+	// A stand-in for the league's results API, so FIXTURE_FEED_DRIVER=http
+	// can be tried locally. It serves the same JSON as the file feed.
+	router.Get("demo/results", func(ctx http.Context) http.Response {
+		results, err := services.FileFeed{Path: facades.Config().GetString("club.feed.path")}.Results()
+		if err != nil {
+			return ctx.Response().Json(http.StatusInternalServerError, http.Json{"message": "Feed unavailable"})
+		}
+
+		return ctx.Response().Success().Json(results)
+	})
 }
 
 // #endregion public

@@ -24,9 +24,11 @@ func init() {
 		// Largest squad a club may register
 		"max_squad_size": config.Env("CLUB_MAX_SQUAD_SIZE", 25),
 
-		// Where sync:fixtures reads results from
+		// Where sync:fixtures reads results from: "file" reads path, "http"
+		// calls the "fixtures" client configured in config/http.go
 		"feed": map[string]any{
-			"path": config.Env("FIXTURE_FEED_PATH", "database/data/fixture_results.json"),
+			"driver": config.Env("FIXTURE_FEED_DRIVER", "file"),
+			"path":   config.Env("FIXTURE_FEED_PATH", "database/data/fixture_results.json"),
 		},
 	})
 }
