@@ -113,3 +113,15 @@ Accept: application/json
 # Fixtures with home and away clubs eager loaded
 GET {{baseUrl}}/api/fixtures
 Accept: application/json
+
+### League table
+
+# League table built from finished fixtures with the query builder
+GET {{baseUrl}}/api/league/table
+Accept: application/json
+
+###
+
+# Goals per club from a raw SQL query
+GET {{baseUrl}}/api/league/goals
+Accept: application/json

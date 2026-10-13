@@ -26,6 +26,10 @@ func Api() {
 		// any func(http.Context) http.Response
 		router.Get("league/points", leaguePoints)
 
+		leagueController := controllers.NewLeagueController()
+		router.Get("league/table", leagueController.Table)
+		router.Get("league/goals", leagueController.Goals)
+
 		// #region resource
 		// One line registers index, store, show, update and destroy,
 		// like Route::apiResource('clubs', ClubController::class)
