@@ -5,3 +5,21 @@
 # Reports whether the app can reach its database (200 when up, 503 when down)
 GET {{baseUrl}}/health
 Accept: application/json
+
+### League
+
+# Closure route inside the /api group
+GET {{baseUrl}}/api/league
+Accept: application/json
+
+###
+
+# Named handler function route
+GET {{baseUrl}}/api/league/points
+Accept: application/json
+
+###
+
+# Unknown URL: the fallback route returns a JSON 404
+GET {{baseUrl}}/does-not-exist
+Accept: application/json
