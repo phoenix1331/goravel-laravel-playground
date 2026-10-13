@@ -4,6 +4,7 @@ package controllers
 import (
 	"errors"
 
+	"github.com/goravel/framework/contracts/database/orm"
 	"github.com/goravel/framework/contracts/http"
 	"github.com/goravel/framework/contracts/validation"
 	frameworkerrors "github.com/goravel/framework/errors"
@@ -53,8 +54,13 @@ func (r *ClubController) Show(ctx http.Context) http.Response {
 // #endregion show
 
 // #region store
-// Store creates a club from a validated request.
+// Store creates a club and makes the logged-in user its admin.
 func (r *ClubController) Store(ctx http.Context) http.Response {
+	user, response := authorise(ctx, "create-club", map[string]any{})
+	if response != nil {
+		return response
+	}
+
 	var request requests.StoreClubRequest
 	// Two results: validationErrors for bad input (422), err for anything
 	// that stopped validation running at all, such as an unreadable body
@@ -66,8 +72,18 @@ func (r *ClubController) Store(ctx http.Context) http.Response {
 		return validationFailed(ctx, validationErrors)
 	}
 
+	// Create the club and attach the admin together, or not at all, like
+	// DB::transaction(fn () => ...). Returning an error rolls back.
 	club := models.Club{Name: request.Name, Ground: request.Ground, FoundedYear: request.FoundedYear}
-	if err := facades.Orm().Query().Create(&club); err != nil {
+	err = facades.Orm().Transaction(func(tx orm.Query) error {
+		if err := tx.Create(&club); err != nil {
+			return err
+		}
+		user.ClubID = &club.ID
+
+		return tx.Save(user)
+	})
+	if err != nil {
 		return serverError(ctx, err)
 	}
 
@@ -82,6 +98,11 @@ func (r *ClubController) Update(ctx http.Context) http.Response {
 	if response != nil {
 		return response
 	}
+	// #region check
+	if _, response := authorise(ctx, "update-club", map[string]any{"club": club}); response != nil {
+		return response
+	}
+	// #endregion check
 
 	var request requests.UpdateClubRequest
 	// Two results: validationErrors for bad input (422), err for anything
@@ -106,6 +127,9 @@ func (r *ClubController) Update(ctx http.Context) http.Response {
 func (r *ClubController) Destroy(ctx http.Context) http.Response {
 	club, response := findClub(ctx)
 	if response != nil {
+		return response
+	}
+	if _, response := authorise(ctx, "delete-club", map[string]any{"club": club}); response != nil {
 		return response
 	}
 

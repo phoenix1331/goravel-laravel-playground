@@ -50,6 +50,9 @@ func (r *FixtureController) RecordResult(ctx http.Context) http.Response {
 	if err != nil {
 		return serverError(ctx, err)
 	}
+	if _, response := authorise(ctx, "record-result", map[string]any{"fixture": &fixture}); response != nil {
+		return response
+	}
 
 	var request requests.RecordResultRequest
 	validationErrors, err := ctx.Request().ValidateRequest(&request)

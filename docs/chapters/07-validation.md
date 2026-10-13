@@ -34,7 +34,30 @@ The rules live in a shared function so the update request can reuse them:
 
 The controller runs the validation itself and decides what to do with the result:
 
-<<< @/../app/http/controllers/club_controller.go#store{go}
+```go
+// Store creates a club from a validated request.
+func (r *ClubController) Store(ctx http.Context) http.Response {
+	var request requests.StoreClubRequest
+	// Two results: validationErrors for bad input (422), err for anything
+	// that stopped validation running at all, such as an unreadable body
+	validationErrors, err := ctx.Request().ValidateRequest(&request)
+	if err != nil {
+		return ctx.Response().Json(http.StatusBadRequest, http.Json{"message": err.Error()})
+	}
+	if validationErrors != nil {
+		return validationFailed(ctx, validationErrors)
+	}
+
+	club := models.Club{Name: request.Name, Ground: request.Ground, FoundedYear: request.FoundedYear}
+	if err := facades.Orm().Query().Create(&club); err != nil {
+		return serverError(ctx, err)
+	}
+
+	return ctx.Response().Json(http.StatusCreated, http.Json{"data": club})
+}
+```
+
+[Chapter 20](/chapters/20-authorisation) adds an authorisation check before the validation.
 
 <<< @/../app/http/controllers/club_controller.go#failed{go}
 

@@ -35,7 +35,8 @@ Teaching repo mapping Laravel concepts to Goravel, one chapter per concept, back
 | `app/services/` | Plain Go services (e.g. `LeagueTable`), bound in the container by `app/providers/` |
 | `app/results/` | `results.Record()`: the single path for recording a score (an action), used by `sync:fixtures` and the API |
 | `app/console/commands/` | Artisan commands, listed in `bootstrap/commands.go` |
-| `app/providers/` | Service providers, listed in `bootstrap/providers.go` |
+| `app/providers/` | Service providers, listed in `bootstrap/providers.go`. `AuthServiceProvider` defines the gates |
+| `app/policies/` | `ClubPolicy`, `FixturePolicy`: club admins manage only their own club; the home admin records results |
 | `routes/` | Route registration (`web.go`) |
 | `database/` | Migrations, seeders, factories (Go code, not SQL) |
 | `tests/` | testify suites |
@@ -56,6 +57,7 @@ Teaching repo mapping Laravel concepts to Goravel, one chapter per concept, back
 | Events and jobs carry IDs as typed args | Goravel payloads are `[]event.Arg` / `[]queue.Arg`, not objects; handlers reload from the database |
 | League table cached as a JSON string | The Redis store cannot hold Go structs ("can't marshal"); the memory store can. Caching strings behaves the same on both. Never `Cache().Flush()` on shared Redis: Goravel runs `FLUSHALL` |
 | JWT auth on writes | Reads and `POST /api/auth/login` are public; writes sit behind `middleware.Authenticate()`. `JWT_SECRET` via `jwt:secret`. Tests log in through the real endpoint with `s.LoginAs(t, user)`; `.env.testing` sets `BCRYPT_ROUNDS=4` and the user factory hashes `password` once. Goravel JWTs have no `jti`, so same-user logins in the same second share a token, and logging one out disables both |
+| Authorisation in controllers via `authorise()` | Goravel's gate does not receive the user, so the helper loads it and adds it to the arguments; returns 401/403 JSON. Kept out of form request `Authorize`, which cannot produce a 403 |
 | Fixture `saving` event converts `kick_off_at` to UTC | SQLite keeps the original offset as text, MySQL converts to UTC; the event makes both return UTC (found by the UTC test failing on SQLite only) |
 | Container keys are string constants beside the service (`services.LeagueTableBinding`) | Goravel binds by string, not interface name; a constant prevents typos |
 | No `env_file` in `docker-compose.yml` | Goravel's config uses viper `AutomaticEnv`, so OS env vars override any `.env` file. Injecting `.env` as container env would silently override `.env.testing` in tests. The app reads `.env` from the bind mount instead |

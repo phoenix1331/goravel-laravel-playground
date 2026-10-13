@@ -44,6 +44,9 @@ func (r *PlayerController) Store(ctx http.Context) http.Response {
 	if response != nil {
 		return response
 	}
+	if _, response := authorise(ctx, "manage-players", map[string]any{"club": club}); response != nil {
+		return response
+	}
 
 	var request requests.StorePlayerRequest
 	validationErrors, err := ctx.Request().ValidateRequest(&request)

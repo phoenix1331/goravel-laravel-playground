@@ -58,5 +58,6 @@ func Providers() []foundation.ServiceProvider {
 		&sqlite.ServiceProvider{},
 		&redis.ServiceProvider{},
 		&providers.LeagueServiceProvider{},
+		&providers.AuthServiceProvider{},
 	}
 }
