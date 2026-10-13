@@ -1,0 +1,14 @@
+# Advisories accepted until Goravel ships a release that allows the fixed versions.
+# Review these whenever github.com/goravel/framework is upgraded.
+
+[[IgnoredVulns]]
+id = "GO-2026-6508"
+reason = "otlploggrpc v0.21.0 needs otel/log v0.21, which breaks goravel/framework v1.18.0 telemetry. Log export is off (OTEL_LOGS_EXPORTER unset)."
+
+[[IgnoredVulns]]
+id = "GO-2026-6615"
+reason = "sdk/log v0.21.0 breaks goravel/framework v1.18.0 telemetry. The log BatchProcessor only runs when OTEL_LOGS_EXPORTER is set, and it is not."
+
+[[IgnoredVulns]]
+id = "GO-2026-5932"
+reason = "No fixed version exists. Advisory covers golang.org/x/crypto/openpgp, which nothing in this module imports."

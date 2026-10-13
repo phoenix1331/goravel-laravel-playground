@@ -1,0 +1,13 @@
+{
+  "name": "goravel-for-laravel-devs",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Laravel concepts mapped to Goravel, side by side",
+  "license": "MIT",
+  "scripts": {
+    "prepare": "husky"
+  },
+  "devDependencies": {
+    "husky": "^9.1.7"
+  }
+}

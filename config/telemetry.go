@@ -161,7 +161,7 @@ func init() {
 				"excluded_paths":   []string{}, // e.g., ["/health", "/metrics"]
 				"excluded_methods": []string{}, // e.g., ["OPTIONS", "HEAD"]
 			},
-			
+
 			// HTTP Client Instrumentation
 			//
 			// Configures instrumentation for outgoing HTTP requests made through the
@@ -174,14 +174,14 @@ func init() {
 			"http_client": map[string]any{
 				"enabled": config.Env("OTEL_HTTP_CLIENT_ENABLED", true),
 			},
-			
+
 			// gRPC Server Instrumentation
 			//
 			// Configures the instrumentation for incoming gRPC requests to your server.
 			"grpc_server": map[string]any{
 				"enabled": config.Env("OTEL_GRPC_SERVER_ENABLED", true),
 			},
-			
+
 			// gRPC Client Instrumentation
 			//
 			// Configures the instrumentation for outgoing gRPC calls made by your application.

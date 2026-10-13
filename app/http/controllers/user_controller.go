@@ -4,7 +4,7 @@ import (
 	"github.com/goravel/framework/contracts/http"
 )
 
-type UserController struct {}
+type UserController struct{}
 
 func NewUserController() *UserController {
 	return &UserController{}

@@ -1,0 +1,36 @@
+#!/usr/bin/env bash
+
+# Go tooling runs inside the app container so the Go version matches go.mod
+if ! docker compose ps --status running --services 2>/dev/null | grep -q '^app$'; then
+  echo "error: the app container is not running. start it with: make up"
+  exit 1
+fi
+
+# Formatting
+echo "running gofmt..."
+UNFORMATTED=$(docker compose exec -T app gofmt -l .)
+if [ -n "$UNFORMATTED" ]; then
+  echo "error: these files are not gofmt formatted. run make fmt to fix:"
+  echo "$UNFORMATTED"
+  exit 1
+fi
+
+# Static analysis
+echo "running go vet..."
+if ! docker compose exec -T app go vet ./...; then
+  echo "error: go vet found problems."
+  exit 1
+fi
+
+# Security audit via osv-scanner CLI
+if ! command -v osv-scanner > /dev/null 2>&1; then
+  echo "error: osv-scanner not found. install it: https://github.com/google/osv-scanner"
+  exit 1
+fi
+
+# Call analysis is skipped: it needs a host Go that matches go.mod, and Go lives in the container
+echo "running osv-scanner audit..."
+if ! osv-scanner --no-call-analysis=go --lockfile=go.mod --lockfile=package-lock.json; then
+  echo "error: vulnerable packages detected. review the osv-scanner output above."
+  exit 1
+fi

@@ -6,7 +6,7 @@ Teaching repo mapping Laravel concepts to Goravel, one chapter per concept, back
 
 | Concern | Choice |
 |---|---|
-| Language | Go 1.25 (Goravel 1.18 minimum) |
+| Language | Go 1.26 (Goravel 1.18 needs 1.25+; 1.25 is end of life and its stdlib advisories are only fixed in 1.26.9+) |
 | Framework | Goravel 1.18, full scaffold (`goravel/goravel`), module name `goravel` |
 | HTTP driver | `goravel/gin` |
 | Database (dev) | MySQL 8.4 via `goravel/mysql` |
@@ -18,7 +18,7 @@ Teaching repo mapping Laravel concepts to Goravel, one chapter per concept, back
 
 | Service | Image | Host port | Notes |
 |---|---|---|---|
-| `app` | `Dockerfile` (golang:1.25 + air) | 8000 | Runs as host UID/GID, project bind-mounted at `/app` |
+| `app` | `Dockerfile` (golang:1.26 + air) | 8000 | Runs as host UID/GID, project bind-mounted at `/app` |
 | `mysql` | mysql:8.4 | 3307 | Host 3306 already in use on the dev machine |
 | `redis` | redis:7-alpine | none | Internal only |
 
@@ -63,3 +63,7 @@ Each chapter delivers working Go code, tests, a docs page and a Laravel comparis
 ## Commands
 
 All developer commands live in the `Makefile` and run inside the `app` container via `docker compose exec app`. Artisan is `go run . artisan <command>` (the `./artisan` script wraps this).
+
+## Dependency audit
+
+`osv-scanner` scans `go.mod` and `package-lock.json` in the pre-commit hook (Go call analysis off, as the host Go may not match `go.mod`). Accepted advisories live in `osv-scanner.toml`, each with a reason. Two are OpenTelemetry log packages whose fixed versions break `goravel/framework` v1.18.0, so they must be revisited on every framework upgrade.

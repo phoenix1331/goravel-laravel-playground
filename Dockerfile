@@ -1,6 +1,6 @@
 # Development image: Go toolchain plus air for live reload.
 # The project is bind-mounted at /app, so code changes rebuild without a new image.
-FROM golang:1.25
+FROM golang:1.26
 
 ENV GOMODCACHE=/go/pkg/mod \
     GOCACHE=/go/cache \

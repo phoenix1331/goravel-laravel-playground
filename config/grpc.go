@@ -21,7 +21,7 @@ func init() {
 			//  "credentials":    config.Env("GRPC_USER_CREDENTIALS"),
 			//  // the group name of UnaryClientInterceptorGroups
 			//	"interceptors":   []string{},
-            //  "stats_handlers": []string{},
+			//  "stats_handlers": []string{},
 			//},
 		},
 	})
