@@ -88,3 +88,28 @@ Content-Type: application/x-www-form-urlencoded
 Accept: application/json
 
 name=Form+FC&ground=Park
+
+### Players
+
+# A club with its squad, ordered by squad number
+GET {{baseUrl}}/api/clubs/1/players
+Accept: application/json
+
+###
+
+# Add a player to a club's squad
+POST {{baseUrl}}/api/clubs/1/players
+Content-Type: application/json
+Accept: application/json
+
+{
+  "name": "Sam Keeper",
+  "position": "goalkeeper",
+  "squad_number": 1
+}
+
+### Fixtures
+
+# Fixtures with home and away clubs eager loaded
+GET {{baseUrl}}/api/fixtures
+Accept: application/json

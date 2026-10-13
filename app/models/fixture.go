@@ -29,6 +29,14 @@ type Fixture struct {
 	// Pointers, because "no score yet" (NULL) is different from 0
 	HomeScore *int `json:"home_score"`
 	AwayScore *int `json:"away_score"`
+
+	// #region two-fks
+	// Two relations to the same model. The names do not follow the Club + ID
+	// convention, so the gorm tag names each foreign key explicitly, like
+	// belongsTo(Club::class, 'home_club_id') in Laravel.
+	HomeClub *Club `gorm:"foreignKey:HomeClubID" json:"home_club,omitempty"`
+	AwayClub *Club `gorm:"foreignKey:AwayClubID" json:"away_club,omitempty"`
+	// #endregion two-fks
 }
 
 // #endregion fixture

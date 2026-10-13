@@ -1,0 +1,86 @@
+// Laravel equivalent: app/Http/Controllers/ClubPlayerController.php - see docs/chapters/10-relationships.md
+package controllers
+
+import (
+	"github.com/goravel/framework/contracts/database/orm"
+	"github.com/goravel/framework/contracts/http"
+
+	"goravel/app/facades"
+	"goravel/app/http/requests"
+	"goravel/app/models"
+)
+
+type PlayerController struct{}
+
+func NewPlayerController() *PlayerController {
+	return &PlayerController{}
+}
+
+// #region index
+// Index returns a club with its squad, like $club->load('players').
+func (r *PlayerController) Index(ctx http.Context) http.Response {
+	club, response := findClub(ctx)
+	if response != nil {
+		return response
+	}
+
+	// Load fills club.Players with a second query. The extra argument
+	// constrains it, like load(['players' => fn ($q) => $q->orderBy(...)])
+	if err := facades.Orm().Query().Load(club, "Players", func(query orm.Query) orm.Query {
+		return query.Order("squad_number")
+	}); err != nil {
+		return serverError(ctx, err)
+	}
+
+	return ctx.Response().Success().Json(http.Json{"data": club})
+}
+
+// #endregion index
+
+// #region store
+// Store adds a player to the club's squad.
+func (r *PlayerController) Store(ctx http.Context) http.Response {
+	club, response := findClub(ctx)
+	if response != nil {
+		return response
+	}
+
+	var request requests.StorePlayerRequest
+	validationErrors, err := ctx.Request().ValidateRequest(&request)
+	if err != nil {
+		return ctx.Response().Json(http.StatusBadRequest, http.Json{"message": err.Error()})
+	}
+	if validationErrors != nil {
+		return validationFailed(ctx, validationErrors)
+	}
+
+	// The shirt number must be free within this club. Goravel's unique rule
+	// cannot add the extra club_id condition, so check it here.
+	taken, err := facades.Orm().Query().Model(&models.Player{}).
+		Where("club_id", club.ID).Where("squad_number", request.SquadNumber).Exists()
+	if err != nil {
+		return serverError(ctx, err)
+	}
+	if taken {
+		return ctx.Response().Json(http.StatusUnprocessableEntity, http.Json{
+			"message": "The given data was invalid.",
+			"errors":  http.Json{"squad_number": http.Json{"unique": "This squad number is already taken."}},
+		})
+	}
+
+	// Setting ClubID is how you "associate" in Go: there is no
+	// $club->players()->create(); you set the foreign key yourself
+	player := models.Player{
+		ClubID:      club.ID,
+		Name:        request.Name,
+		Position:    request.Position,
+		SquadNumber: request.SquadNumber,
+	}
+	if err := facades.Orm().Query().Create(&player); err != nil {
+		return serverError(ctx, err)
+	}
+
+	return ctx.Response().Json(http.StatusCreated, http.Json{"data": player})
+}
+
+// #endregion store

@@ -31,6 +31,14 @@ func Api() {
 		// like Route::apiResource('clubs', ClubController::class)
 		router.Resource("clubs", controllers.NewClubController())
 		// #endregion resource
+
+		// #region nested
+		playerController := controllers.NewPlayerController()
+		router.Get("clubs/{id}/players", playerController.Index)
+		router.Post("clubs/{id}/players", playerController.Store)
+
+		router.Get("fixtures", controllers.NewFixtureController().Index)
+		// #endregion nested
 	})
 }
 

@@ -11,6 +11,12 @@ type Club struct {
 	Name        string `json:"name"`
 	Ground      string `json:"ground"`
 	FoundedYear *int   `json:"founded_year"`
+
+	// #region has-many
+	// Has many: a slice of the related model. Empty until loaded with
+	// With() or Load(); omitempty leaves it out of JSON when not loaded.
+	Players []*Player `json:"players,omitempty"`
+	// #endregion has-many
 }
 
 // #endregion model

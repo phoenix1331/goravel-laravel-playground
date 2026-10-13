@@ -28,6 +28,10 @@ type Player struct {
 	Name        string   `json:"name"`
 	Position    Position `json:"position"`
 	SquadNumber int      `json:"squad_number"`
+
+	// Belongs to: a pointer to the parent, nil until loaded. ClubID above is
+	// the foreign key, matched by name (Club + ID).
+	Club *Club `json:"club,omitempty"`
 }
 
 // #endregion player
