@@ -8,6 +8,9 @@ import (
 // LeagueTableBinding is the container key the service is bound under.
 const LeagueTableBinding = "club.league_table"
 
+// LeagueTableCacheKey is where the rendered table is cached.
+const LeagueTableCacheKey = "league_table"
+
 // Result is one finished fixture.
 type Result struct {
 	HomeClubID uint

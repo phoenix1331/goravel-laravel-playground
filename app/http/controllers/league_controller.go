@@ -2,7 +2,11 @@
 package controllers
 
 import (
+	"encoding/json"
+	"time"
+
 	"github.com/goravel/framework/contracts/http"
+	"github.com/spf13/cast"
 
 	"goravel/app/facades"
 	"goravel/app/models"
@@ -24,9 +28,45 @@ type leagueRow struct {
 	GoalDifference int `json:"goal_difference"`
 }
 
+// leagueTableTTL is a backstop: the cache is cleared whenever a result is
+// recorded (listeners.ForgetLeagueTable), so it rarely lives this long.
+const leagueTableTTL = time.Hour
+
 // #region table
-// Table builds the league table from finished fixtures.
+// Table returns the league table, from the cache when possible.
 func (r *LeagueController) Table(ctx http.Context) http.Response {
+	// Remember is Cache::remember(). The callback only runs on a miss.
+	//
+	// The callback returns JSON as a string, not the []leagueRow itself. The
+	// Redis store can only hold strings and numbers ("can't marshal
+	// []leagueRow"), while the memory store used in tests keeps any Go value.
+	// Caching a string behaves the same on both.
+	cached, err := facades.Cache().Remember(services.LeagueTableCacheKey, leagueTableTTL, func() (any, error) {
+		rows, err := buildLeagueTable()
+		if err != nil {
+			return nil, err
+		}
+		encoded, err := json.Marshal(rows)
+
+		return string(encoded), err
+	})
+	if err != nil {
+		return serverError(ctx, err)
+	}
+
+	var rows []leagueRow
+	if err := json.Unmarshal([]byte(cast.ToString(cached)), &rows); err != nil {
+		return serverError(ctx, err)
+	}
+
+	return ctx.Response().Success().Json(http.Json{"data": rows})
+}
+
+// #endregion table
+
+// #region build
+// buildLeagueTable builds the table from finished fixtures.
+func buildLeagueTable() ([]leagueRow, error) {
 	// facades.DB() is the query builder, like DB::table(). Rows scan into
 	// any struct: column home_club_id fills field HomeClubID by name.
 	var results []services.Result
@@ -35,7 +75,7 @@ func (r *LeagueController) Table(ctx http.Context) http.Response {
 		Where("status", models.Finished).
 		Get(&results)
 	if err != nil {
-		return serverError(ctx, err)
+		return nil, err
 	}
 
 	standings := facades.LeagueTable().Standings(results)
@@ -43,13 +83,13 @@ func (r *LeagueController) Table(ctx http.Context) http.Response {
 	// Clubs that have not played yet still appear, at the bottom
 	var clubs []models.Club
 	if err := facades.Orm().Query().Order("name").Get(&clubs); err != nil {
-		return serverError(ctx, err)
+		return nil, err
 	}
 
-	return ctx.Response().Success().Json(http.Json{"data": tableRows(standings, clubs)})
+	return tableRows(standings, clubs), nil
 }
 
-// #endregion table
+// #endregion build
 
 // tableRows adds positions and club names, and appends clubs with no results.
 func tableRows(standings []services.Standing, clubs []models.Club) []leagueRow {

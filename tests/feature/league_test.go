@@ -8,6 +8,7 @@ import (
 
 	"goravel/app/facades"
 	"goravel/app/models"
+	"goravel/app/services"
 	"goravel/tests"
 )
 
@@ -25,6 +26,9 @@ func TestLeagueTestSuite(t *testing.T) {
 // 1-1 with Crewe, and Dorking have not played. One fixture is still to come.
 func (s *LeagueTestSuite) SetupTest() {
 	s.Require().NoError(s.TruncateTables())
+	// The table is cached since chapter 18. Forget the key rather than Flush():
+	// on Redis, Flush() runs FLUSHALL and empties every database on the server.
+	facades.Cache().Forget(services.LeagueTableCacheKey)
 
 	s.clubs = map[string]models.Club{}
 	for _, name := range []string{"Ashford", "Barnsley", "Crewe", "Dorking"} {

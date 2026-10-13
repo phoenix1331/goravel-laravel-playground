@@ -41,8 +41,8 @@ fresh: ## Drop all tables, re-run migrations and seed
 test: ## Run the test suite against in-memory SQLite (.env.testing)
 	@$(EXEC) go test ./... -count=1 --env=.env.testing
 
-test-mysql: ## Run the test suite against MySQL (goravel_test) to catch SQLite/MySQL drift
-	@docker compose exec -e DB_CONNECTION=mysql -e DB_HOST=mysql -e DB_PORT=3306 -e DB_DATABASE=goravel_test -e DB_USERNAME=goravel -e DB_PASSWORD=secret app go test ./... -count=1 -p 1 --env=.env.testing
+test-mysql: ## Run the test suite production-like: MySQL (goravel_test) and the Redis cache (db 1)
+	@docker compose exec -e DB_CONNECTION=mysql -e DB_HOST=mysql -e DB_PORT=3306 -e DB_DATABASE=goravel_test -e DB_USERNAME=goravel -e DB_PASSWORD=secret -e CACHE_STORE=redis -e REDIS_HOST=redis -e REDIS_DB=1 app go test ./... -count=1 -p 1 --env=.env.testing
 
 fmt: ## Format all Go files with gofmt
 	@$(EXEC) gofmt -w .

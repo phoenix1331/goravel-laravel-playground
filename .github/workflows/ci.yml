@@ -36,10 +36,11 @@ jobs:
       - name: go test
         run: go test ./... -count=1 --env=.env.testing
 
-  # The suite normally runs on SQLite. Running it once on MySQL catches
-  # dialect drift: queries that SQLite accepts but MySQL rejects, or the reverse.
+  # The suite normally runs on SQLite with the memory cache. Running it once on
+  # MySQL and Redis catches drift: SQL that only one database accepts, and
+  # values the memory cache stores but Redis cannot.
   test-mysql:
-    name: Tests (MySQL 8.4)
+    name: Tests (MySQL 8.4 + Redis)
     runs-on: ubuntu-latest
     services:
       mysql:
@@ -56,6 +57,15 @@ jobs:
           --health-interval=5s
           --health-timeout=5s
           --health-retries=20
+      redis:
+        image: redis:7-alpine
+        ports:
+          - 6379:6379
+        options: >-
+          --health-cmd="redis-cli ping"
+          --health-interval=5s
+          --health-timeout=3s
+          --health-retries=20
     # OS env vars override .env.testing, so these switch the same suite to MySQL
     env:
       DB_CONNECTION: mysql
@@ -64,6 +74,9 @@ jobs:
       DB_DATABASE: goravel_test
       DB_USERNAME: goravel
       DB_PASSWORD: secret
+      CACHE_STORE: redis
+      REDIS_HOST: 127.0.0.1
+      REDIS_PORT: 6379
     steps:
       - uses: actions/checkout@v5
       - uses: actions/setup-go@v6

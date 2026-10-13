@@ -30,6 +30,7 @@ func Boot() contractsfoundation.Application {
 			return map[event.Event][]event.Listener{
 				&events.FixtureResultRecorded{}: {
 					&listeners.NotifyClubAdmins{},
+					&listeners.ForgetLeagueTable{},
 				},
 			}
 		}).

@@ -18,7 +18,7 @@ Goravel has two ways to query without models. `facades.Orm().Query()` is the ORM
 
 ### The query builder
 
-<<< @/../app/http/controllers/league_controller.go#table{go}
+<<< @/../app/http/controllers/league_controller.go#build{go}
 
 The rows scan straight into `[]services.Result`, the struct the league table service already takes. There are no tags on `Result`: `facades.DB()` converts each field name to snake case (`HomeClubID` to `home_club_id`) and matches it to a column. Laravel gives you `stdClass` rows that you map by hand. Go gives you typed structs.
 
