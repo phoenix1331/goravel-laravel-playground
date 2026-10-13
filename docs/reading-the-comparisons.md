@@ -2,7 +2,7 @@
 
 Every chapter follows the same pattern, shown here with the smallest feature in the repo: a `/health` endpoint that reports whether the app can reach its database.
 
-- **Laravel tab:** a short PHP file from [`docs/snippets/laravel/`](https://github.com/phoenix1331/goravel-for-laravel-devs/tree/main/docs/snippets/laravel). These are illustrative and are not run.
+- **Laravel tab:** a short PHP file from [`docs/snippets/laravel/`](https://github.com/phoenix1331/goravel-laravel-playground/tree/main/docs/snippets/laravel). These are illustrative and are not run.
 - **Goravel tab:** pulled straight from the real source files at build time, so what you read is the code that is tested in CI.
 
 ## The route

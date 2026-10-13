@@ -30,7 +30,7 @@ type endpoint struct {
 func (r *IndexController) Index(ctx http.Context) http.Response {
 	name := facades.Config().GetString("app.name")
 	description := "API only: every endpoint returns JSON. See request.http for example requests."
-	docs := "https://github.com/phoenix1331/goravel-for-laravel-devs"
+	docs := "https://github.com/phoenix1331/goravel-laravel-playground"
 	endpoints := listEndpoints()
 
 	if strings.Contains(ctx.Request().Header("Accept"), "text/html") {

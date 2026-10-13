@@ -2,7 +2,7 @@
 
 <a href="https://www.goravel.dev"><img src="https://www.goravel.dev/logo.png" width="300" alt="Goravel"></a>
 
-# Goravel comparison for Laravel devs
+# Goravel playground for Laravel devs
 
 [Goravel website](https://www.goravel.dev) · [Goravel documentation](https://www.goravel.dev/getting-started/installation.html) · [Goravel on GitHub](https://github.com/goravel/goravel)
 
@@ -17,7 +17,7 @@
 
 Something to play with: a grassroots football club API (clubs, players, fixtures, a league table) built with Goravel, where each feature sits next to a short note on how you would do it in Laravel and what Go does differently. Run it, poke the endpoints, change the code and watch the tests.
 
-**Docs site:** https://phoenix1331.github.io/goravel-for-laravel-devs
+**Docs site:** https://phoenix1331.github.io/goravel-laravel-playground
 
 > **API only.** There is no front end: every endpoint returns JSON. Open http://localhost:8000/ in a browser for a live list of endpoints (JSON clients get the same list as JSON), and use `request.http` to send requests.
 
@@ -82,30 +82,30 @@ make docs-dev                    # docs on http://localhost:5173
 
 | # | Chapter | Laravel | Goravel |
 |---|---|---|---|
-| 01 | [Installation and structure](https://phoenix1331.github.io/goravel-for-laravel-devs/chapters/01-installation) | `laravel new`, `artisan`, directory structure | `goravel new`, `./artisan`, layout |
-| 02 | [Configuration](https://phoenix1331.github.io/goravel-for-laravel-devs/chapters/02-configuration) | `.env` and `config/*.php` | `.env`, `config/*.go`, `facades.Config()` |
-| 03 | [Routing](https://phoenix1331.github.io/goravel-for-laravel-devs/chapters/03-routing) | `routes/web.php`, `routes/api.php` | `routes/*.go`, route groups |
-| 04 | [Controllers](https://phoenix1331.github.io/goravel-for-laravel-devs/chapters/04-controllers) | Controller classes | Controller structs |
-| 05 | [Service container and providers](https://phoenix1331.github.io/goravel-for-laravel-devs/chapters/05-service-container) | Service container, `register()` / `boot()` | Container bindings, `Register` / `Boot` |
-| 06 | [Facades](https://phoenix1331.github.io/goravel-for-laravel-devs/chapters/06-facades) | Static proxies via `__callStatic` | `app/facades` package functions |
-| 07 | [Form requests and validation](https://phoenix1331.github.io/goravel-for-laravel-devs/chapters/07-validation) | Form requests, `$request->validate()` | Form requests, validation rules |
-| 08 | [Middleware](https://phoenix1331.github.io/goravel-for-laravel-devs/chapters/08-middleware) | Middleware classes with `handle()` | Middleware functions |
-| 09 | [ORM models](https://phoenix1331.github.io/goravel-for-laravel-devs/chapters/09-models) | Eloquent models | ORM models |
-| 10 | [Relationships](https://phoenix1331.github.io/goravel-for-laravel-devs/chapters/10-relationships) | Eloquent relationships, `with()` | ORM relationships, `With()` |
-| 11 | [Migrations](https://phoenix1331.github.io/goravel-for-laravel-devs/chapters/11-migrations) | Migrations with the schema builder | Migrations in Go |
-| 12 | [Factories and seeders](https://phoenix1331.github.io/goravel-for-laravel-devs/chapters/12-factories-seeders) | Model factories and seeders | Factories and seeders |
-| 13 | [Query builder and raw SQL](https://phoenix1331.github.io/goravel-for-laravel-devs/chapters/13-query-builder) | `DB::table()`, `DB::select()` | `facades.Orm().Query()`, `facades.DB()` |
-| 14 | [Artisan commands](https://phoenix1331.github.io/goravel-for-laravel-devs/chapters/14-console-commands) | `make:command`, `handle()` | Console commands (`make:command`) |
-| 15 | [Events and listeners](https://phoenix1331.github.io/goravel-for-laravel-devs/chapters/15-events) | Events, listeners, `event()` | Events and listeners |
-| 16 | [Jobs and queues](https://phoenix1331.github.io/goravel-for-laravel-devs/chapters/16-queues) | Jobs, `dispatch()`, queue workers | Jobs and queues |
-| 17 | [Task scheduling](https://phoenix1331.github.io/goravel-for-laravel-devs/chapters/17-scheduling) | `routes/console.php` schedule | Scheduler |
-| 18 | [Cache](https://phoenix1331.github.io/goravel-for-laravel-devs/chapters/18-cache) | `Cache::remember()` | Cache facade |
-| 19 | [Authentication](https://phoenix1331.github.io/goravel-for-laravel-devs/chapters/19-authentication) | Session guard, Sanctum | Auth with the JWT guard |
-| 20 | [Gates and policies](https://phoenix1331.github.io/goravel-for-laravel-devs/chapters/20-authorisation) | Gates and policies | Authorisation |
-| 21 | [HTTP client](https://phoenix1331.github.io/goravel-for-laravel-devs/chapters/21-http-client) | `Http::get()`, `Http::fake()` | HTTP client |
-| 22 | [Logging](https://phoenix1331.github.io/goravel-for-laravel-devs/chapters/22-logging) | `Log::info()`, channels | Logging |
-| 23 | [Testing](https://phoenix1331.github.io/goravel-for-laravel-devs/chapters/23-testing) | PHPUnit / Pest, HTTP tests, fakes | testify suites, HTTP tests, mocks |
-| 24 | [Error handling](https://phoenix1331.github.io/goravel-for-laravel-devs/chapters/24-error-handling) | Exceptions, `try` / `catch`, handler | Go errors |
+| 01 | [Installation and structure](https://phoenix1331.github.io/goravel-laravel-playground/chapters/01-installation) | `laravel new`, `artisan`, directory structure | `goravel new`, `./artisan`, layout |
+| 02 | [Configuration](https://phoenix1331.github.io/goravel-laravel-playground/chapters/02-configuration) | `.env` and `config/*.php` | `.env`, `config/*.go`, `facades.Config()` |
+| 03 | [Routing](https://phoenix1331.github.io/goravel-laravel-playground/chapters/03-routing) | `routes/web.php`, `routes/api.php` | `routes/*.go`, route groups |
+| 04 | [Controllers](https://phoenix1331.github.io/goravel-laravel-playground/chapters/04-controllers) | Controller classes | Controller structs |
+| 05 | [Service container and providers](https://phoenix1331.github.io/goravel-laravel-playground/chapters/05-service-container) | Service container, `register()` / `boot()` | Container bindings, `Register` / `Boot` |
+| 06 | [Facades](https://phoenix1331.github.io/goravel-laravel-playground/chapters/06-facades) | Static proxies via `__callStatic` | `app/facades` package functions |
+| 07 | [Form requests and validation](https://phoenix1331.github.io/goravel-laravel-playground/chapters/07-validation) | Form requests, `$request->validate()` | Form requests, validation rules |
+| 08 | [Middleware](https://phoenix1331.github.io/goravel-laravel-playground/chapters/08-middleware) | Middleware classes with `handle()` | Middleware functions |
+| 09 | [ORM models](https://phoenix1331.github.io/goravel-laravel-playground/chapters/09-models) | Eloquent models | ORM models |
+| 10 | [Relationships](https://phoenix1331.github.io/goravel-laravel-playground/chapters/10-relationships) | Eloquent relationships, `with()` | ORM relationships, `With()` |
+| 11 | [Migrations](https://phoenix1331.github.io/goravel-laravel-playground/chapters/11-migrations) | Migrations with the schema builder | Migrations in Go |
+| 12 | [Factories and seeders](https://phoenix1331.github.io/goravel-laravel-playground/chapters/12-factories-seeders) | Model factories and seeders | Factories and seeders |
+| 13 | [Query builder and raw SQL](https://phoenix1331.github.io/goravel-laravel-playground/chapters/13-query-builder) | `DB::table()`, `DB::select()` | `facades.Orm().Query()`, `facades.DB()` |
+| 14 | [Artisan commands](https://phoenix1331.github.io/goravel-laravel-playground/chapters/14-console-commands) | `make:command`, `handle()` | Console commands (`make:command`) |
+| 15 | [Events and listeners](https://phoenix1331.github.io/goravel-laravel-playground/chapters/15-events) | Events, listeners, `event()` | Events and listeners |
+| 16 | [Jobs and queues](https://phoenix1331.github.io/goravel-laravel-playground/chapters/16-queues) | Jobs, `dispatch()`, queue workers | Jobs and queues |
+| 17 | [Task scheduling](https://phoenix1331.github.io/goravel-laravel-playground/chapters/17-scheduling) | `routes/console.php` schedule | Scheduler |
+| 18 | [Cache](https://phoenix1331.github.io/goravel-laravel-playground/chapters/18-cache) | `Cache::remember()` | Cache facade |
+| 19 | [Authentication](https://phoenix1331.github.io/goravel-laravel-playground/chapters/19-authentication) | Session guard, Sanctum | Auth with the JWT guard |
+| 20 | [Gates and policies](https://phoenix1331.github.io/goravel-laravel-playground/chapters/20-authorisation) | Gates and policies | Authorisation |
+| 21 | [HTTP client](https://phoenix1331.github.io/goravel-laravel-playground/chapters/21-http-client) | `Http::get()`, `Http::fake()` | HTTP client |
+| 22 | [Logging](https://phoenix1331.github.io/goravel-laravel-playground/chapters/22-logging) | `Log::info()`, channels | Logging |
+| 23 | [Testing](https://phoenix1331.github.io/goravel-laravel-playground/chapters/23-testing) | PHPUnit / Pest, HTTP tests, fakes | testify suites, HTTP tests, mocks |
+| 24 | [Error handling](https://phoenix1331.github.io/goravel-laravel-playground/chapters/24-error-handling) | Exceptions, `try` / `catch`, handler | Go errors |
 
 ## Licence
 

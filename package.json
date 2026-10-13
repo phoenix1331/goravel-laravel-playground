@@ -1,8 +1,8 @@
 {
-  "name": "goravel-for-laravel-devs",
+  "name": "goravel-laravel-playground",
   "version": "1.0.0",
   "private": true,
-  "description": "Laravel concepts mapped to Goravel, side by side",
+  "description": "A hands-on Goravel playground for Laravel developers",
   "license": "MIT",
   "scripts": {
     "prepare": "husky",

@@ -1,12 +1,12 @@
 import { defineConfig } from 'vitepress'
 
-const repo = 'https://github.com/phoenix1331/goravel-for-laravel-devs'
+const repo = 'https://github.com/phoenix1331/goravel-laravel-playground'
 
 export default defineConfig({
-  title: 'Goravel for Laravel devs',
-  description: 'Laravel concepts mapped to Goravel, side by side, backed by a working Go app',
+  title: 'Goravel playground for Laravel devs',
+  description: 'A hands-on Goravel playground for Laravel developers',
   lang: 'en-GB',
-  base: '/goravel-for-laravel-devs/',
+  base: '/goravel-laravel-playground/',
   cleanUrls: true,
   lastUpdated: true,
   themeConfig: {
