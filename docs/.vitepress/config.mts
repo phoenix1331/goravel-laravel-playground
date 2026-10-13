@@ -13,7 +13,7 @@ export default defineConfig({
     nav: [
       { text: 'Go for PHP devs', link: '/go-for-php-devs' },
       { text: 'Chapters', link: '/chapters/01-installation' },
-      { text: 'Cheat sheet', link: '/cheat-sheet' }
+      { text: 'Where to find it', link: '/where-to-find-it' }
     ],
     sidebar: [
       {
@@ -21,7 +21,7 @@ export default defineConfig({
         items: [
           { text: 'Go for PHP devs', link: '/go-for-php-devs' },
           { text: 'Reading the comparisons', link: '/reading-the-comparisons' },
-          { text: 'Cheat sheet', link: '/cheat-sheet' },
+          { text: 'Where to find it', link: '/where-to-find-it' },
           { text: 'Laravel snippet index', link: '/laravel-index' }
         ]
       },
