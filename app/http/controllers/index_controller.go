@@ -24,7 +24,37 @@ type endpoint struct {
 // #region index
 // Index describes the API and lists every endpoint. The list is read from the
 // router at request time, so it can never fall out of date.
+//
+// Browsers ask for HTML and get a page rendered from
+// resources/views/index.tmpl; API clients get the same data as JSON.
 func (r *IndexController) Index(ctx http.Context) http.Response {
+	name := facades.Config().GetString("app.name")
+	description := "API only: every endpoint returns JSON. See request.http for example requests."
+	docs := "https://github.com/phoenix1331/goravel-for-laravel-devs"
+	endpoints := listEndpoints()
+
+	if strings.Contains(ctx.Request().Header("Accept"), "text/html") {
+		// Like return view('index', [...]): Go's html/template, escaping included
+		return ctx.Response().View().Make("index.tmpl", map[string]any{
+			"Name":        name,
+			"Description": description,
+			"Docs":        docs,
+			"Endpoints":   endpoints,
+		})
+	}
+
+	return ctx.Response().Success().Json(http.Json{
+		"name":        name,
+		"description": description,
+		"docs":        docs,
+		"endpoints":   endpoints,
+	})
+}
+
+// #endregion index
+
+// listEndpoints reads every registered route, sorted by path.
+func listEndpoints() []endpoint {
 	var endpoints []endpoint
 	for _, route := range facades.Route().GetRoutes() {
 		switch route.Method {
@@ -49,12 +79,5 @@ func (r *IndexController) Index(ctx http.Context) http.Response {
 		return endpoints[i].Path < endpoints[j].Path
 	})
 
-	return ctx.Response().Success().Json(http.Json{
-		"name":        facades.Config().GetString("app.name"),
-		"description": "API only: every endpoint returns JSON. See request.http for example requests.",
-		"docs":        "https://github.com/phoenix1331/goravel-for-laravel-devs",
-		"endpoints":   endpoints,
-	})
+	return endpoints
 }
-
-// #endregion index

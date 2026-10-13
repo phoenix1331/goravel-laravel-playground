@@ -1,10 +1,16 @@
+<div align="center">
+
+<img src="https://www.goravel.dev/logo.png" width="300" alt="Goravel">
+
 # Goravel for Laravel devs
+
+</div>
 
 A side-by-side guide for Laravel developers learning Go. It maps 24 Laravel concepts to their Goravel equivalents and is backed by a working grassroots football club API.
 
 **Docs site:** https://phoenix1331.github.io/goravel-for-laravel-devs
 
-> **API only.** There is no front end: every endpoint returns JSON. Open http://localhost:8000/ for a live list of endpoints, and use `request.http` to send requests.
+> **API only.** There is no front end: every endpoint returns JSON. Open http://localhost:8000/ in a browser for a live list of endpoints (JSON clients get the same list as JSON), and use `request.http` to send requests.
 
 ## Who it is for
 

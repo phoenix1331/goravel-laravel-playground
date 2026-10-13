@@ -33,3 +33,11 @@ func (s *IndexTestSuite) TestRootListsEndpoints() {
 	s.Contains(body.Endpoints, struct{ Method, Path string }{"POST", "/api/fixtures/{id}/result"})
 	s.NotContains(body.Endpoints, struct{ Method, Path string }{"STATIC", "/public"})
 }
+
+func (s *IndexTestSuite) TestBrowsersGetAnHtmlPageWithTheLogo() {
+	response, err := s.Http(s.T()).WithHeader("Accept", "text/html").Get("/")
+	s.Require().NoError(err)
+
+	response.AssertOk()
+	response.AssertSee([]string{"goravel.dev/logo.png", "/api/league/table"})
+}
