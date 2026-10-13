@@ -68,7 +68,7 @@ These tests check the outcome, notifications in the database, rather than "the e
 
 ## What is different and why
 
-- **Arguments, not objects.** A Laravel event holds `public Fixture $fixture`, and `SerializesModels` reduces it to an ID if it goes on a queue. A Goravel event's payload is `[]event.Arg{{Type: "uint", Value: id}}`. The `Type` string tells the queue how to rebuild the value, so the same event works with synchronous and queued listeners. Listeners load what they need from the ID.
+- **Arguments, not objects.** A Laravel event holds `public Fixture $fixture`, and `SerializesModels` reduces it to an ID if it goes on a queue. A Goravel event's payload is `[]event.Arg{ {Type: "uint", Value: id} }`. The `Type` string tells the queue how to rebuild the value, so the same event works with synchronous and queued listeners. Listeners load what they need from the ID.
 - **Listeners receive `...any`.** `Handle(args ...any)` gets the values in dispatch order, untyped. `cast.ToUint(args[0])` converts safely, whatever numeric type arrived. Check `len(args)` before indexing: a wrong dispatch call is a runtime error, not a compile error.
 - **Explicit registration.** No discovery. A listener missing from the `WithEvents` map never runs, and dispatching an event with no listeners at all returns an error (`EventListenerNotBind`).
 - **`Queue()` decides sync or queued.** `Enable: false` runs the listener inside `Dispatch()`, like a Laravel listener without `ShouldQueue`. Chapter 16 changes this.
