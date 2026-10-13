@@ -46,9 +46,32 @@ The `(*models.Club, http.Response)` return is a common Go shape: return the valu
 
 ### Reading the request body
 
-<<< @/../app/http/controllers/club_controller.go#store{go}
+The first version of `Store` bound the JSON body straight into a struct:
 
-`$request->only(...)` becomes a struct describing the expected JSON. `Bind` decodes the body into it. Fields not in the struct are ignored, which gives you the same protection as `$fillable` without a separate list. There is no validation yet: an empty name is accepted. [Chapter 07](/chapters/07-validation) fixes that with a form request.
+```go
+// clubInput is the JSON body accepted by Store and Update.
+type clubInput struct {
+	Name        string `json:"name"`
+	Ground      string `json:"ground"`
+	FoundedYear *int   `json:"founded_year"`
+}
+
+func (r *ClubController) Store(ctx http.Context) http.Response {
+	var input clubInput
+	if err := ctx.Request().Bind(&input); err != nil {
+		return ctx.Response().Json(http.StatusBadRequest, http.Json{"message": "Invalid JSON body"})
+	}
+
+	club := models.Club{Name: input.Name, Ground: input.Ground, FoundedYear: input.FoundedYear}
+	if err := facades.Orm().Query().Create(&club); err != nil {
+		return serverError(ctx, err)
+	}
+
+	return ctx.Response().Json(http.StatusCreated, http.Json{"data": club})
+}
+```
+
+`$request->only(...)` becomes a struct describing the expected JSON. `Bind` decodes the body into it. Fields not in the struct are ignored, which gives you the same protection as `$fillable` without a separate list. There was no validation, so an empty name was accepted. [Chapter 07](/chapters/07-validation) replaces `clubInput` with a form request, and the current `Store` lives there.
 
 ## Testing it
 
