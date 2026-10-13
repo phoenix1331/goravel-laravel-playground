@@ -52,6 +52,8 @@ Laravel discovers listeners by the type hint on `handle()`. Goravel needs an exp
 
 <<< @/../app/http/controllers/fixture_controller.go#record{go}
 
+The `authorise` call comes from [chapter 20](/chapters/20-authorisation) and the 409 for an already-recorded fixture from [chapter 24](/chapters/24-error-handling).
+
 The notifications are rows in a new `result_notifications` table.
 
 ## Testing it

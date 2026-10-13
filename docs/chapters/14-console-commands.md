@@ -38,6 +38,8 @@ make artisan cmd="sync:fixtures --dry-run"
 
 <<< @/../app/console/commands/sync_fixtures.go#handle{go}
 
+`newFeed` arrived in [chapter 21](/chapters/21-http-client) to choose between a file and an HTTP API. In this chapter the command built a `services.FileFeed{Path: path}` directly.
+
 The feed is an interface, so the command does not care where results come from:
 
 <<< @/../app/services/fixture_feed.go#feed{go}
@@ -46,7 +48,26 @@ The feed is an interface, so the command does not care where results come from:
 
 The command does not update the fixture itself. It calls `results.Record`, a small function playing the part of a Laravel action class:
 
-<<< @/../app/results/record.go#record{go}
+```go
+// Record marks a fixture as finished with the given score. Every way a result
+// arrives (the sync command, the API) goes through here, so later chapters
+// have one place to hook in.
+func Record(fixture *models.Fixture, homeScore, awayScore int) error {
+	if homeScore < 0 || awayScore < 0 {
+		return fmt.Errorf("record fixture %d: scores cannot be negative", fixture.ID)
+	}
+
+	fixture.Status = models.Finished
+	fixture.HomeScore = &homeScore
+	fixture.AwayScore = &awayScore
+
+	if err := facades.Orm().Query().Save(fixture); err != nil {
+		return fmt.Errorf("record fixture %d: %w", fixture.ID, err)
+	}
+
+	return nil
+}
+```
 
 Chapter 15 adds an event to this function, and chapter 16 a queued job, without touching the command.
 

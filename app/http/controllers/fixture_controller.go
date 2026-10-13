@@ -63,9 +63,17 @@ func (r *FixtureController) RecordResult(ctx http.Context) http.Response {
 		return validationFailed(ctx, validationErrors)
 	}
 
-	if err := results.Record(&fixture, request.HomeScore, request.AwayScore); err != nil {
+	// #region is
+	err = results.Record(&fixture, request.HomeScore, request.AwayScore)
+	if errors.Is(err, results.ErrAlreadyRecorded) {
+		// An expected failure with its own status, like catching one
+		// exception class and rendering it differently
+		return ctx.Response().Json(http.StatusConflict, http.Json{"message": "This fixture already has a result."})
+	}
+	if err != nil {
 		return serverError(ctx, err)
 	}
+	// #endregion is
 
 	return ctx.Response().Success().Json(http.Json{"data": fixture})
 }

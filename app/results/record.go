@@ -2,12 +2,21 @@
 package results
 
 import (
+	"errors"
 	"fmt"
 
 	"goravel/app/events"
 	"goravel/app/facades"
 	"goravel/app/models"
 )
+
+// #region sentinel
+// ErrAlreadyRecorded is a sentinel error: a package-level value that callers
+// compare against with errors.Is, the way PHP code catches a specific
+// exception class. Callers decide what it means to them (a 409, a skip).
+var ErrAlreadyRecorded = errors.New("fixture already has a result")
+
+// #endregion sentinel
 
 // #region record
 // Record marks a fixture as finished with the given score. Every way a result
@@ -17,6 +26,13 @@ func Record(fixture *models.Fixture, homeScore, awayScore int) error {
 	if homeScore < 0 || awayScore < 0 {
 		return fmt.Errorf("record fixture %d: scores cannot be negative", fixture.ID)
 	}
+	// #region wrap
+	if fixture.Status == models.Finished {
+		// %w wraps the sentinel: the message gains context ("record fixture
+		// 7: fixture already has a result") and errors.Is still matches it
+		return fmt.Errorf("record fixture %d: %w", fixture.ID, ErrAlreadyRecorded)
+	}
+	// #endregion wrap
 
 	fixture.Status = models.Finished
 	fixture.HomeScore = &homeScore
