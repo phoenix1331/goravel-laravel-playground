@@ -11,9 +11,11 @@
 <img width="3010" height="1650" alt="Screenshot 2026-10-13 202051" src="https://github.com/user-attachments/assets/36575dc9-448e-4983-8089-77ae85925e5b" />
 
 
-> **An unofficial learning guide.** [Goravel](https://www.goravel.dev) is created and maintained by the Goravel team and contributors. This repository is an independent project that uses Goravel to teach Go to Laravel developers; it is not affiliated with or endorsed by the Goravel project. The Goravel name and logo belong to their owners.
+> **A playground, not the docs.** [Goravel](https://www.goravel.dev) is built and maintained by the Goravel team and contributors. This is an independent, unofficial project: a small working Goravel app for Laravel developers to clone, run and break. It is not affiliated with or endorsed by the Goravel project, and the Goravel name and logo belong to their owners.
+>
+> For the full feature-by-feature comparison, read Goravel's own [Compare with Laravel](https://www.goravel.dev/prologue/compare-with-laravel.html) page and the [Goravel documentation](https://www.goravel.dev/getting-started/installation.html).
 
-A side-by-side guide for Laravel developers learning Go. It maps 24 Laravel concepts to their Goravel equivalents and is backed by a working grassroots football club API.
+Something to play with: a grassroots football club API (clubs, players, fixtures, a league table) built with Goravel, where each feature sits next to a short note on how you would do it in Laravel and what Go does differently. Run it, poke the endpoints, change the code and watch the tests.
 
 **Docs site:** https://phoenix1331.github.io/goravel-for-laravel-devs
 
@@ -21,10 +23,10 @@ A side-by-side guide for Laravel developers learning Go. It maps 24 Laravel conc
 
 ## Who it is for
 
-- Laravel developers curious about Go who want to start from something familiar
-- Anyone evaluating Goravel against Laravel for a backend service
+- Laravel developers who learn best by running and changing real code
+- Anyone wanting a hands-on feel for Goravel before using it for a backend service
 
-Each chapter shows the Laravel way, the Goravel way, and what is different and why: explicit errors, structs instead of classes, no magic methods, compile-time wiring. The Go snippets on the site are pulled from this repo's source at build time, so they are real, tested code.
+The chapters are short notes, not a manual. Each one points at the code in this repo that uses a feature, shows a Laravel snippet for comparison, and calls out the places Go behaves differently: explicit errors, structs instead of classes, no magic methods, compile-time wiring. The Go snippets on the site are pulled from this repo's source at build time, so they are the real, tested code. For anything a chapter does not cover, the [Goravel documentation](https://www.goravel.dev/getting-started/installation.html) is the reference.
 
 ## Stack
 
