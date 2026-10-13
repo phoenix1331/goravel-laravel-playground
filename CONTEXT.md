@@ -65,6 +65,7 @@ Each chapter delivers working Go code, tests, a docs page and a Laravel comparis
 | Docs page | `docs/chapters/NN-<slug>.md`, VitePress code group: Laravel tab imports the `.php` file, Go tab imports the source region |
 | Go file header | Key files start with `// Laravel equivalent: <path> - see docs/chapters/NN-<slug>.md` |
 | Inline comments | Only where Go behaves differently from what a Laravel developer expects |
+| Evolving code | A region imported by an earlier chapter must not change meaning later. When a later chapter rewrites code (e.g. ch07 validation replacing ch04 `Bind`), the earlier chapter shows the old version as a static code block |
 | Snippet index | `docs/laravel-index.md` lists every PHP snippet against its Go counterpart |
 
 ## Testing

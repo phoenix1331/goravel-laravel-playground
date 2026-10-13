@@ -7,11 +7,14 @@ import (
 
 	"goravel/app/facades"
 	"goravel/app/http/controllers"
+	"goravel/app/http/middleware"
 )
 
 // #region api
 func Api() {
-	facades.Route().Prefix("api").Group(func(router route.Router) {
+	// Every route in the group runs through EnsureJson first, like
+	// Route::middleware(EnsureJsonRequest::class)->prefix('api')->group(...)
+	facades.Route().Prefix("api").Middleware(middleware.EnsureJson()).Group(func(router route.Router) {
 		// A closure, exactly like Route::get('/league', fn () => ...)
 		router.Get("league", func(ctx http.Context) http.Response {
 			return ctx.Response().Success().Json(http.Json{

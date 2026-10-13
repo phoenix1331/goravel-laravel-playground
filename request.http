@@ -79,3 +79,12 @@ Accept: application/json
   "name": "   ",
   "founded_year": 1800
 }
+
+### Middleware
+
+# Not JSON: EnsureJson middleware rejects it with 415 before the controller runs
+POST {{baseUrl}}/api/clubs
+Content-Type: application/x-www-form-urlencoded
+Accept: application/json
+
+name=Form+FC&ground=Park
