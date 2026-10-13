@@ -12,6 +12,7 @@ import (
 // #region boot
 func Boot() contractsfoundation.Application {
 	return foundation.Setup().
+		WithCommands(Commands).
 		WithSeeders(Seeders).
 		WithMigrations(Migrations).
 		WithRouting(func() {

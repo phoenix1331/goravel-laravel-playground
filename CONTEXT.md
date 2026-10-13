@@ -33,6 +33,8 @@ Teaching repo mapping Laravel concepts to Goravel, one chapter per concept, back
 | `app/http/` | Controllers, middleware, requests |
 | `app/models/` | ORM models |
 | `app/services/` | Plain Go services (e.g. `LeagueTable`), bound in the container by `app/providers/` |
+| `app/results/` | `results.Record()`: the single path for recording a score (an action), used by `sync:fixtures` and the API |
+| `app/console/commands/` | Artisan commands, listed in `bootstrap/commands.go` |
 | `app/providers/` | Service providers, listed in `bootstrap/providers.go` |
 | `routes/` | Route registration (`web.go`) |
 | `database/` | Migrations, seeders, factories (Go code, not SQL) |
