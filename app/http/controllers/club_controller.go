@@ -5,9 +5,11 @@ import (
 	"errors"
 
 	"github.com/goravel/framework/contracts/http"
+	"github.com/goravel/framework/contracts/validation"
 	frameworkerrors "github.com/goravel/framework/errors"
 
 	"goravel/app/facades"
+	"goravel/app/http/requests"
 	"goravel/app/models"
 )
 
@@ -51,21 +53,20 @@ func (r *ClubController) Show(ctx http.Context) http.Response {
 // #endregion show
 
 // #region store
-// clubInput is the JSON body accepted by Store and Update.
-type clubInput struct {
-	Name        string `json:"name"`
-	Ground      string `json:"ground"`
-	FoundedYear *int   `json:"founded_year"`
-}
-
-// Store creates a club from the JSON body.
+// Store creates a club from a validated request.
 func (r *ClubController) Store(ctx http.Context) http.Response {
-	var input clubInput
-	if err := ctx.Request().Bind(&input); err != nil {
-		return ctx.Response().Json(http.StatusBadRequest, http.Json{"message": "Invalid JSON body"})
+	var request requests.StoreClubRequest
+	// Two results: validationErrors for bad input (422), err for anything
+	// that stopped validation running at all, such as an unreadable body
+	validationErrors, err := ctx.Request().ValidateRequest(&request)
+	if err != nil {
+		return ctx.Response().Json(http.StatusBadRequest, http.Json{"message": err.Error()})
+	}
+	if validationErrors != nil {
+		return validationFailed(ctx, validationErrors)
 	}
 
-	club := models.Club{Name: input.Name, Ground: input.Ground, FoundedYear: input.FoundedYear}
+	club := models.Club{Name: request.Name, Ground: request.Ground, FoundedYear: request.FoundedYear}
 	if err := facades.Orm().Query().Create(&club); err != nil {
 		return serverError(ctx, err)
 	}
@@ -75,19 +76,25 @@ func (r *ClubController) Store(ctx http.Context) http.Response {
 
 // #endregion store
 
-// Update replaces a club's fields from the JSON body.
+// Update replaces a club's fields from a validated request.
 func (r *ClubController) Update(ctx http.Context) http.Response {
 	club, response := findClub(ctx)
 	if response != nil {
 		return response
 	}
 
-	var input clubInput
-	if err := ctx.Request().Bind(&input); err != nil {
-		return ctx.Response().Json(http.StatusBadRequest, http.Json{"message": "Invalid JSON body"})
+	var request requests.UpdateClubRequest
+	// Two results: validationErrors for bad input (422), err for anything
+	// that stopped validation running at all, such as an unreadable body
+	validationErrors, err := ctx.Request().ValidateRequest(&request)
+	if err != nil {
+		return ctx.Response().Json(http.StatusBadRequest, http.Json{"message": err.Error()})
+	}
+	if validationErrors != nil {
+		return validationFailed(ctx, validationErrors)
 	}
 
-	club.Name, club.Ground, club.FoundedYear = input.Name, input.Ground, input.FoundedYear
+	club.Name, club.Ground, club.FoundedYear = request.Name, request.Ground, request.FoundedYear
 	if err := facades.Orm().Query().Save(club); err != nil {
 		return serverError(ctx, err)
 	}
@@ -127,6 +134,18 @@ func findClub(ctx http.Context) (*models.Club, http.Response) {
 }
 
 // #endregion find
+
+// #region failed
+// validationFailed returns a 422 in the same shape as Laravel's, with one
+// difference: each field maps rule names to messages, not a list of messages.
+func validationFailed(ctx http.Context, validationErrors validation.Errors) http.Response {
+	return ctx.Response().Json(http.StatusUnprocessableEntity, http.Json{
+		"message": "The given data was invalid.",
+		"errors":  validationErrors.All(),
+	})
+}
+
+// #endregion failed
 
 // serverError logs the real error and returns a generic 500, so database
 // details never reach the client.

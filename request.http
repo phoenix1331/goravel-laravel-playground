@@ -67,3 +67,15 @@ Accept: application/json
 # Delete a club
 DELETE {{baseUrl}}/api/clubs/1
 Accept: application/json
+
+###
+
+# Validation failure: blank name, missing ground, founded_year too early (422)
+POST {{baseUrl}}/api/clubs
+Content-Type: application/json
+Accept: application/json
+
+{
+  "name": "   ",
+  "founded_year": 1800
+}
