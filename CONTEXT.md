@@ -46,6 +46,8 @@ Teaching repo mapping Laravel concepts to Goravel, one chapter per concept, back
 | `air` live reload in the `app` container | Go compiles to a binary; air rebuilds and restarts on save. `database/` is watched because migrations are Go code |
 | Container runs as host user | Files created in the bind mount (go.sum, tmp, storage) stay owned by the developer |
 | Licence MIT | Matches Goravel |
+| No `env_file` in `docker-compose.yml` | Goravel's config uses viper `AutomaticEnv`, so OS env vars override any `.env` file. Injecting `.env` as container env would silently override `.env.testing` in tests. The app reads `.env` from the bind mount instead |
+| Pool size from `.env` (`DB_MAX_OPEN_CONNS`, `DB_MAX_IDLE_CONNS`) | Lets environments tune the pool without editing `config/database.go` |
 | `gofmt` + `go vet` instead of Pint | Built into the Go toolchain, no config file. `make lint` checks, `make fmt` fixes. Go has no `strict_types` equivalent because it is statically typed |
 
 ## Chapter conventions
@@ -60,6 +62,18 @@ Each chapter delivers working Go code, tests, a docs page and a Laravel comparis
 | Go file header | Key files start with `// Laravel equivalent: <path> - see docs/chapters/NN-<slug>.md` |
 | Inline comments | Only where Go behaves differently from what a Laravel developer expects |
 | Snippet index | `docs/laravel-index.md` lists every PHP snippet against its Go counterpart |
+
+## Testing
+
+| Concern | Approach |
+|---|---|
+| Env | `.env.testing` (tracked), selected with `go test ./... --env=.env.testing`; Goravel walks up from the package dir to find it |
+| Database | SQLite in memory, DSN `file:/goravel_test.db?vfs=memdb` |
+| Why memdb, not `:memory:` | Each pooled connection to `:memory:` gets its own empty database (proven: second connection sees "no such table"). `cache=shared` is not supported by `ncruces/go-sqlite3`. A pool of 1 works but deadlocks if anything holds the connection. memdb shares one in-memory database across all connections in the process |
+| Migrations | Once per package, in `TestMain` via `tests.Main(m)` |
+| Reset per test | `s.TruncateTables()` in `SetupTest` deletes rows from every table except `migrations`. Chosen over re-migrating (slower) and per-test transactions (facades use a global connection, so a test transaction cannot wrap app code) |
+| Isolation | `go test` runs each package as its own process, so each package gets its own database |
+| Base suite | `tests.TestCase` embeds Goravel's `testing.TestCase` (`Http()`, `Seed()`) and adds `TruncateTables()` |
 
 ## Commands
 

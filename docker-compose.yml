@@ -13,8 +13,6 @@ services:
       - .:/app
       - gomod:/go/pkg/mod
       - gocache:/go/cache
-    env_file:
-      - .env
     depends_on:
       mysql:
         condition: service_healthy

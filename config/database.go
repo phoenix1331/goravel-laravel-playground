@@ -45,7 +45,7 @@ func init() {
 			// then the new MaxIdleConns will be reduced to match the MaxOpenConns limit.
 			//
 			// If n <= 0, no idle connections are retained.
-			"max_idle_conns": 10,
+			"max_idle_conns": config.Env("DB_MAX_IDLE_CONNS", 10),
 			// Sets the maximum number of open connections to the database.
 			//
 			// If MaxIdleConns is greater than 0 and the new MaxOpenConns is less than
@@ -53,7 +53,7 @@ func init() {
 			// MaxOpenConns limit.
 			//
 			// If n <= 0, then there is no limit on the number of open connections.
-			"max_open_conns": 100,
+			"max_open_conns": config.Env("DB_MAX_OPEN_CONNS", 100),
 			// Sets the maximum amount of time a connection may be idle.
 			//
 			// Expired connections may be closed lazily before reuse.

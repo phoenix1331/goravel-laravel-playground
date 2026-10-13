@@ -38,8 +38,8 @@ seed: ## Run database seeders
 fresh: ## Drop all tables, re-run migrations and seed
 	@$(ARTISAN) migrate:fresh --seed
 
-test: ## Run the test suite
-	@$(EXEC) go test ./...
+test: ## Run the test suite against in-memory SQLite (.env.testing)
+	@$(EXEC) go test ./... -count=1 --env=.env.testing
 
 fmt: ## Format all Go files with gofmt
 	@$(EXEC) gofmt -w .

@@ -17,6 +17,8 @@ func Web() {
 
 	facades.Route().Static("public", "./public")
 
-	userController := controllers.NewUserController()
-	facades.Route().Get("/users", userController.Index)
+	// #region health
+	healthController := controllers.NewHealthController()
+	facades.Route().Get("/health", healthController.Show)
+	// #endregion health
 }

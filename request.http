@@ -1,0 +1,7 @@
+@baseUrl = http://localhost:8000
+
+### Health
+
+# Reports whether the app can reach its database (200 when up, 503 when down)
+GET {{baseUrl}}/health
+Accept: application/json
