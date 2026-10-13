@@ -73,7 +73,12 @@ Each chapter delivers working Go code, tests, a docs page and a Laravel comparis
 | Migrations | Once per package, in `TestMain` via `tests.Main(m)` |
 | Reset per test | `s.TruncateTables()` in `SetupTest` deletes rows from every table except `migrations`. Chosen over re-migrating (slower) and per-test transactions (facades use a global connection, so a test transaction cannot wrap app code) |
 | Isolation | `go test` runs each package as its own process, so each package gets its own database |
+| Dialect drift | `make test-mysql` / CI `test-mysql` job rerun the same suite on MySQL by overriding `DB_*` env vars (OS env beats `.env.testing`). Uses the `goravel_test` database (`docker/mysql/init.sql`) and `-p 1`, since packages share one MySQL database |
 | Base suite | `tests.TestCase` embeds Goravel's `testing.TestCase` (`Http()`, `Seed()`) and adds `TruncateTables()` |
+
+## CI
+
+`.github/workflows/ci.yml` on push to `main` and on PRs: `lint` (gofmt, vet), `test-sqlite`, `test-mysql` (MySQL 8.4 service container). Go version comes from `go.mod` via `setup-go`.
 
 ## Commands
 

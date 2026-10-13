@@ -3,7 +3,7 @@
 EXEC = docker compose exec app
 ARTISAN = $(EXEC) go run . artisan
 
-.PHONY: help up down build shell logs run artisan migrate seed fresh test fmt vet lint
+.PHONY: help up down build shell logs run artisan migrate seed fresh test test-mysql fmt vet lint
 
 help: ## List available targets
 	@grep -E '^[a-zA-Z_-]+:.*?## ' $(MAKEFILE_LIST) | awk 'BEGIN {FS = ":.*?## "}; {printf "  \033[36m%-12s\033[0m %s\n", $$1, $$2}'
@@ -40,6 +40,9 @@ fresh: ## Drop all tables, re-run migrations and seed
 
 test: ## Run the test suite against in-memory SQLite (.env.testing)
 	@$(EXEC) go test ./... -count=1 --env=.env.testing
+
+test-mysql: ## Run the test suite against MySQL (goravel_test) to catch SQLite/MySQL drift
+	@docker compose exec -e DB_CONNECTION=mysql -e DB_HOST=mysql -e DB_PORT=3306 -e DB_DATABASE=goravel_test -e DB_USERNAME=goravel -e DB_PASSWORD=secret app go test ./... -count=1 -p 1 --env=.env.testing
 
 fmt: ## Format all Go files with gofmt
 	@$(EXEC) gofmt -w .

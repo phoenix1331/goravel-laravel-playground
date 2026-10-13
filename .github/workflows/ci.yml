@@ -1,0 +1,74 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  lint:
+    name: gofmt and go vet
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-go@v6
+        with:
+          go-version-file: go.mod
+      - name: gofmt
+        run: |
+          files=$(gofmt -l .)
+          if [ -n "$files" ]; then
+            echo "needs gofmt:"
+            echo "$files"
+            exit 1
+          fi
+      - name: go vet
+        run: go vet ./...
+
+  test-sqlite:
+    name: Tests (SQLite in memory)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-go@v6
+        with:
+          go-version-file: go.mod
+      - name: go test
+        run: go test ./... -count=1 --env=.env.testing
+
+  # The suite normally runs on SQLite. Running it once on MySQL catches
+  # dialect drift: queries that SQLite accepts but MySQL rejects, or the reverse.
+  test-mysql:
+    name: Tests (MySQL 8.4)
+    runs-on: ubuntu-latest
+    services:
+      mysql:
+        image: mysql:8.4
+        env:
+          MYSQL_DATABASE: goravel_test
+          MYSQL_USER: goravel
+          MYSQL_PASSWORD: secret
+          MYSQL_ROOT_PASSWORD: secret
+        ports:
+          - 3306:3306
+        options: >-
+          --health-cmd="mysqladmin ping -h 127.0.0.1 -psecret"
+          --health-interval=5s
+          --health-timeout=5s
+          --health-retries=20
+    # OS env vars override .env.testing, so these switch the same suite to MySQL
+    env:
+      DB_CONNECTION: mysql
+      DB_HOST: 127.0.0.1
+      DB_PORT: 3306
+      DB_DATABASE: goravel_test
+      DB_USERNAME: goravel
+      DB_PASSWORD: secret
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-go@v6
+        with:
+          go-version-file: go.mod
+      # -p 1: packages share one MySQL database, so they must not run in parallel
+      - name: go test
+        run: go test ./... -count=1 -p 1 --env=.env.testing
