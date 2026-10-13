@@ -1,10 +1,14 @@
 <div align="center">
 
-<img src="https://www.goravel.dev/logo.png" width="300" alt="Goravel">
+<a href="https://www.goravel.dev"><img src="https://www.goravel.dev/logo.png" width="300" alt="Goravel"></a>
 
 # Goravel for Laravel devs
 
+[Goravel website](https://www.goravel.dev) · [Goravel documentation](https://www.goravel.dev/getting-started/installation.html) · [Goravel on GitHub](https://github.com/goravel/goravel)
+
 </div>
+
+> **An unofficial learning guide.** [Goravel](https://www.goravel.dev) is created and maintained by the Goravel team and contributors. This repository is an independent project that uses Goravel to teach Go to Laravel developers; it is not affiliated with or endorsed by the Goravel project. The Goravel name and logo belong to their owners.
 
 A side-by-side guide for Laravel developers learning Go. It maps 24 Laravel concepts to their Goravel equivalents and is backed by a working grassroots football club API.
 
