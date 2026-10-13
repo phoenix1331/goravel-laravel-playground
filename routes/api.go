@@ -41,7 +41,9 @@ func Api() {
 		router.Get("clubs/{id}/players", playerController.Index)
 		router.Post("clubs/{id}/players", playerController.Store)
 
-		router.Get("fixtures", controllers.NewFixtureController().Index)
+		fixtureController := controllers.NewFixtureController()
+		router.Get("fixtures", fixtureController.Index)
+		router.Post("fixtures/{id}/result", fixtureController.RecordResult)
 		// #endregion nested
 	})
 }

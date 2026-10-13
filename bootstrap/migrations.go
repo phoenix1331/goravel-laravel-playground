@@ -15,5 +15,6 @@ func Migrations() []schema.Migration {
 		&migrations.M20261013183501CreateUsersTable{},
 		&migrations.M20261013184001AddShortNameToClubsTable{},
 		&migrations.M20261013184019AddKickOffIndexToFixturesTable{},
+		&migrations.M20261013185753CreateResultNotificationsTable{},
 	}
 }

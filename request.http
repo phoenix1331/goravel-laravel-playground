@@ -125,3 +125,15 @@ Accept: application/json
 # Goals per club from a raw SQL query
 GET {{baseUrl}}/api/league/goals
 Accept: application/json
+
+###
+
+# Record a final score: fires FixtureResultRecorded, which notifies both clubs' admins
+POST {{baseUrl}}/api/fixtures/9/result
+Content-Type: application/json
+Accept: application/json
+
+{
+  "home_score": 2,
+  "away_score": 1
+}

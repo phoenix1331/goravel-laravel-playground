@@ -4,6 +4,7 @@ package results
 import (
 	"fmt"
 
+	"goravel/app/events"
 	"goravel/app/facades"
 	"goravel/app/models"
 )
@@ -24,6 +25,15 @@ func Record(fixture *models.Fixture, homeScore, awayScore int) error {
 	if err := facades.Orm().Query().Save(fixture); err != nil {
 		return fmt.Errorf("record fixture %d: %w", fixture.ID, err)
 	}
+
+	// #region dispatch
+	// Tell the rest of the app. Like event(new FixtureResultRecorded($fixture)),
+	// but the payload is a list of typed arguments.
+	recorded := &events.FixtureResultRecorded{}
+	if err := facades.Event().Job(recorded, recorded.Args(fixture.ID)).Dispatch(); err != nil {
+		return fmt.Errorf("record fixture %d: %w", fixture.ID, err)
+	}
+	// #endregion dispatch
 
 	return nil
 }
