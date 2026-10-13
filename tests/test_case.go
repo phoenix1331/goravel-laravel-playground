@@ -4,8 +4,10 @@ package tests
 import (
 	"fmt"
 	"os"
+	"strings"
 	gotesting "testing"
 
+	contractshttp "github.com/goravel/framework/contracts/testing/http"
 	"github.com/goravel/framework/testing"
 
 	// Registers the "memdb" SQLite VFS used by .env.testing. A plain :memory:
@@ -15,7 +17,9 @@ import (
 	_ "github.com/ncruces/go-sqlite3/vfs/memdb"
 
 	"goravel/app/facades"
+	"goravel/app/models"
 	"goravel/bootstrap"
+	"goravel/database/factories"
 )
 
 func init() {
@@ -70,3 +74,42 @@ func (r *TestCase) TruncateTables() error {
 }
 
 // #endregion truncate
+
+// CreateAdmin makes a user who administers the given club.
+func (r *TestCase) CreateAdmin(t *gotesting.T, clubID uint) models.User {
+	t.Helper()
+
+	var admin models.User
+	if err := facades.Orm().Factory().Create(&admin, map[string]any{"ClubID": &clubID}); err != nil {
+		t.Fatalf("create admin: %v", err)
+	}
+
+	return admin
+}
+
+// #region login
+// LoginAs logs a user in through the real login endpoint and returns a
+// request builder that sends their token and a JSON content type, the
+// equivalent of $this->actingAs($user). The user must have been made by the
+// factory, so their password is factories.Password.
+func (r *TestCase) LoginAs(t *gotesting.T, user models.User) contractshttp.Request {
+	t.Helper()
+
+	body := fmt.Sprintf(`{"email":%q,"password":%q}`, user.Email, factories.Password)
+	response, err := r.Http(t).WithHeader("Content-Type", "application/json").
+		Post("/api/auth/login", strings.NewReader(body))
+	if err != nil {
+		t.Fatalf("login as %s: %v", user.Email, err)
+	}
+
+	var login struct {
+		AccessToken string `json:"access_token"`
+	}
+	if err := response.Bind(&login); err != nil || login.AccessToken == "" {
+		t.Fatalf("login as %s: no token in response", user.Email)
+	}
+
+	return r.Http(t).WithToken(login.AccessToken).WithHeader("Content-Type", "application/json")
+}
+
+// #endregion login

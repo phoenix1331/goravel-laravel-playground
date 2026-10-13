@@ -27,6 +27,8 @@ func (s *MiddlewareTestSuite) SetupTest() {
 
 // #region test
 func (s *MiddlewareTestSuite) TestRejectsNonJsonWrites() {
+	// No token needed: EnsureJson wraps the whole /api group, so it runs
+	// before the Authenticate middleware on the write routes
 	response, err := s.Http(s.T()).
 		WithHeader("Content-Type", "application/x-www-form-urlencoded").
 		Post("/api/clubs", strings.NewReader("name=Form+FC&ground=Park"))
@@ -41,7 +43,10 @@ func (s *MiddlewareTestSuite) TestRejectsNonJsonWrites() {
 }
 
 func (s *MiddlewareTestSuite) TestAllowsJsonWrites() {
-	response, err := s.Http(s.T()).
+	var user models.User
+	s.Require().NoError(facades.Orm().Factory().Create(&user))
+
+	response, err := s.LoginAs(s.T(), user).
 		WithHeader("Content-Type", "application/json; charset=utf-8").
 		Post("/api/clubs", strings.NewReader(`{"name":"Json FC","ground":"Park"}`))
 	s.Require().NoError(err)

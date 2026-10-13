@@ -26,9 +26,18 @@ func (s *ClubValidationTestSuite) SetupTest() {
 	s.Require().NoError(s.TruncateTables())
 }
 
-// validationErrors posts a body and returns the "errors" object from the 422.
-func (s *ClubValidationTestSuite) validationErrors(method, uri, body string) map[string]map[string]string {
-	request := s.Http(s.T()).WithHeader("Content-Type", "application/json")
+// user makes a logged-in-able user with no club, for creating clubs.
+func (s *ClubValidationTestSuite) user() models.User {
+	var user models.User
+	s.Require().NoError(facades.Orm().Factory().Create(&user))
+
+	return user
+}
+
+// validationErrors sends a body as the given user and returns the "errors"
+// object from the 422.
+func (s *ClubValidationTestSuite) validationErrors(user models.User, method, uri, body string) map[string]map[string]string {
+	request := s.LoginAs(s.T(), user)
 
 	send := request.Post
 	if method == "PUT" {
@@ -46,7 +55,7 @@ func (s *ClubValidationTestSuite) validationErrors(method, uri, body string) map
 
 // #region test
 func (s *ClubValidationTestSuite) TestRequiredFields() {
-	errors := s.validationErrors("POST", "/api/clubs", `{}`)
+	errors := s.validationErrors(s.user(), "POST", "/api/clubs", `{}`)
 
 	s.Contains(errors["name"], "required")
 	s.Contains(errors["ground"], "required")
@@ -54,13 +63,13 @@ func (s *ClubValidationTestSuite) TestRequiredFields() {
 }
 
 func (s *ClubValidationTestSuite) TestWhitespaceIsTrimmedBeforeRequiredCheck() {
-	errors := s.validationErrors("POST", "/api/clubs", `{"name":"   ","ground":"Park"}`)
+	errors := s.validationErrors(s.user(), "POST", "/api/clubs", `{"name":"   ","ground":"Park"}`)
 
 	s.Contains(errors["name"], "required")
 }
 
 func (s *ClubValidationTestSuite) TestFoundedYearRange() {
-	errors := s.validationErrors("POST", "/api/clubs", `{"name":"Old FC","ground":"Park","founded_year":1800}`)
+	errors := s.validationErrors(s.user(), "POST", "/api/clubs", `{"name":"Old FC","ground":"Park","founded_year":1800}`)
 
 	s.Equal("The oldest football club was founded in 1857.", errors["founded_year"]["min"])
 }
@@ -68,7 +77,7 @@ func (s *ClubValidationTestSuite) TestFoundedYearRange() {
 func (s *ClubValidationTestSuite) TestNameMustBeUnique() {
 	s.Require().NoError(facades.Orm().Query().Create(&models.Club{Name: "Taken FC", Ground: "Park"}))
 
-	errors := s.validationErrors("POST", "/api/clubs", `{"name":"Taken FC","ground":"Park"}`)
+	errors := s.validationErrors(s.user(), "POST", "/api/clubs", `{"name":"Taken FC","ground":"Park"}`)
 
 	s.Equal("A club with this name already exists.", errors["name"]["unique"])
 }
@@ -79,7 +88,7 @@ func (s *ClubValidationTestSuite) TestUpdateIgnoresOwnNameInUniqueCheck() {
 	club := models.Club{Name: "Same Name FC", Ground: "Park"}
 	s.Require().NoError(facades.Orm().Query().Create(&club))
 
-	response, err := s.Http(s.T()).WithHeader("Content-Type", "application/json").
+	response, err := s.LoginAs(s.T(), s.CreateAdmin(s.T(), club.ID)).
 		Put(fmt.Sprintf("/api/clubs/%d", club.ID), strings.NewReader(`{"name":"Same Name FC","ground":"New Park"}`))
 	s.Require().NoError(err)
 
@@ -91,7 +100,7 @@ func (s *ClubValidationTestSuite) TestUpdateRejectsAnotherClubsName() {
 	second := models.Club{Name: "Second FC", Ground: "Park"}
 	s.Require().NoError(facades.Orm().Query().Create(&second))
 
-	errors := s.validationErrors("PUT", fmt.Sprintf("/api/clubs/%d", second.ID), `{"name":"First FC","ground":"Park"}`)
+	errors := s.validationErrors(s.CreateAdmin(s.T(), second.ID), "PUT", fmt.Sprintf("/api/clubs/%d", second.ID), `{"name":"First FC","ground":"Park"}`)
 
 	s.Contains(errors["name"], "unique")
 }

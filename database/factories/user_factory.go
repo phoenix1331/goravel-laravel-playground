@@ -2,21 +2,42 @@
 package factories
 
 import (
+	"sync"
+
 	"github.com/brianvoe/gofakeit/v7"
+
+	"goravel/app/facades"
 )
 
-// UserFactory sets Password to an already-hashed value, so creating users in
-// tests does not pay for a bcrypt hash each time. Chapter 19 logs in with it.
-// The plain-text password is "password", as in Laravel's UserFactory.
-type UserFactory struct{}
+// The plain-text password for every factory user, as in Laravel's UserFactory.
+const Password = "password"
 
-// PasswordHash is bcrypt("password").
-const PasswordHash = "$2a$12$wenAdbQLsf4CQmRLUTQhuuCcM6Hm8T2bQWlWMmARMC.Wd6iBd3526"
+var (
+	passwordHash string
+	hashOnce     sync.Once
+)
+
+// hashedPassword hashes Password once per process and reuses it, like the
+// static $password in Laravel's UserFactory. The cost comes from
+// BCRYPT_ROUNDS, which .env.testing lowers to 4 so test logins are quick.
+func hashedPassword() string {
+	hashOnce.Do(func() {
+		hash, err := facades.Hash().Make(Password)
+		if err != nil {
+			panic(err)
+		}
+		passwordHash = hash
+	})
+
+	return passwordHash
+}
+
+type UserFactory struct{}
 
 func (f *UserFactory) Definition() map[string]any {
 	return map[string]any{
 		"Name":     gofakeit.Name(),
 		"Email":    gofakeit.Email(),
-		"Password": PasswordHash,
+		"Password": hashedPassword(),
 	}
 }

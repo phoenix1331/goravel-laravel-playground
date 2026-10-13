@@ -1,10 +1,41 @@
 @baseUrl = http://localhost:8000
 
+# Writes need a token. Send the "Log in" request below, then paste its
+# access_token here. Seeded admins: admin1@example.com to admin6@example.com,
+# password "password" (admin1 runs club 1, and so on).
+@token = paste-the-access-token-here
+
 ### Index
 
 # Lists every endpoint (the app is API only)
 GET {{baseUrl}}/
 Accept: application/json
+
+### Auth
+
+# Log in: returns a JWT in access_token
+POST {{baseUrl}}/api/auth/login
+Content-Type: application/json
+Accept: application/json
+
+{
+  "email": "admin1@example.com",
+  "password": "password"
+}
+
+###
+
+# The user the token belongs to
+GET {{baseUrl}}/api/auth/me
+Accept: application/json
+Authorization: Bearer {{token}}
+
+###
+
+# Log out: the token stops working
+POST {{baseUrl}}/api/auth/logout
+Accept: application/json
+Authorization: Bearer {{token}}
 
 ### Health
 
@@ -42,6 +73,7 @@ Accept: application/json
 POST {{baseUrl}}/api/clubs
 Content-Type: application/json
 Accept: application/json
+Authorization: Bearer {{token}}
 
 {
   "name": "Hillside United",
@@ -61,6 +93,7 @@ Accept: application/json
 PUT {{baseUrl}}/api/clubs/1
 Content-Type: application/json
 Accept: application/json
+Authorization: Bearer {{token}}
 
 {
   "name": "Hillside United FC",
@@ -73,6 +106,7 @@ Accept: application/json
 # Delete a club
 DELETE {{baseUrl}}/api/clubs/1
 Accept: application/json
+Authorization: Bearer {{token}}
 
 ###
 
@@ -80,6 +114,7 @@ Accept: application/json
 POST {{baseUrl}}/api/clubs
 Content-Type: application/json
 Accept: application/json
+Authorization: Bearer {{token}}
 
 {
   "name": "   ",
@@ -107,6 +142,7 @@ Accept: application/json
 POST {{baseUrl}}/api/clubs/1/players
 Content-Type: application/json
 Accept: application/json
+Authorization: Bearer {{token}}
 
 {
   "name": "Sam Keeper",
@@ -138,6 +174,7 @@ Accept: application/json
 POST {{baseUrl}}/api/fixtures/9/result
 Content-Type: application/json
 Accept: application/json
+Authorization: Bearer {{token}}
 
 {
   "home_score": 2,

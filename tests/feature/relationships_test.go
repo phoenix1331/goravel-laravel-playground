@@ -35,8 +35,9 @@ func (s *RelationshipsTestSuite) club(name string) models.Club {
 	return club
 }
 
+// postPlayer adds a player as the club's own admin.
 func (s *RelationshipsTestSuite) postPlayer(clubID uint, body string) testinghttp.Response {
-	response, err := s.Http(s.T()).WithHeader("Content-Type", "application/json").
+	response, err := s.LoginAs(s.T(), s.CreateAdmin(s.T(), clubID)).
 		Post(fmt.Sprintf("/api/clubs/%d/players", clubID), strings.NewReader(body))
 	s.Require().NoError(err)
 

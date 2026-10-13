@@ -59,7 +59,15 @@ There is no `$club->players()->create(...)`. You set `ClubID` on the new struct 
 
 The routes nest under the club, using the `{id}` that `findClub` from chapter 04 already reads:
 
-<<< @/../routes/api.go#nested{go}
+```go
+playerController := controllers.NewPlayerController()
+router.Get("clubs/{id}/players", playerController.Index)
+router.Post("clubs/{id}/players", playerController.Store)
+
+router.Get("fixtures", controllers.NewFixtureController().Index)
+```
+
+[Chapter 19](/chapters/19-authentication) moves the `POST` behind authentication.
 
 ### Unique within a parent
 

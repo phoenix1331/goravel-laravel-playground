@@ -55,6 +55,7 @@ Teaching repo mapping Laravel concepts to Goravel, one chapter per concept, back
 | Queue worker and scheduler run inside the app process | Goravel starts runners (`goravel:http`, `goravel:queue`, `goravel:schedule`) from `app.Start()`; no `queue:work`. `APP_DISABLED_RUNNERS` (space separated) splits them into separate processes |
 | Events and jobs carry IDs as typed args | Goravel payloads are `[]event.Arg` / `[]queue.Arg`, not objects; handlers reload from the database |
 | League table cached as a JSON string | The Redis store cannot hold Go structs ("can't marshal"); the memory store can. Caching strings behaves the same on both. Never `Cache().Flush()` on shared Redis: Goravel runs `FLUSHALL` |
+| JWT auth on writes | Reads and `POST /api/auth/login` are public; writes sit behind `middleware.Authenticate()`. `JWT_SECRET` via `jwt:secret`. Tests log in through the real endpoint with `s.LoginAs(t, user)`; `.env.testing` sets `BCRYPT_ROUNDS=4` and the user factory hashes `password` once. Goravel JWTs have no `jti`, so same-user logins in the same second share a token, and logging one out disables both |
 | Fixture `saving` event converts `kick_off_at` to UTC | SQLite keeps the original offset as text, MySQL converts to UTC; the event makes both return UTC (found by the UTC test failing on SQLite only) |
 | Container keys are string constants beside the service (`services.LeagueTableBinding`) | Goravel binds by string, not interface name; a constant prevents typos |
 | No `env_file` in `docker-compose.yml` | Goravel's config uses viper `AutomaticEnv`, so OS env vars override any `.env` file. Injecting `.env` as container env would silently override `.env.testing` in tests. The app reads `.env` from the bind mount instead |
@@ -86,7 +87,7 @@ Each chapter delivers working Go code, tests, a docs page and a Laravel comparis
 | Reset per test | `s.TruncateTables()` in `SetupTest` deletes rows from every table except `migrations`. Chosen over re-migrating (slower) and per-test transactions (facades use a global connection, so a test transaction cannot wrap app code) |
 | Isolation | `go test` runs each package as its own process, so each package gets its own database |
 | Production-like run | `make test-mysql` / CI `test-mysql` job rerun the same suite on MySQL and the Redis cache by overriding env vars (OS env beats `.env.testing`). Uses the `goravel_test` database (`docker/mysql/init.sql`), Redis db 1, and `-p 1`, since packages share one database. Catches SQL dialect drift and memory-vs-Redis cache drift |
-| Base suite | `tests.TestCase` embeds Goravel's `testing.TestCase` (`Http()`, `Seed()`) and adds `TruncateTables()` |
+| Base suite | `tests.TestCase` embeds Goravel's `testing.TestCase` (`Http()`, `Seed()`) and adds `TruncateTables()`, `CreateAdmin()` and `LoginAs()` |
 
 ## Docs site
 

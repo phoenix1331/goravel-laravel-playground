@@ -57,7 +57,7 @@ func (s *EventsTestSuite) notificationsFor(user models.User) []models.ResultNoti
 
 // #region test
 func (s *EventsTestSuite) TestRecordingAResultNotifiesBothClubsAdmins() {
-	response, err := s.Http(s.T()).WithHeader("Content-Type", "application/json").
+	response, err := s.LoginAs(s.T(), s.admins["Ashford"]).
 		Post(fmt.Sprintf("/api/fixtures/%d/result", s.fixture.ID), strings.NewReader(`{"home_score":3,"away_score":1}`))
 	s.Require().NoError(err)
 	response.AssertOk()
@@ -80,7 +80,7 @@ func (s *EventsTestSuite) TestSyncCommandFiresTheSameEvent() {
 // #endregion test
 
 func (s *EventsTestSuite) TestInvalidScoreIsRejectedAndNothingFires() {
-	response, err := s.Http(s.T()).WithHeader("Content-Type", "application/json").
+	response, err := s.LoginAs(s.T(), s.admins["Ashford"]).
 		Post(fmt.Sprintf("/api/fixtures/%d/result", s.fixture.ID), strings.NewReader(`{"home_score":-1}`))
 	s.Require().NoError(err)
 

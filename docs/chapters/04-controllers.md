@@ -28,7 +28,13 @@ The controller is a struct with a constructor function:
 
 It is registered once in `routes/api.go`. `Resource` maps the same five routes as `apiResource`, with the parameter named `{id}`:
 
-<<< @/../routes/api.go#resource{go}
+```go
+// One line registers index, store, show, update and destroy,
+// like Route::apiResource('clubs', ClubController::class)
+router.Resource("clubs", controllers.NewClubController())
+```
+
+[Chapter 19](/chapters/19-authentication) later splits these five routes so the reads stay public and the writes need a login, which `Resource` cannot do on its own.
 
 A handler method looks like the closures from chapter 03, with a receiver `(r *ClubController)` in front:
 

@@ -20,6 +20,10 @@ Laravel loads `routes/api.php` because `bootstrap/app.php` names it in `withRout
 
 <<< @/../routes/api.go#api{go}
 
+The routes themselves are split into small functions that each receive the group's `router`. The league routes show the two kinds of handler:
+
+<<< @/../routes/api.go#league{go}
+
 The named handler is an ordinary package-level function:
 
 <<< @/../routes/api.go#handler{go}
@@ -36,7 +40,7 @@ WithRouting(func() {
 
 There is no automatic `/api` prefix either. `Prefix("api").Group(...)` adds it explicitly, and you can see it in the code.
 
-Check what is registered with `make artisan cmd="route:list"`, the same as `php artisan route:list`:
+Check what is registered with `make artisan cmd="route:list"`, the same as `php artisan route:list`. At this point in the project it showed:
 
 ```
 GET|HEAD  /                  goravel/routes.Web.func1

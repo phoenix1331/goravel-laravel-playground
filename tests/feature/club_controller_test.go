@@ -60,8 +60,11 @@ func (s *ClubControllerTestSuite) TestShowReturns404ForMissingClub() {
 }
 
 func (s *ClubControllerTestSuite) TestStoreCreatesClub() {
+	var user models.User
+	s.Require().NoError(facades.Orm().Factory().Create(&user))
+
 	body := strings.NewReader(`{"name":"Hillside United","ground":"Hillside Rec","founded_year":1987}`)
-	response, err := s.Http(s.T()).WithHeader("Content-Type", "application/json").Post("/api/clubs", body)
+	response, err := s.LoginAs(s.T(), user).Post("/api/clubs", body)
 	s.Require().NoError(err)
 	response.AssertCreated()
 
@@ -77,8 +80,10 @@ func (s *ClubControllerTestSuite) TestStoreCreatesClub() {
 func (s *ClubControllerTestSuite) TestUpdateChangesClub() {
 	club := s.createClub("Old Name")
 
+	admin := s.CreateAdmin(s.T(), club.ID)
+
 	body := strings.NewReader(`{"name":"New Name","ground":"New Ground"}`)
-	response, err := s.Http(s.T()).WithHeader("Content-Type", "application/json").Put(fmt.Sprintf("/api/clubs/%d", club.ID), body)
+	response, err := s.LoginAs(s.T(), admin).Put(fmt.Sprintf("/api/clubs/%d", club.ID), body)
 	s.Require().NoError(err)
 	response.AssertOk()
 
@@ -91,7 +96,9 @@ func (s *ClubControllerTestSuite) TestUpdateChangesClub() {
 func (s *ClubControllerTestSuite) TestDestroyDeletesClub() {
 	club := s.createClub("Doomed FC")
 
-	response, err := s.Http(s.T()).Delete(fmt.Sprintf("/api/clubs/%d", club.ID), nil)
+	admin := s.CreateAdmin(s.T(), club.ID)
+
+	response, err := s.LoginAs(s.T(), admin).Delete(fmt.Sprintf("/api/clubs/%d", club.ID), nil)
 	s.Require().NoError(err)
 	response.AssertNoContent()
 
