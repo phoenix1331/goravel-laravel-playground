@@ -1,4 +1,3 @@
-// Laravel equivalent: app/Http/Requests/LoginRequest.php
 package requests
 
 import (

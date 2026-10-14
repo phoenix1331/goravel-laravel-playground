@@ -1,4 +1,3 @@
-// Laravel equivalent: app/Http/Requests/StorePlayerRequest.php
 package requests
 
 import (
@@ -9,6 +8,14 @@ import (
 	"goravel/app/models"
 )
 
+// StorePlayerRequest validates a new player.
+//
+// Laravel:
+//
+//	'position' => ['required', Rule::enum(Position::class)],
+//
+// Goravel: no enum rule, so the allowed values are joined into an in: rule
+// from models.Positions.
 type StorePlayerRequest struct {
 	Name        string          `form:"name" json:"name"`
 	Position    models.Position `form:"position" json:"position"`

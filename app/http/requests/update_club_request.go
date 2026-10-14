@@ -1,4 +1,3 @@
-// Laravel equivalent: app/Http/Requests/UpdateClubRequest.php
 package requests
 
 import (
@@ -24,6 +23,8 @@ func (r *UpdateClubRequest) Filters(ctx http.Context) map[string]any {
 
 // Rules ignores the club being updated in the unique check, so saving a club
 // without renaming it does not fail.
+//
+// Laravel: Rule::unique('clubs', 'name')->ignore($this->route('club'))
 func (r *UpdateClubRequest) Rules(ctx http.Context) map[string]any {
 	return clubRules(ctx.Request().RouteInt("id"))
 }

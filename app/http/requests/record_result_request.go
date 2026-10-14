@@ -1,4 +1,3 @@
-// Laravel equivalent: app/Http/Requests/RecordResultRequest.php
 package requests
 
 import (

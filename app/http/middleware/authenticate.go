@@ -1,4 +1,3 @@
-// Laravel equivalent: the auth:sanctum / auth:api middleware
 package middleware
 
 import (
@@ -9,6 +8,9 @@ import (
 
 // Authenticate requires a valid bearer token. It parses the token into the
 // request context, so later code can call facades.Auth(ctx).User(&user).
+//
+// Laravel: Route::middleware('auth:sanctum'), built in.
+// Goravel: a few lines of your own around facades.Auth(ctx).Parse.
 type AuthenticateRequest struct{}
 
 func Authenticate() http.Middleware {

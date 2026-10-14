@@ -1,4 +1,4 @@
-// Laravel equivalent: app/Http/Middleware/EnsureJsonRequest.php
+// Package middleware holds HTTP middleware.
 package middleware
 
 import (
@@ -8,6 +8,20 @@ import (
 )
 
 // EnsureJsonRequest rejects API writes whose body is not JSON, with 415.
+//
+// Laravel:
+//
+//	public function handle(Request $request, Closure $next): Response
+//	{
+//	    if (in_array($request->method(), ['POST', 'PUT', 'PATCH']) && ! $request->isJson()) {
+//	        return response()->json([...], 415);  // returning stops the chain
+//	    }
+//	    return $next($request);
+//	}
+//
+// Goravel: Handle returns nothing. Call Next() to continue, or write a
+// response, call Abort() and return. Forgetting that return falls through
+// to Next(), the most common Goravel middleware bug.
 type EnsureJsonRequest struct{}
 
 // EnsureJson is the constructor used in route definitions.
