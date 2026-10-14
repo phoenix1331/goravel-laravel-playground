@@ -1,4 +1,3 @@
-// Laravel equivalent: app/Models/Player.php
 package models
 
 import (
@@ -9,6 +8,17 @@ import (
 )
 
 // Position is a named string type: Go's closest thing to a backed enum.
+//
+// Laravel:
+//
+//	enum Position: string
+//	{
+//	    case Goalkeeper = 'goalkeeper';
+//	    // ...
+//	}
+//
+// Weaker than a PHP enum: Position("striker") compiles, so validate input
+// against Positions.
 type Position string
 
 const (
@@ -21,6 +31,13 @@ const (
 // Positions lists every valid position, for validation rules and seeders.
 var Positions = []Position{Goalkeeper, Defender, Midfielder, Forward}
 
+// Player is a member of a club's squad.
+//
+// Laravel:
+//
+//	public function club(): BelongsTo { return $this->belongsTo(Club::class); }
+//
+// Goravel: the relation is the Club field below, paired with ClubID by name.
 type Player struct {
 	orm.Model
 	ClubID      uint     `json:"club_id"`

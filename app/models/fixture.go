@@ -1,4 +1,3 @@
-// Laravel equivalent: app/Models/Fixture.php
 package models
 
 import (
@@ -21,6 +20,20 @@ const (
 	Postponed  FixtureStatus = "postponed"
 )
 
+// Fixture is a match between two clubs.
+//
+// Laravel:
+//
+//	protected function casts(): array
+//	{
+//	    return ['kick_off_at' => 'datetime', 'status' => FixtureStatus::class];
+//	}
+//	public function homeClub(): BelongsTo { return $this->belongsTo(Club::class, 'home_club_id'); }
+//	public function awayClub(): BelongsTo { return $this->belongsTo(Club::class, 'away_club_id'); }
+//
+// Goravel: time.Time is the datetime cast. Nullable scores are *int, because a
+// plain int cannot be NULL and would read back as 0, a real score. Two
+// relations to one table name their keys in a gorm tag.
 type Fixture struct {
 	orm.Model
 	HomeClubID uint          `json:"home_club_id"`
@@ -39,8 +52,10 @@ type Fixture struct {
 	AwayClub *Club `gorm:"foreignKey:AwayClubID" json:"away_club,omitempty"`
 }
 
-// IsFinished is an ordinary method. Where Laravel might use an accessor
-// ($fixture->is_finished), Go calls a method: fixture.IsFinished().
+// IsFinished is an ordinary method.
+//
+// Laravel: an accessor, read as a property: $fixture->is_finished
+// Goravel: just call it: fixture.IsFinished()
 func (f *Fixture) IsFinished() bool {
 	return f.Status == Finished && f.HomeScore != nil && f.AwayScore != nil
 }
@@ -60,8 +75,15 @@ func (f *Fixture) Result() (services.Result, bool) {
 	}, true
 }
 
-// DispatchesEvents hooks into the model's life cycle, like a mutator or a
-// saving() listener in Laravel. Saving runs before every create and update.
+// DispatchesEvents hooks into the model's life cycle. Saving runs before
+// every create and update.
+//
+// Laravel:
+//
+//	protected function kickOffAt(): Attribute
+//	{
+//	    return Attribute::set(fn ($value) => Carbon::parse($value)->utc());
+//	}
 //
 // It converts kick-off to UTC. MySQL does this on its own, but SQLite stores
 // the time as text with its original offset, so without this a 3pm BST

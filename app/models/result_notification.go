@@ -1,4 +1,3 @@
-// Laravel equivalent: app/Models/ResultNotification.php
 package models
 
 import (

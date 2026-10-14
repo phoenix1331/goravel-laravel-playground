@@ -1,4 +1,3 @@
-// Laravel equivalent: app/Models/User.php
 package models
 
 import (
@@ -8,6 +7,14 @@ import (
 	"goravel/database/factories"
 )
 
+// User is a club admin who can log in.
+//
+// Laravel:
+//
+//	protected $hidden = ['password'];
+//
+// Goravel: json:"-" on the field does the same job, for every JSON encoding
+// of the struct.
 type User struct {
 	orm.Model
 	// The club this user administers, or nil
