@@ -1,0 +1,154 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Goravel playground for Laravel devs</title>
+  <meta name="description" content="A small Goravel API for Laravel developers to clone, run and read, with the Laravel equivalent written above the Go code.">
+  <style>
+    :root {
+      --bg: #f8fafc;
+      --surface: #ffffff;
+      --text: #0f172a;
+      --muted: #475569;
+      --border: #e2e8f0;
+      --accent: #0e7490;
+      --code-bg: #0f172a;
+      --code-text: #e2e8f0;
+      --code-comment: #7dd3fc;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg: #0b1120;
+        --surface: #111a2e;
+        --text: #e2e8f0;
+        --muted: #94a3b8;
+        --border: #1e293b;
+        --accent: #22d3ee;
+        --code-bg: #020617;
+      }
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font: 16px/1.6 system-ui, -apple-system, "Segoe UI", sans-serif;
+    }
+    main { max-width: 880px; margin: 0 auto; padding: 48px 16px 64px; }
+    header { text-align: center; }
+    .logo { width: 220px; max-width: 60%; }
+    h1 { font-size: clamp(1.8rem, 4vw, 2.4rem); line-height: 1.2; margin: 24px 0 8px; }
+    h2 { font-size: 1.3rem; margin: 48px 0 12px; }
+    .lede { color: var(--muted); font-size: 1.1rem; max-width: 620px; margin: 0 auto; }
+    .note {
+      margin: 32px 0 0;
+      padding: 14px 18px;
+      border: 1px solid var(--border);
+      border-left: 4px solid var(--accent);
+      border-radius: 8px;
+      background: var(--surface);
+      color: var(--muted);
+      font-size: 0.95rem;
+    }
+    a { color: var(--accent); }
+    .buttons { display: flex; flex-wrap: wrap; gap: 12px; justify-content: center; margin-top: 24px; }
+    .button {
+      display: inline-block;
+      padding: 10px 18px;
+      border-radius: 8px;
+      border: 1px solid var(--accent);
+      color: var(--accent);
+      text-decoration: none;
+      font-weight: 600;
+    }
+    .button.primary { background: var(--accent); color: var(--bg); }
+    pre {
+      margin: 0;
+      padding: 18px 20px;
+      overflow-x: auto;
+      background: var(--code-bg);
+      color: var(--code-text);
+      border-radius: 10px;
+      tab-size: 4;
+      font: 13.5px/1.55 ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+    }
+    .c { color: var(--code-comment); }
+    code { font-family: ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace; font-size: 0.92em; }
+    ul.files { list-style: none; padding: 0; margin: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 10px; }
+    ul.files li {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 10px 14px;
+    }
+    ul.files a { text-decoration: none; font-weight: 600; }
+    ul.files span { display: block; color: var(--muted); font-size: 0.88rem; }
+    ol { padding-left: 20px; }
+    ol li { margin: 6px 0; }
+    footer { margin-top: 56px; color: var(--muted); font-size: 0.88rem; text-align: center; }
+  </style>
+</head>
+<body>
+<main>
+  <header>
+    <a href="https://www.goravel.dev"><img class="logo" src="https://www.goravel.dev/logo.png" alt="Goravel"></a>
+    <h1>Goravel playground for Laravel devs</h1>
+    <p class="lede">A small, working Goravel API for Laravel developers to clone, run and read. Open a controller, a model or a migration, and the Laravel version is written right above the Go.</p>
+    <div class="buttons">
+      <a class="button primary" href="https://github.com/phoenix1331/goravel-laravel-playground">View on GitHub</a>
+      <a class="button" href="https://www.goravel.dev/prologue/compare-with-laravel.html">Goravel's Laravel comparison</a>
+    </div>
+  </header>
+
+  <p class="note">An independent, unofficial project. <a href="https://www.goravel.dev">Goravel</a> is built and maintained by the Goravel team and contributors; this repository is not affiliated with or endorsed by them. For the full feature-by-feature comparison and everything else, read the <a href="https://www.goravel.dev/getting-started/installation.html">Goravel documentation</a>.</p>
+
+  <h2>How it works</h2>
+  <p>There are no chapters to work through. The app is a grassroots football club API (clubs, players, fixtures and a league table), and its application code carries short comments comparing each piece to Laravel. This is the club controller's <code>Show</code> action:</p>
+  <pre><span class="c">// Show returns one club, or 404.
+//
+// Laravel:
+//
+//	public function show(Club $club): JsonResponse  // route model binding
+//	{
+//	    return response()->json(['data' => $club]);
+//	}
+//
+// Goravel: no route model binding, so findClub reads {id} and loads the row.</span>
+func (r *ClubController) Show(ctx http.Context) http.Response {
+	club, response := findClub(ctx)
+	if response != nil {
+		return response
+	}
+
+	return ctx.Response().Success().Json(http.Json{"data": club})
+}</pre>
+  <p>The comments cover the code a Laravel developer writes every day. The framework's own plumbing is left to the Goravel docs.</p>
+
+  <h2>Where to look</h2>
+  <ul class="files">
+    <li><a href="https://github.com/phoenix1331/goravel-laravel-playground/blob/main/routes/api.go">routes/api.go</a><span>Groups, middleware, closures vs handlers</span></li>
+    <li><a href="https://github.com/phoenix1331/goravel-laravel-playground/blob/main/app/http/controllers/club_controller.go">Controllers</a><span>No injection, no route model binding</span></li>
+    <li><a href="https://github.com/phoenix1331/goravel-laravel-playground/blob/main/app/http/requests/store_club_request.go">Form requests</a><span>Familiar rules, typed validated data</span></li>
+    <li><a href="https://github.com/phoenix1331/goravel-laravel-playground/blob/main/app/models/fixture.go">Models</a><span>Structs, relations as fields, no casts</span></li>
+    <li><a href="https://github.com/phoenix1331/goravel-laravel-playground/tree/main/database">Migrations and factories</a><span>Schema builder in Go</span></li>
+    <li><a href="https://github.com/phoenix1331/goravel-laravel-playground/blob/main/app/policies/club_policy.go">Policies</a><span>Gates that do not know the user</span></li>
+    <li><a href="https://github.com/phoenix1331/goravel-laravel-playground/blob/main/app/jobs/send_result_notifications.go">Jobs and events</a><span>Typed arguments, no queue:work</span></li>
+    <li><a href="https://github.com/phoenix1331/goravel-laravel-playground/blob/main/app/console/commands/sync_fixtures.go">Artisan command</a><span>Flags as values, errors not exit codes</span></li>
+  </ul>
+
+  <h2>Run it</h2>
+  <ol>
+    <li>Clone the repository and copy <code>.env.example</code> to <code>.env</code>.</li>
+    <li><code>make up</code> starts the app, MySQL and Redis in Docker.</li>
+    <li><code>make artisan cmd="key:generate"</code>, <code>make artisan cmd="jwt:secret"</code>, then <code>make run</code>.</li>
+    <li><code>make fresh</code> loads a demo league; open <code>http://localhost:8000/</code> for every endpoint.</li>
+    <li><code>make test</code> runs the suite. Change some code and watch what breaks.</li>
+  </ol>
+
+  <footer>
+    MIT licensed. Goravel and its logo belong to their owners.
+  </footer>
+</main>
+</body>
+</html>

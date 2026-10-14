@@ -1,0 +1,33 @@
+name: Pages
+
+# Publishes docs/index.html, a single static page, to GitHub Pages.
+# Manual only while the repository is private (Pages on a private repository
+# needs a paid plan). To publish: make the repository public, set Settings >
+# Pages > Source to "GitHub Actions", then run this workflow from the Actions
+# tab, or add a push trigger for docs/**.
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v4
+        with:
+          path: docs
+      - id: deployment
+        uses: actions/deploy-pages@v4

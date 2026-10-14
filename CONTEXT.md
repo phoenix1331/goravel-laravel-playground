@@ -93,7 +93,8 @@ A playground for Laravel developers trying Goravel: a working Goravel API for a 
 
 | Workflow | Trigger | Jobs |
 |---|---|---|
-| `.github/workflows/ci.yml` | push to `main`, PRs | `lint` (gofmt, vet), `test-sqlite`, `test-mysql` (MySQL 8.4 service). Go version from `go.mod` |
+| `.github/workflows/ci.yml` | push to `main`, PRs | `lint` (gofmt, vet), `test-sqlite`, `test-mysql` (MySQL 8.4 + Redis services). Go version from `go.mod` |
+| `.github/workflows/pages.yml` | manual | Uploads `docs/` (one static page) to GitHub Pages. Manual while the repo is private |
 
 ## Commands
 
