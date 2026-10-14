@@ -1,4 +1,3 @@
-// Laravel equivalent: tests/Feature/RoutingTest.php
 package feature
 
 import (

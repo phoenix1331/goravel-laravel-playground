@@ -1,4 +1,3 @@
-// Laravel equivalent: Gate::define() calls in AppServiceProvider::boot()
 package providers
 
 import (

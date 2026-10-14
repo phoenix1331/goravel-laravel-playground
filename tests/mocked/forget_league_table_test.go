@@ -1,5 +1,3 @@
-// Laravel equivalent: Cache::shouldReceive() in tests/Unit
-//
 // This package uses Goravel's generated mocks. mock.Factory() swaps the whole
 // application for a mock, process-wide, so it must not share a package with
 // tests that boot the real app. go test runs each package in its own process,

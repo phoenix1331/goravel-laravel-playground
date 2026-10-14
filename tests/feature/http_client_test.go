@@ -1,4 +1,3 @@
-// Laravel equivalent: tests/Feature/HttpFeedTest.php
 package feature
 
 import (

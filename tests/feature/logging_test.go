@@ -1,4 +1,3 @@
-// Laravel equivalent: tests/Feature/ResultLoggingTest.php
 package feature
 
 import (

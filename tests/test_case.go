@@ -1,4 +1,9 @@
-// Laravel equivalent: tests/TestCase.php
+// Package tests is the shared test harness, the equivalent of Laravel's
+// tests/TestCase.php plus the testing settings in phpunit.xml.
+//
+// Laravel: class TestCase extends BaseTestCase, with RefreshDatabase and
+// actingAs(). Goravel: suites embed this TestCase; TestMain migrates once,
+// TruncateTables resets between tests, and LoginAs stands in for actingAs.
 package tests
 
 import (

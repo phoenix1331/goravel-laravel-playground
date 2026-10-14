@@ -1,4 +1,3 @@
-// Laravel equivalent: tests/Feature/FixtureResultRecordedTest.php
 package feature
 
 import (

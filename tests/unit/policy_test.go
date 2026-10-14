@@ -1,4 +1,3 @@
-// Laravel equivalent: tests/Unit/ClubPolicyTest.php
 package unit
 
 import (

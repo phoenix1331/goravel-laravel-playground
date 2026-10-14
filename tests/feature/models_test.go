@@ -1,4 +1,3 @@
-// Laravel equivalent: tests/Feature/ModelsTest.php
 package feature
 
 import (

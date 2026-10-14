@@ -1,4 +1,3 @@
-// Laravel equivalent: tests/Feature/ScheduleTest.php
 package feature
 
 import (

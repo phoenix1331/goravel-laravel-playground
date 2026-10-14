@@ -1,4 +1,3 @@
-// Laravel equivalent: tests/Feature/RecordResultTwiceTest.php
 package feature
 
 import (

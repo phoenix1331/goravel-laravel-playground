@@ -1,4 +1,3 @@
-// Laravel equivalent: tests/Feature/SchemaTest.php
 package feature
 
 import (

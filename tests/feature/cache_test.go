@@ -1,4 +1,3 @@
-// Laravel equivalent: tests/Feature/LeagueTableCacheTest.php
 package feature
 
 import (

@@ -1,4 +1,3 @@
-// Laravel equivalent: tests/Feature/EnsureJsonRequestTest.php
 package feature
 
 import (

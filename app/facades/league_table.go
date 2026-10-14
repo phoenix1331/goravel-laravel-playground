@@ -1,4 +1,3 @@
-// Laravel equivalent: app/Facades/LeagueTable.php
 package facades
 
 import (

@@ -1,4 +1,3 @@
-// Laravel equivalent: tests/Feature/LeagueTest.php
 package feature
 
 import (

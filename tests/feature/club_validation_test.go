@@ -1,4 +1,3 @@
-// Laravel equivalent: tests/Feature/ClubValidationTest.php
 package feature
 
 import (

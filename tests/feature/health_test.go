@@ -1,4 +1,3 @@
-// Laravel equivalent: tests/Feature/HealthTest.php
 package feature
 
 import (

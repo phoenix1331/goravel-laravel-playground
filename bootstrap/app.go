@@ -1,4 +1,3 @@
-// Laravel equivalent: bootstrap/app.php
 package bootstrap
 
 import (

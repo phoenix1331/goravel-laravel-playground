@@ -1,4 +1,3 @@
-// Laravel equivalent: app/Providers/LeagueServiceProvider.php
 package providers
 
 import (

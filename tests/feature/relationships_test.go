@@ -1,4 +1,3 @@
-// Laravel equivalent: tests/Feature/RelationshipsTest.php
 package feature
 
 import (

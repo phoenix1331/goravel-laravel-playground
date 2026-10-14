@@ -1,4 +1,3 @@
-// Laravel equivalent: tests/Feature/AuthorisationTest.php
 package feature
 
 import (

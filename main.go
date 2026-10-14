@@ -1,4 +1,3 @@
-// Laravel equivalent: public/index.php
 package main
 
 import (

@@ -1,4 +1,3 @@
-// Laravel equivalent: tests/Feature/ClubControllerTest.php
 package feature
 
 import (

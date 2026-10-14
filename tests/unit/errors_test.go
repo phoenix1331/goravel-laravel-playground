@@ -1,4 +1,3 @@
-// Laravel equivalent: expecting a specific exception class
 package unit
 
 import (

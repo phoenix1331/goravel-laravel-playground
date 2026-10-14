@@ -1,4 +1,3 @@
-// Laravel equivalent: tests/Feature/SendResultNotificationsTest.php
 package feature
 
 import (

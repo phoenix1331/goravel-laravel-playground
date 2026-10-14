@@ -1,4 +1,3 @@
-// Laravel equivalent: tests/Unit/ConfigTest.php
 package unit
 
 import (

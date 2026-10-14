@@ -1,4 +1,3 @@
-// Laravel equivalent: tests/Unit/LeagueTableFacadeTest.php
 package unit
 
 import (
