@@ -1,4 +1,4 @@
-// Laravel equivalent: tests/Feature/ClubValidationTest.php - see docs/chapters/07-validation.md
+// Laravel equivalent: tests/Feature/ClubValidationTest.php
 package feature
 
 import (
@@ -53,7 +53,6 @@ func (s *ClubValidationTestSuite) validationErrors(user models.User, method, uri
 	return decoded.Errors
 }
 
-// #region test
 func (s *ClubValidationTestSuite) TestRequiredFields() {
 	errors := s.validationErrors(s.user(), "POST", "/api/clubs", `{}`)
 
@@ -81,8 +80,6 @@ func (s *ClubValidationTestSuite) TestNameMustBeUnique() {
 
 	s.Equal("A club with this name already exists.", errors["name"]["unique"])
 }
-
-// #endregion test
 
 func (s *ClubValidationTestSuite) TestUpdateIgnoresOwnNameInUniqueCheck() {
 	club := models.Club{Name: "Same Name FC", Ground: "Park"}

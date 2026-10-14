@@ -1,4 +1,4 @@
-// Laravel equivalent: tests/Feature/SchemaTest.php - see docs/chapters/11-migrations.md
+// Laravel equivalent: tests/Feature/SchemaTest.php
 package feature
 
 import (
@@ -25,7 +25,6 @@ func (s *MigrationsTestSuite) SetupTest() {
 	s.Require().NoError(s.TruncateTables())
 }
 
-// #region test
 func (s *MigrationsTestSuite) TestSchemaHasExpectedColumnsAndIndexes() {
 	schema := facades.Schema()
 
@@ -77,5 +76,3 @@ func (s *MigrationsTestSuite) TestKickOffIsStoredInUtc() {
 	s.Equal(time.UTC, stored.KickOffAt.Location())
 	s.Equal(14, stored.KickOffAt.Hour())
 }
-
-// #endregion test

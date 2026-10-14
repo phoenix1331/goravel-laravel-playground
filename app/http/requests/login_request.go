@@ -1,4 +1,4 @@
-// Laravel equivalent: app/Http/Requests/LoginRequest.php - see docs/chapters/19-authentication.md
+// Laravel equivalent: app/Http/Requests/LoginRequest.php
 package requests
 
 import (

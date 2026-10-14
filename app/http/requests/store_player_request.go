@@ -1,4 +1,4 @@
-// Laravel equivalent: app/Http/Requests/StorePlayerRequest.php - see docs/chapters/10-relationships.md
+// Laravel equivalent: app/Http/Requests/StorePlayerRequest.php
 package requests
 
 import (

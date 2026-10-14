@@ -1,4 +1,4 @@
-// Laravel equivalent: tests/Feature/LeagueTableCacheTest.php - see docs/chapters/18-cache.md
+// Laravel equivalent: tests/Feature/LeagueTableCacheTest.php
 package feature
 
 import (
@@ -50,7 +50,6 @@ func (s *CacheTestSuite) leader() (string, int) {
 	return body.Data[0].Club, body.Data[0].Points
 }
 
-// #region test
 func (s *CacheTestSuite) TestTableIsCachedAfterFirstRequest() {
 	s.leader()
 
@@ -82,5 +81,3 @@ func (s *CacheTestSuite) TestRecordingAResultClearsTheCache() {
 	s.Equal("Ashford", club)
 	s.Equal(3, points)
 }
-
-// #endregion test

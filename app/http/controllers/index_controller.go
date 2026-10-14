@@ -1,4 +1,4 @@
-// Laravel equivalent: a closure on Route::get('/') returning JSON - see docs/chapters/03-routing.md
+// Laravel equivalent: a closure on Route::get('/') returning JSON
 package controllers
 
 import (
@@ -21,7 +21,6 @@ type endpoint struct {
 	Path   string `json:"path"`
 }
 
-// #region index
 // Index describes the API and lists every endpoint. The list is read from the
 // router at request time, so it can never fall out of date.
 //
@@ -50,8 +49,6 @@ func (r *IndexController) Index(ctx http.Context) http.Response {
 		"endpoints":   endpoints,
 	})
 }
-
-// #endregion index
 
 // listEndpoints reads every registered route, sorted by path.
 func listEndpoints() []endpoint {

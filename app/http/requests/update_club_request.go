@@ -1,4 +1,4 @@
-// Laravel equivalent: app/Http/Requests/UpdateClubRequest.php - see docs/chapters/07-validation.md
+// Laravel equivalent: app/Http/Requests/UpdateClubRequest.php
 package requests
 
 import (

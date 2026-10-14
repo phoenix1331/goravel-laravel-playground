@@ -1,4 +1,4 @@
-// Laravel equivalent: tests/Feature/HttpFeedTest.php - see docs/chapters/21-http-client.md
+// Laravel equivalent: tests/Feature/HttpFeedTest.php
 package feature
 
 import (
@@ -50,7 +50,6 @@ func (s *HttpClientTestSuite) reload() models.Fixture {
 	return fixture
 }
 
-// #region test
 func (s *HttpClientTestSuite) TestSyncReadsResultsFromTheApi() {
 	// Like Http::fake(['feed.test/*' => Http::response([...], 200)])
 	http := facades.Http()
@@ -76,8 +75,6 @@ func (s *HttpClientTestSuite) TestServerErrorFailsTheCommandAndChangesNothing() 
 	s.ErrorContains(err, "status 503")
 	s.Equal(models.Scheduled, s.reload().Status)
 }
-
-// #endregion test
 
 func (s *HttpClientTestSuite) TestStrayRequestsAreBlocked() {
 	// Nothing matches the feed URL, and PreventStrayRequests stops the

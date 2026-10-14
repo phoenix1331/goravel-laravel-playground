@@ -1,4 +1,4 @@
-// Laravel equivalent: tests/Feature/AuthorisationTest.php - see docs/chapters/20-authorisation.md
+// Laravel equivalent: tests/Feature/AuthorisationTest.php
 package feature
 
 import (
@@ -38,7 +38,6 @@ func (s *AuthorisationTestSuite) SetupTest() {
 	}))
 }
 
-// #region test
 func (s *AuthorisationTestSuite) TestAdminsCannotEditAnotherClub() {
 	response, err := s.LoginAs(s.T(), s.awayAdmin).
 		Put(fmt.Sprintf("/api/clubs/%d", s.home.ID), strings.NewReader(`{"name":"Hijacked","ground":"Park"}`))
@@ -90,5 +89,3 @@ func (s *AuthorisationTestSuite) TestAdminsCannotCreateASecondClub() {
 
 	response.AssertForbidden()
 }
-
-// #endregion test

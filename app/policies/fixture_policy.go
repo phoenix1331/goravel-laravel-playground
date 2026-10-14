@@ -1,4 +1,4 @@
-// Laravel equivalent: app/Policies/FixturePolicy.php - see docs/chapters/20-authorisation.md
+// Laravel equivalent: app/Policies/FixturePolicy.php
 package policies
 
 import (

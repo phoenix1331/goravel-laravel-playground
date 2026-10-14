@@ -1,4 +1,4 @@
-// Laravel equivalent: $this->authorize() / Gate::authorize() - see docs/chapters/20-authorisation.md
+// Laravel equivalent: $this->authorize() / Gate::authorize()
 package controllers
 
 import (
@@ -8,7 +8,6 @@ import (
 	"goravel/app/models"
 )
 
-// #region authorise
 // authorise loads the logged-in user and asks the gate whether they may
 // perform ability. It returns the user, or a ready-made 401/403 response.
 // The user is added to arguments, because Goravel's gate does not know who
@@ -26,5 +25,3 @@ func authorise(ctx http.Context, ability string, arguments map[string]any) (*mod
 
 	return &user, nil
 }
-
-// #endregion authorise

@@ -1,4 +1,4 @@
-// Laravel equivalent: database/migrations/xxxx_create_fixtures_table.php - see docs/chapters/11-migrations.md
+// Laravel equivalent: database/migrations/xxxx_create_fixtures_table.php
 package migrations
 
 import (
@@ -14,7 +14,6 @@ func (r *M20261013183455CreateFixturesTable) Signature() string {
 	return "20261013183455_create_fixtures_table"
 }
 
-// #region create
 // Up Run the migrations.
 func (r *M20261013183455CreateFixturesTable) Up() error {
 	if !facades.Schema().HasTable("fixtures") {
@@ -43,5 +42,3 @@ func (r *M20261013183455CreateFixturesTable) Up() error {
 func (r *M20261013183455CreateFixturesTable) Down() error {
 	return facades.Schema().DropIfExists("fixtures")
 }
-
-// #endregion create

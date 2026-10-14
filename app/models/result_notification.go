@@ -1,4 +1,4 @@
-// Laravel equivalent: app/Models/ResultNotification.php - see docs/chapters/15-events.md
+// Laravel equivalent: app/Models/ResultNotification.php
 package models
 
 import (

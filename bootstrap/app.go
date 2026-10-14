@@ -1,4 +1,4 @@
-// Laravel equivalent: bootstrap/app.php - see docs/chapters/01-installation.md
+// Laravel equivalent: bootstrap/app.php
 package bootstrap
 
 import (
@@ -12,7 +12,6 @@ import (
 	"goravel/routes"
 )
 
-// #region boot
 func Boot() contractsfoundation.Application {
 	return foundation.Setup().
 		WithJobs(Jobs).
@@ -24,7 +23,6 @@ func Boot() contractsfoundation.Application {
 			routes.Api()
 			routes.Grpc()
 		}).
-		// #region events
 		// Each event maps to its listeners, like $listen in EventServiceProvider
 		WithEvents(func() map[event.Event][]event.Listener {
 			return map[event.Event][]event.Listener{
@@ -34,11 +32,8 @@ func Boot() contractsfoundation.Application {
 				},
 			}
 		}).
-		// #endregion events
 		WithSchedule(Schedule).
 		WithProviders(Providers).
 		WithConfig(config.Boot).
 		Create()
 }
-
-// #endregion boot

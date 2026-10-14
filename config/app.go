@@ -56,14 +56,12 @@ func init() {
 		// will not be safe. Please do this before deploying an application!
 		"key": config.Env("APP_KEY", ""),
 
-		// #region runners
 		// Background runners started by app.Start(): the HTTP server
 		// (goravel:http), the queue worker (goravel:queue, only when the queue
 		// is not sync) and the scheduler (goravel:schedule). List signatures
 		// here, space separated, to switch them off, e.g. to run a
 		// worker-only process: APP_DISABLED_RUNNERS="goravel:http"
 		"disabled_runners": config.Env("APP_DISABLED_RUNNERS", ""),
-		// #endregion runners
 		"maintenance": map[string]any{
 			// Maintenance Mode Driver
 			//

@@ -1,4 +1,4 @@
-// Laravel equivalent: app/Models/Fixture.php - see docs/chapters/09-models.md
+// Laravel equivalent: app/Models/Fixture.php
 package models
 
 import (
@@ -21,7 +21,6 @@ const (
 	Postponed  FixtureStatus = "postponed"
 )
 
-// #region fixture
 type Fixture struct {
 	orm.Model
 	HomeClubID uint          `json:"home_club_id"`
@@ -33,18 +32,13 @@ type Fixture struct {
 	HomeScore *int `json:"home_score"`
 	AwayScore *int `json:"away_score"`
 
-	// #region two-fks
 	// Two relations to the same model. The names do not follow the Club + ID
 	// convention, so the gorm tag names each foreign key explicitly, like
 	// belongsTo(Club::class, 'home_club_id') in Laravel.
 	HomeClub *Club `gorm:"foreignKey:HomeClubID" json:"home_club,omitempty"`
 	AwayClub *Club `gorm:"foreignKey:AwayClubID" json:"away_club,omitempty"`
-	// #endregion two-fks
 }
 
-// #endregion fixture
-
-// #region methods
 // IsFinished is an ordinary method. Where Laravel might use an accessor
 // ($fixture->is_finished), Go calls a method: fixture.IsFinished().
 func (f *Fixture) IsFinished() bool {
@@ -66,9 +60,6 @@ func (f *Fixture) Result() (services.Result, bool) {
 	}, true
 }
 
-// #endregion methods
-
-// #region events
 // DispatchesEvents hooks into the model's life cycle, like a mutator or a
 // saving() listener in Laravel. Saving runs before every create and update.
 //
@@ -86,8 +77,6 @@ func (f *Fixture) DispatchesEvents() map[contractsorm.EventType]func(contractsor
 		},
 	}
 }
-
-// #endregion events
 
 // Factory links the model to its factory, like the HasFactory trait.
 func (f *Fixture) Factory() factory.Factory {

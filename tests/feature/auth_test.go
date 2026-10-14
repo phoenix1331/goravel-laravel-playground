@@ -1,4 +1,4 @@
-// Laravel equivalent: tests/Feature/AuthTest.php - see docs/chapters/19-authentication.md
+// Laravel equivalent: tests/Feature/AuthTest.php
 package feature
 
 import (
@@ -39,7 +39,6 @@ func (s *AuthTestSuite) login(email, password string) testinghttp.Response {
 	return response
 }
 
-// #region test
 func (s *AuthTestSuite) TestLoginReturnsAToken() {
 	response := s.login("alex@example.com", "password")
 	response.AssertOk()
@@ -107,8 +106,6 @@ func (s *AuthTestSuite) TestLoggedOutTokenIsRejected() {
 	s.Require().NoError(err)
 	response.AssertUnauthorized()
 }
-
-// #endregion test
 
 func (s *AuthTestSuite) TestGarbageTokenIsRejected() {
 	response, err := s.Http(s.T()).WithToken("not-a-jwt").Get("/api/auth/me")

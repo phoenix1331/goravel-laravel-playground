@@ -1,4 +1,4 @@
-// Laravel equivalent: Gate::define() calls in AppServiceProvider::boot() - see docs/chapters/20-authorisation.md
+// Laravel equivalent: Gate::define() calls in AppServiceProvider::boot()
 package providers
 
 import (
@@ -21,7 +21,6 @@ func (r *AuthServiceProvider) Relationship() binding.Relationship {
 
 func (r *AuthServiceProvider) Register(app foundation.Application) {}
 
-// #region gates
 // Boot names each ability and points it at a policy method. There is no
 // automatic Club -> ClubPolicy discovery: every ability is defined here.
 func (r *AuthServiceProvider) Boot(app foundation.Application) {
@@ -36,5 +35,3 @@ func (r *AuthServiceProvider) Boot(app foundation.Application) {
 	fixtures := policies.NewFixturePolicy()
 	gate.Define("record-result", fixtures.RecordResult)
 }
-
-// #endregion gates

@@ -1,4 +1,4 @@
-// Laravel equivalent: database/seeders/DatabaseSeeder.php - see docs/chapters/12-factories-seeders.md
+// Laravel equivalent: database/seeders/DatabaseSeeder.php
 package seeders
 
 import (
@@ -18,7 +18,6 @@ func (s *DatabaseSeeder) Signature() string {
 	return "DatabaseSeeder"
 }
 
-// #region run
 // Run builds a small league: six clubs, a squad and an admin for each, and a
 // full round of fixtures, the first half already played.
 func (s *DatabaseSeeder) Run() error {
@@ -48,8 +47,6 @@ func (s *DatabaseSeeder) Run() error {
 
 	return s.fixtures(clubs)
 }
-
-// #endregion run
 
 // squad gives a club sixteen players with shirt numbers 1 to 16.
 func (s *DatabaseSeeder) squad(club models.Club) error {

@@ -1,4 +1,4 @@
-// Laravel equivalent: database/factories/ClubFactory.php - see docs/chapters/12-factories-seeders.md
+// Laravel equivalent: database/factories/ClubFactory.php
 package factories
 
 import (
@@ -13,7 +13,6 @@ var towns = []string{
 	"Penrith", "Ripon", "Stroud", "Thirsk", "Ulverston", "Whitby",
 }
 
-// #region club
 type ClubFactory struct{}
 
 // Definition returns default values keyed by struct field name (not column
@@ -29,5 +28,3 @@ func (f *ClubFactory) Definition() map[string]any {
 		"FoundedYear": &year,
 	}
 }
-
-// #endregion club

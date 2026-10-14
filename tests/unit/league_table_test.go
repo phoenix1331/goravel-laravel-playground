@@ -1,4 +1,4 @@
-// Laravel equivalent: tests/Unit/LeagueTableTest.php - see docs/chapters/05-service-container.md
+// Laravel equivalent: tests/Unit/LeagueTableTest.php
 package unit
 
 import (
@@ -11,7 +11,6 @@ import (
 	"goravel/app/services"
 )
 
-// #region table
 // A table-driven test: each case is a row of data, and one loop runs them all.
 // It plays the same role as a PHPUnit data provider.
 func TestPointsLeagueTableRanking(t *testing.T) {
@@ -52,8 +51,6 @@ func TestPointsLeagueTableRanking(t *testing.T) {
 	}
 }
 
-// #endregion table
-
 func TestPointsLeagueTableCountsResults(t *testing.T) {
 	table := services.NewPointsLeagueTable(3, 1, 0)
 	standings := table.Standings([]services.Result{
@@ -66,7 +63,6 @@ func TestPointsLeagueTableCountsResults(t *testing.T) {
 	assert.Equal(t, 2, standings[0].GoalDifference())
 }
 
-// #region container
 func TestContainerResolvesLeagueTableSingleton(t *testing.T) {
 	first, err := facades.App().Make(services.LeagueTableBinding)
 	require.NoError(t, err)
@@ -82,5 +78,3 @@ func TestContainerResolvesLeagueTableSingleton(t *testing.T) {
 	require.NoError(t, err)
 	assert.Same(t, first, second)
 }
-
-// #endregion container

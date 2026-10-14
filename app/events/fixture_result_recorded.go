@@ -1,11 +1,10 @@
-// Laravel equivalent: app/Events/FixtureResultRecorded.php - see docs/chapters/15-events.md
+// Laravel equivalent: app/Events/FixtureResultRecorded.php
 package events
 
 import (
 	"github.com/goravel/framework/contracts/event"
 )
 
-// #region event
 // FixtureResultRecorded fires when a fixture gets a final score.
 //
 // The event carries its data as a list of typed arguments, not as struct
@@ -22,5 +21,3 @@ func (e *FixtureResultRecorded) Handle(args []event.Arg) ([]event.Arg, error) {
 func (e *FixtureResultRecorded) Args(fixtureID uint) []event.Arg {
 	return []event.Arg{{Type: "uint", Value: fixtureID}}
 }
-
-// #endregion event

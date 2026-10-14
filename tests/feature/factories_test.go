@@ -1,4 +1,4 @@
-// Laravel equivalent: tests/Feature/FactoriesTest.php - see docs/chapters/12-factories-seeders.md
+// Laravel equivalent: tests/Feature/FactoriesTest.php
 package feature
 
 import (
@@ -25,7 +25,6 @@ func (s *FactoriesTestSuite) SetupTest() {
 	s.Require().NoError(s.TruncateTables())
 }
 
-// #region test
 func (s *FactoriesTestSuite) TestCountCreatesManyRows() {
 	// Club::factory()->count(3)->create()
 	var clubs []models.Club
@@ -69,8 +68,6 @@ func (s *FactoriesTestSuite) TestDatabaseSeederBuildsALeague() {
 	s.Equal(int64(15), s.count(&models.Fixture{}))
 	s.Equal(int64(6), s.count(&models.User{}))
 }
-
-// #endregion test
 
 func (s *FactoriesTestSuite) count(model any) int64 {
 	count, err := facades.Orm().Query().Model(model).Count()

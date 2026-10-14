@@ -1,4 +1,4 @@
-// Laravel equivalent: app/Http/Requests/StoreClubRequest.php - see docs/chapters/07-validation.md
+// Laravel equivalent: app/Http/Requests/StoreClubRequest.php
 package requests
 
 import (
@@ -8,7 +8,6 @@ import (
 	"github.com/goravel/framework/contracts/http"
 )
 
-// #region request
 // StoreClubRequest is both the rules and the destination for the validated
 // data: after validation passes, Goravel binds the input into these fields.
 type StoreClubRequest struct {
@@ -39,9 +38,6 @@ func (r *StoreClubRequest) Messages(ctx http.Context) map[string]string {
 	return clubMessages()
 }
 
-// #endregion request
-
-// #region rules
 // clubRules is shared by the store and update requests. Rules are built in
 // code, so values such as the current year are just function calls.
 // exceptID is the club being updated, or 0 when creating.
@@ -59,8 +55,6 @@ func clubRules(exceptID int) map[string]any {
 		"founded_year": fmt.Sprintf("nullable|integer|min:1857|max:%d", time.Now().Year()),
 	}
 }
-
-// #endregion rules
 
 func clubMessages() map[string]string {
 	return map[string]string{

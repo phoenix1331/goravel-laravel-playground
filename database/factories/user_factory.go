@@ -1,4 +1,4 @@
-// Laravel equivalent: database/factories/UserFactory.php - see docs/chapters/12-factories-seeders.md
+// Laravel equivalent: database/factories/UserFactory.php
 package factories
 
 import (

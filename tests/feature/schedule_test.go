@@ -1,4 +1,4 @@
-// Laravel equivalent: tests/Feature/ScheduleTest.php - see docs/chapters/17-scheduling.md
+// Laravel equivalent: tests/Feature/ScheduleTest.php
 package feature
 
 import (
@@ -38,7 +38,6 @@ func (s *ScheduleTestSuite) event(match func(schedule.Event) bool) schedule.Even
 	return nil
 }
 
-// #region test
 func (s *ScheduleTestSuite) TestSyncRunsEveryFifteenMinutesOnSaturdays() {
 	sync := s.event(func(e schedule.Event) bool { return e.GetCommand() == "sync:fixtures" })
 
@@ -72,5 +71,3 @@ func (s *ScheduleTestSuite) TestPruneDeletesOnlyOldNotifications() {
 	s.Require().Len(remaining, 1)
 	s.Equal("recent", remaining[0].Message)
 }
-
-// #endregion test

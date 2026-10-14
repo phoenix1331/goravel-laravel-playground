@@ -1,4 +1,4 @@
-// Laravel equivalent: the auth:sanctum / auth:api middleware - see docs/chapters/19-authentication.md
+// Laravel equivalent: the auth:sanctum / auth:api middleware
 package middleware
 
 import (
@@ -7,7 +7,6 @@ import (
 	"goravel/app/facades"
 )
 
-// #region middleware
 // Authenticate requires a valid bearer token. It parses the token into the
 // request context, so later code can call facades.Auth(ctx).User(&user).
 type AuthenticateRequest struct{}
@@ -40,5 +39,3 @@ func (m *AuthenticateRequest) Handle(ctx http.Context) {
 func unauthenticated(ctx http.Context) {
 	ctx.Response().Json(http.StatusUnauthorized, http.Json{"message": "Unauthenticated."}).Abort()
 }
-
-// #endregion middleware

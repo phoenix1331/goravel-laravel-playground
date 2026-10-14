@@ -1,4 +1,4 @@
-// Laravel equivalent: app/Services/FixtureFeed.php - see docs/chapters/14-console-commands.md
+// Laravel equivalent: app/Services/FixtureFeed.php
 package services
 
 import (
@@ -17,7 +17,6 @@ type FeedResult struct {
 	AwayScore int    `json:"away_score"`
 }
 
-// #region feed
 // FixtureFeed is anywhere results can be read from. Chapter 21 adds an HTTP
 // implementation next to this file-based one.
 type FixtureFeed interface {
@@ -43,9 +42,6 @@ func (f FileFeed) Results() ([]FeedResult, error) {
 	return results, nil
 }
 
-// #endregion feed
-
-// #region http
 // HttpFeed reads results from the league's API. It is given a ready-made
 // request builder, so it never reads config itself and tests can fake it.
 type HttpFeed struct {
@@ -71,5 +67,3 @@ func (f HttpFeed) Results() ([]FeedResult, error) {
 
 	return results, nil
 }
-
-// #endregion http

@@ -1,4 +1,4 @@
-// Laravel equivalent: database/factories/PlayerFactory.php - see docs/chapters/12-factories-seeders.md
+// Laravel equivalent: database/factories/PlayerFactory.php
 package factories
 
 import (

@@ -53,7 +53,6 @@ func init() {
 		// For example, you might have a "github" client with a specific base URL
 		// and a "stripe" client with a longer timeout.
 		"clients": map[string]any{
-			// #region client
 			// The league's results feed, used by sync:fixtures when
 			// FIXTURE_FEED_DRIVER=http. A named client is like a Laravel
 			// Http::macro or a configured Guzzle client: base URL and timeout
@@ -62,7 +61,6 @@ func init() {
 				"base_url": config.Env("FIXTURE_FEED_URL", "http://localhost:8000/api/demo"),
 				"timeout":  config.Env("FIXTURE_FEED_TIMEOUT", "10s"),
 			},
-			// #endregion client
 			"default": map[string]any{
 				// The base URL for the client. All requests made using this client
 				// will be relative to this URL.

@@ -1,4 +1,4 @@
-// Laravel equivalent: app/Http/Controllers/ClubController.php - see docs/chapters/04-controllers.md
+// Laravel equivalent: app/Http/Controllers/ClubController.php
 package controllers
 
 import (
@@ -14,7 +14,6 @@ import (
 	"goravel/app/models"
 )
 
-// #region struct
 // ClubController is a plain struct. Its methods become route handlers because
 // they have the signature func(http.Context) http.Response.
 type ClubController struct{}
@@ -25,9 +24,6 @@ func NewClubController() *ClubController {
 	return &ClubController{}
 }
 
-// #endregion struct
-
-// #region index
 // Index lists every club.
 func (r *ClubController) Index(ctx http.Context) http.Response {
 	var clubs []models.Club
@@ -38,9 +34,6 @@ func (r *ClubController) Index(ctx http.Context) http.Response {
 	return ctx.Response().Success().Json(http.Json{"data": clubs})
 }
 
-// #endregion index
-
-// #region show
 // Show returns one club, or 404.
 func (r *ClubController) Show(ctx http.Context) http.Response {
 	club, response := findClub(ctx)
@@ -51,9 +44,6 @@ func (r *ClubController) Show(ctx http.Context) http.Response {
 	return ctx.Response().Success().Json(http.Json{"data": club})
 }
 
-// #endregion show
-
-// #region store
 // Store creates a club and makes the logged-in user its admin.
 func (r *ClubController) Store(ctx http.Context) http.Response {
 	user, response := authorise(ctx, "create-club", map[string]any{})
@@ -90,19 +80,15 @@ func (r *ClubController) Store(ctx http.Context) http.Response {
 	return ctx.Response().Json(http.StatusCreated, http.Json{"data": club})
 }
 
-// #endregion store
-
 // Update replaces a club's fields from a validated request.
 func (r *ClubController) Update(ctx http.Context) http.Response {
 	club, response := findClub(ctx)
 	if response != nil {
 		return response
 	}
-	// #region check
 	if _, response := authorise(ctx, "update-club", map[string]any{"club": club}); response != nil {
 		return response
 	}
-	// #endregion check
 
 	var request requests.UpdateClubRequest
 	// Two results: validationErrors for bad input (422), err for anything
@@ -140,7 +126,6 @@ func (r *ClubController) Destroy(ctx http.Context) http.Response {
 	return ctx.Response().NoContent()
 }
 
-// #region find
 // findClub loads the club named by the {id} route parameter. It stands in for
 // Laravel's route model binding, which Goravel does not have. It returns either
 // the club or a ready-made error response, never both.
@@ -157,9 +142,6 @@ func findClub(ctx http.Context) (*models.Club, http.Response) {
 	return &club, nil
 }
 
-// #endregion find
-
-// #region failed
 // validationFailed returns a 422 in the same shape as Laravel's, with one
 // difference: each field maps rule names to messages, not a list of messages.
 func validationFailed(ctx http.Context, validationErrors validation.Errors) http.Response {
@@ -169,9 +151,6 @@ func validationFailed(ctx http.Context, validationErrors validation.Errors) http
 	})
 }
 
-// #endregion failed
-
-// #region server-error
 // serverError logs the real error and returns a generic 500, so database
 // details never reach the client. Request() attaches the method, path and
 // headers to the log entry, the context Laravel's exception handler adds.
@@ -180,5 +159,3 @@ func serverError(ctx http.Context, err error) http.Response {
 
 	return ctx.Response().Json(http.StatusInternalServerError, http.Json{"message": "Server Error"})
 }
-
-// #endregion server-error

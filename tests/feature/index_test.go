@@ -1,4 +1,4 @@
-// Laravel equivalent: tests/Feature/IndexTest.php - see docs/chapters/03-routing.md
+// Laravel equivalent: tests/Feature/IndexTest.php
 package feature
 
 import (

@@ -1,4 +1,4 @@
-// Laravel equivalent: tests/Feature/ResultLoggingTest.php - see docs/chapters/22-logging.md
+// Laravel equivalent: tests/Feature/ResultLoggingTest.php
 package feature
 
 import (
@@ -45,7 +45,6 @@ func (s *LoggingTestSuite) logSize() int64 {
 	return info.Size()
 }
 
-// #region test
 func (s *LoggingTestSuite) TestRecordingAResultWritesAJsonLine() {
 	var home, away models.Club
 	s.Require().NoError(facades.Orm().Factory().Create(&home))
@@ -78,5 +77,3 @@ func (s *LoggingTestSuite) TestRecordingAResultWritesAJsonLine() {
 	s.Equal(4, entry.Extra.HomeScore)
 	s.Equal(2, entry.Extra.AwayScore)
 }
-
-// #endregion test

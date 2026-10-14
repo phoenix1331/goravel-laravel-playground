@@ -1,4 +1,4 @@
-// Laravel equivalent: app/Providers/LeagueServiceProvider.php - see docs/chapters/05-service-container.md
+// Laravel equivalent: app/Providers/LeagueServiceProvider.php
 package providers
 
 import (
@@ -20,7 +20,6 @@ func (r *LeagueServiceProvider) Relationship() binding.Relationship {
 	}
 }
 
-// #region register
 // Register binds services into the container, like register() in Laravel.
 // The callback runs lazily, the first time something asks for the binding.
 func (r *LeagueServiceProvider) Register(app foundation.Application) {
@@ -34,8 +33,6 @@ func (r *LeagueServiceProvider) Register(app foundation.Application) {
 		), nil
 	})
 }
-
-// #endregion register
 
 // Boot runs after every provider is registered, like boot() in Laravel.
 // Nothing to do here yet.

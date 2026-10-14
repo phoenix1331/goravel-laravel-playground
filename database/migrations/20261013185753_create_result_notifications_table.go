@@ -1,4 +1,4 @@
-// Laravel equivalent: database/migrations/xxxx_create_result_notifications_table.php - see docs/chapters/15-events.md
+// Laravel equivalent: database/migrations/xxxx_create_result_notifications_table.php
 package migrations
 
 import (

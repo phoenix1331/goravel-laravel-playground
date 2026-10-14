@@ -1,4 +1,4 @@
-// Laravel equivalent: routes/console.php - see docs/chapters/17-scheduling.md
+// Laravel equivalent: routes/console.php
 package bootstrap
 
 import (
@@ -10,7 +10,6 @@ import (
 	"goravel/app/models"
 )
 
-// #region schedule
 // Schedule lists the recurring tasks. The scheduler runner started by
 // app.Start() checks them every second; there is no cron entry to add.
 func Schedule() []schedule.Event {
@@ -28,8 +27,6 @@ func Schedule() []schedule.Event {
 			Name("prune-old-notifications"),
 	}
 }
-
-// #endregion schedule
 
 // pruneOldNotifications deletes result notifications older than 30 days.
 func pruneOldNotifications() {

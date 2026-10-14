@@ -1,4 +1,4 @@
-// Laravel equivalent: app/Listeners/NotifyClubAdmins.php - see docs/chapters/15-events.md
+// Laravel equivalent: app/Listeners/NotifyClubAdmins.php
 package listeners
 
 import (
@@ -11,7 +11,6 @@ import (
 	"goravel/app/jobs"
 )
 
-// #region listener
 // NotifyClubAdmins reacts to a new result by queueing the notifications job.
 type NotifyClubAdmins struct{}
 
@@ -33,16 +32,12 @@ func (l *NotifyClubAdmins) Handle(args ...any) error {
 	}
 	fixtureID := cast.ToUint(args[0])
 
-	// #region dispatch
 	// Like SendResultNotifications::dispatch($fixture). The job goes on the
 	// connection named by QUEUE_CONNECTION: sync in tests, redis in dev.
 	job := &jobs.SendResultNotifications{}
 	if err := facades.Queue().Job(job, job.Args(fixtureID)).Dispatch(); err != nil {
 		return fmt.Errorf("notify club admins: %w", err)
 	}
-	// #endregion dispatch
 
 	return nil
 }
-
-// #endregion listener

@@ -1,4 +1,4 @@
-// Laravel equivalent: the /up health route in bootstrap/app.php - see docs/chapters/03-routing.md
+// Laravel equivalent: the /up health route in bootstrap/app.php
 package controllers
 
 import (
@@ -13,7 +13,6 @@ func NewHealthController() *HealthController {
 	return &HealthController{}
 }
 
-// #region show
 // Show reports whether the app can reach its database.
 func (r *HealthController) Show(ctx http.Context) http.Response {
 	// No exceptions in Go: Orm().DB() hands back an error value to check
@@ -33,5 +32,3 @@ func (r *HealthController) Show(ctx http.Context) http.Response {
 		"database": "up",
 	})
 }
-
-// #endregion show

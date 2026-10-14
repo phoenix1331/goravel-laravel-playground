@@ -1,4 +1,4 @@
-// Laravel equivalent: app/Http/Controllers/LeagueController.php - see docs/chapters/13-query-builder.md
+// Laravel equivalent: app/Http/Controllers/LeagueController.php
 package controllers
 
 import (
@@ -32,7 +32,6 @@ type leagueRow struct {
 // recorded (listeners.ForgetLeagueTable), so it rarely lives this long.
 const leagueTableTTL = time.Hour
 
-// #region table
 // Table returns the league table, from the cache when possible.
 func (r *LeagueController) Table(ctx http.Context) http.Response {
 	// Remember is Cache::remember(). The callback only runs on a miss.
@@ -62,9 +61,6 @@ func (r *LeagueController) Table(ctx http.Context) http.Response {
 	return ctx.Response().Success().Json(http.Json{"data": rows})
 }
 
-// #endregion table
-
-// #region build
 // buildLeagueTable builds the table from finished fixtures.
 func buildLeagueTable() ([]leagueRow, error) {
 	// facades.DB() is the query builder, like DB::table(). Rows scan into
@@ -88,8 +84,6 @@ func buildLeagueTable() ([]leagueRow, error) {
 
 	return tableRows(standings, clubs), nil
 }
-
-// #endregion build
 
 // tableRows adds positions and club names, and appends clubs with no results.
 func tableRows(standings []services.Standing, clubs []models.Club) []leagueRow {
@@ -116,7 +110,6 @@ func tableRows(standings []services.Standing, clubs []models.Club) []leagueRow {
 	return rows
 }
 
-// #region goals
 // goalsRow receives one row of the raw query. Raw SQL needs explicit db tags
 // only when a column name does not match the field name in snake_case.
 type goalsRow struct {
@@ -148,5 +141,3 @@ func (r *LeagueController) Goals(ctx http.Context) http.Response {
 
 	return ctx.Response().Success().Json(http.Json{"data": rows})
 }
-
-// #endregion goals

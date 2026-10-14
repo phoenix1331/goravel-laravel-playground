@@ -1,4 +1,4 @@
-// Laravel equivalent: tests/TestCase.php - see docs/chapters/23-testing.md
+// Laravel equivalent: tests/TestCase.php
 package tests
 
 import (
@@ -30,7 +30,6 @@ type TestCase struct {
 	testing.TestCase
 }
 
-// #region main
 // Main migrates the database once, then runs the package's tests. Call it
 // from TestMain in every test package:
 //
@@ -47,9 +46,6 @@ func Main(m *gotesting.M) int {
 	return m.Run()
 }
 
-// #endregion main
-
-// #region truncate
 // TruncateTables deletes every row from every table except the migrations
 // table, so each test starts empty without paying for a full re-migrate.
 // Call it from SetupTest.
@@ -73,8 +69,6 @@ func (r *TestCase) TruncateTables() error {
 	return nil
 }
 
-// #endregion truncate
-
 // CreateAdmin makes a user who administers the given club.
 func (r *TestCase) CreateAdmin(t *gotesting.T, clubID uint) models.User {
 	t.Helper()
@@ -87,7 +81,6 @@ func (r *TestCase) CreateAdmin(t *gotesting.T, clubID uint) models.User {
 	return admin
 }
 
-// #region login
 // LoginAs logs a user in through the real login endpoint and returns a
 // request builder that sends their token and a JSON content type, the
 // equivalent of $this->actingAs($user). The user must have been made by the
@@ -111,5 +104,3 @@ func (r *TestCase) LoginAs(t *gotesting.T, user models.User) contractshttp.Reque
 
 	return r.Http(t).WithToken(login.AccessToken).WithHeader("Content-Type", "application/json")
 }
-
-// #endregion login

@@ -1,4 +1,4 @@
-// Laravel equivalent: tests/Unit/ClubPolicyTest.php - see docs/chapters/20-authorisation.md
+// Laravel equivalent: tests/Unit/ClubPolicyTest.php
 package unit
 
 import (
@@ -11,7 +11,6 @@ import (
 	"goravel/app/policies"
 )
 
-// #region test
 // Policies are plain methods, so they can be tested without HTTP or a database.
 func TestClubPolicyUpdate(t *testing.T) {
 	club := &models.Club{}
@@ -36,8 +35,6 @@ func TestClubPolicyUpdate(t *testing.T) {
 		})
 	}
 }
-
-// #endregion test
 
 func TestClubPolicyCreateOnlyForUsersWithoutAClub(t *testing.T) {
 	policy := policies.NewClubPolicy()

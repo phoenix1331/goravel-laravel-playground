@@ -1,4 +1,4 @@
-// Laravel equivalent: app/Http/Requests/RecordResultRequest.php - see docs/chapters/15-events.md
+// Laravel equivalent: app/Http/Requests/RecordResultRequest.php
 package requests
 
 import (

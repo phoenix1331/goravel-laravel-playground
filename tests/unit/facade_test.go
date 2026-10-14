@@ -1,4 +1,4 @@
-// Laravel equivalent: tests/Unit/LeagueTableFacadeTest.php - see docs/chapters/06-facades.md
+// Laravel equivalent: tests/Unit/LeagueTableFacadeTest.php
 package unit
 
 import (
@@ -11,7 +11,6 @@ import (
 	"goravel/app/services"
 )
 
-// #region fake
 // fakeLeagueTable satisfies services.LeagueTable just by having the method.
 type fakeLeagueTable struct {
 	calls int
@@ -23,9 +22,6 @@ func (f *fakeLeagueTable) Standings(results []services.Result) []services.Standi
 	return []services.Standing{{ClubID: 99, Points: 100}}
 }
 
-// #endregion fake
-
-// #region test
 func TestLeagueTableFacadeResolvesBinding(t *testing.T) {
 	standings := facades.LeagueTable().Standings([]services.Result{
 		{HomeClubID: 1, AwayClubID: 2, HomeScore: 2, AwayScore: 0},
@@ -58,5 +54,3 @@ func TestLeagueTableFacadeCanBeSwapped(t *testing.T) {
 	assert.Equal(t, uint(99), standings[0].ClubID)
 	assert.Equal(t, 1, fake.calls)
 }
-
-// #endregion test

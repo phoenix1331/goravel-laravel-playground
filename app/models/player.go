@@ -1,4 +1,4 @@
-// Laravel equivalent: app/Models/Player.php - see docs/chapters/09-models.md
+// Laravel equivalent: app/Models/Player.php
 package models
 
 import (
@@ -8,7 +8,6 @@ import (
 	"goravel/database/factories"
 )
 
-// #region position
 // Position is a named string type: Go's closest thing to a backed enum.
 type Position string
 
@@ -22,9 +21,6 @@ const (
 // Positions lists every valid position, for validation rules and seeders.
 var Positions = []Position{Goalkeeper, Defender, Midfielder, Forward}
 
-// #endregion position
-
-// #region player
 type Player struct {
 	orm.Model
 	ClubID      uint     `json:"club_id"`
@@ -36,8 +32,6 @@ type Player struct {
 	// the foreign key, matched by name (Club + ID).
 	Club *Club `json:"club,omitempty"`
 }
-
-// #endregion player
 
 // Factory links the model to its factory, like the HasFactory trait.
 func (p *Player) Factory() factory.Factory {

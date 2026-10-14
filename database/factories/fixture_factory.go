@@ -1,4 +1,4 @@
-// Laravel equivalent: database/factories/FixtureFactory.php - see docs/chapters/12-factories-seeders.md
+// Laravel equivalent: database/factories/FixtureFactory.php
 package factories
 
 import (

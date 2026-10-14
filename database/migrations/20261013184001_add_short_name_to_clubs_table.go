@@ -1,4 +1,4 @@
-// Laravel equivalent: database/migrations/xxxx_add_short_name_to_clubs_table.php - see docs/chapters/11-migrations.md
+// Laravel equivalent: database/migrations/xxxx_add_short_name_to_clubs_table.php
 package migrations
 
 import (
@@ -14,7 +14,6 @@ func (r *M20261013184001AddShortNameToClubsTable) Signature() string {
 	return "20261013184001_add_short_name_to_clubs_table"
 }
 
-// #region alter
 // Up Run the migrations.
 func (r *M20261013184001AddShortNameToClubsTable) Up() error {
 	// Table() alters an existing table, like Schema::table()
@@ -30,5 +29,3 @@ func (r *M20261013184001AddShortNameToClubsTable) Down() error {
 		table.DropColumn("short_name")
 	})
 }
-
-// #endregion alter

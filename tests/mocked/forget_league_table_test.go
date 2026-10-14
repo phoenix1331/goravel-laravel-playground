@@ -1,4 +1,4 @@
-// Laravel equivalent: Cache::shouldReceive() in tests/Unit - see docs/chapters/23-testing.md
+// Laravel equivalent: Cache::shouldReceive() in tests/Unit
 //
 // This package uses Goravel's generated mocks. mock.Factory() swaps the whole
 // application for a mock, process-wide, so it must not share a package with
@@ -15,7 +15,6 @@ import (
 	"goravel/app/services"
 )
 
-// #region test
 func TestForgetLeagueTableForgetsTheCachedTable(t *testing.T) {
 	// Like Cache::shouldReceive('forget')->once()->with('league_table')
 	mockCache := mock.Factory().Cache()
@@ -28,5 +27,3 @@ func TestForgetLeagueTableForgetsTheCachedTable(t *testing.T) {
 	}
 	mockCache.AssertExpectations(t)
 }
-
-// #endregion test

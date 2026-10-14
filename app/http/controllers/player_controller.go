@@ -1,4 +1,4 @@
-// Laravel equivalent: app/Http/Controllers/ClubPlayerController.php - see docs/chapters/10-relationships.md
+// Laravel equivalent: app/Http/Controllers/ClubPlayerController.php
 package controllers
 
 import (
@@ -16,7 +16,6 @@ func NewPlayerController() *PlayerController {
 	return &PlayerController{}
 }
 
-// #region index
 // Index returns a club with its squad, like $club->load('players').
 func (r *PlayerController) Index(ctx http.Context) http.Response {
 	club, response := findClub(ctx)
@@ -35,9 +34,6 @@ func (r *PlayerController) Index(ctx http.Context) http.Response {
 	return ctx.Response().Success().Json(http.Json{"data": club})
 }
 
-// #endregion index
-
-// #region store
 // Store adds a player to the club's squad.
 func (r *PlayerController) Store(ctx http.Context) http.Response {
 	club, response := findClub(ctx)
@@ -85,5 +81,3 @@ func (r *PlayerController) Store(ctx http.Context) http.Response {
 
 	return ctx.Response().Json(http.StatusCreated, http.Json{"data": player})
 }
-
-// #endregion store

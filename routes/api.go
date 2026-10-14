@@ -1,4 +1,4 @@
-// Laravel equivalent: routes/api.php - see docs/chapters/03-routing.md
+// Laravel equivalent: routes/api.php
 package routes
 
 import (
@@ -11,7 +11,6 @@ import (
 	"goravel/app/services"
 )
 
-// #region api
 func Api() {
 	// Every route in the group runs through EnsureJson first, like
 	// Route::middleware(EnsureJsonRequest::class)->prefix('api')->group(...)
@@ -22,9 +21,6 @@ func Api() {
 	})
 }
 
-// #endregion api
-
-// #region league
 func leagueRoutes(router route.Router) {
 	// A closure, exactly like Route::get('/league', fn () => ...)
 	router.Get("league", func(ctx http.Context) http.Response {
@@ -42,9 +38,6 @@ func leagueRoutes(router route.Router) {
 	router.Get("league/goals", leagueController.Goals)
 }
 
-// #endregion league
-
-// #region handler
 func leaguePoints(ctx http.Context) http.Response {
 	return ctx.Response().Success().Json(http.Json{
 		"win":  facades.Config().GetInt("club.points.win"),
@@ -53,9 +46,6 @@ func leaguePoints(ctx http.Context) http.Response {
 	})
 }
 
-// #endregion handler
-
-// #region public
 // publicRoutes can be read by anyone. Logging in is public too.
 func publicRoutes(router route.Router) {
 	clubController := controllers.NewClubController()
@@ -78,9 +68,6 @@ func publicRoutes(router route.Router) {
 	})
 }
 
-// #endregion public
-
-// #region authenticated
 // authenticatedRoutes need a bearer token, like a
 // Route::middleware('auth:sanctum')->group(...) block.
 func authenticatedRoutes(router route.Router) {
@@ -99,5 +86,3 @@ func authenticatedRoutes(router route.Router) {
 		router.Post("fixtures/{id}/result", controllers.NewFixtureController().RecordResult)
 	})
 }
-
-// #endregion authenticated

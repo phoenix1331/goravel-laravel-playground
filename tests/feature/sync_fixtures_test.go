@@ -1,4 +1,4 @@
-// Laravel equivalent: tests/Feature/SyncFixturesTest.php - see docs/chapters/14-console-commands.md
+// Laravel equivalent: tests/Feature/SyncFixturesTest.php
 package feature
 
 import (
@@ -41,7 +41,6 @@ func (s *SyncFixturesTestSuite) reload() models.Fixture {
 	return fixture
 }
 
-// #region test
 func (s *SyncFixturesTestSuite) TestRecordsResultsFromTheFeed() {
 	// Go runs each package's tests from the package directory, so this path
 	// is tests/feature/testdata/..., the conventional home for test fixtures
@@ -66,5 +65,3 @@ func (s *SyncFixturesTestSuite) TestMissingFileFails() {
 
 	s.Error(err)
 }
-
-// #endregion test

@@ -1,4 +1,4 @@
-// Laravel equivalent: app/Console/Commands/SyncFixtures.php - see docs/chapters/14-console-commands.md
+// Laravel equivalent: app/Console/Commands/SyncFixtures.php
 package commands
 
 import (
@@ -13,7 +13,6 @@ import (
 	"goravel/app/services"
 )
 
-// #region signature
 type SyncFixtures struct{}
 
 // Signature is the command name: ./artisan sync:fixtures
@@ -36,9 +35,6 @@ func (r *SyncFixtures) Extend() command.Extend {
 	}
 }
 
-// #endregion signature
-
-// #region handle
 // Handle runs the command. Returning an error makes the command exit non-zero.
 func (r *SyncFixtures) Handle(ctx console.Context) error {
 	feedResults, err := newFeed(ctx.Option("file")).Results()
@@ -72,9 +68,6 @@ func (r *SyncFixtures) Handle(ctx console.Context) error {
 	return nil
 }
 
-// #endregion handle
-
-// #region feed
 // newFeed picks where results come from: --file wins, then the configured
 // driver. Both feeds satisfy services.FixtureFeed, so Handle does not care.
 func newFeed(file string) services.FixtureFeed {
@@ -87,8 +80,6 @@ func newFeed(file string) services.FixtureFeed {
 
 	return services.FileFeed{Path: facades.Config().GetString("club.feed.path")}
 }
-
-// #endregion feed
 
 // findOpenFixture finds the unfinished fixture between two clubs, by name.
 // Each pair of clubs meets once per season with the same home side, so home

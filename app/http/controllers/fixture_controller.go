@@ -1,4 +1,4 @@
-// Laravel equivalent: app/Http/Controllers/FixtureController.php - see docs/chapters/10-relationships.md
+// Laravel equivalent: app/Http/Controllers/FixtureController.php
 package controllers
 
 import (
@@ -19,7 +19,6 @@ func NewFixtureController() *FixtureController {
 	return &FixtureController{}
 }
 
-// #region index
 // Index lists fixtures with both clubs eager loaded, like
 // Fixture::with(['homeClub', 'awayClub'])->orderBy('kick_off_at')->get().
 func (r *FixtureController) Index(ctx http.Context) http.Response {
@@ -36,9 +35,6 @@ func (r *FixtureController) Index(ctx http.Context) http.Response {
 	return ctx.Response().Success().Json(http.Json{"data": fixtures})
 }
 
-// #endregion index
-
-// #region record
 // RecordResult sets the final score. results.Record saves it and fires
 // FixtureResultRecorded; the controller does not know who is listening.
 func (r *FixtureController) RecordResult(ctx http.Context) http.Response {
@@ -63,7 +59,6 @@ func (r *FixtureController) RecordResult(ctx http.Context) http.Response {
 		return validationFailed(ctx, validationErrors)
 	}
 
-	// #region is
 	err = results.Record(&fixture, request.HomeScore, request.AwayScore)
 	if errors.Is(err, results.ErrAlreadyRecorded) {
 		// An expected failure with its own status, like catching one
@@ -73,9 +68,6 @@ func (r *FixtureController) RecordResult(ctx http.Context) http.Response {
 	if err != nil {
 		return serverError(ctx, err)
 	}
-	// #endregion is
 
 	return ctx.Response().Success().Json(http.Json{"data": fixture})
 }
-
-// #endregion record

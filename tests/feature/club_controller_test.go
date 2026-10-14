@@ -1,4 +1,4 @@
-// Laravel equivalent: tests/Feature/ClubControllerTest.php - see docs/chapters/04-controllers.md
+// Laravel equivalent: tests/Feature/ClubControllerTest.php
 package feature
 
 import (
@@ -34,7 +34,6 @@ func (s *ClubControllerTestSuite) createClub(name string) models.Club {
 	return club
 }
 
-// #region test
 func (s *ClubControllerTestSuite) TestIndexListsClubsByName() {
 	s.createClub("Riverside Rovers")
 	s.createClub("Ashford Athletic")
@@ -74,8 +73,6 @@ func (s *ClubControllerTestSuite) TestStoreCreatesClub() {
 	s.Require().NotNil(club.FoundedYear)
 	s.Equal(1987, *club.FoundedYear)
 }
-
-// #endregion test
 
 func (s *ClubControllerTestSuite) TestUpdateChangesClub() {
 	club := s.createClub("Old Name")

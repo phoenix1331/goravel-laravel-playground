@@ -1,4 +1,4 @@
-// Laravel equivalent: tests/Feature/ModelsTest.php - see docs/chapters/09-models.md
+// Laravel equivalent: tests/Feature/ModelsTest.php
 package feature
 
 import (
@@ -26,7 +26,6 @@ func (s *ModelsTestSuite) SetupTest() {
 	s.Require().NoError(s.TruncateTables())
 }
 
-// #region test
 func (s *ModelsTestSuite) TestCreateFillsIdAndTimestamps() {
 	club := models.Club{Name: "Ashford Athletic", Ground: "The Rec"}
 	s.Require().NoError(facades.Orm().Query().Create(&club))
@@ -72,5 +71,3 @@ func (s *ModelsTestSuite) TestFixtureResultOnlyWhenFinished() {
 	s.True(ok)
 	s.Equal(2, result.HomeScore)
 }
-
-// #endregion test

@@ -1,4 +1,4 @@
-// Laravel equivalent: app/Http/Controllers/AuthController.php - see docs/chapters/19-authentication.md
+// Laravel equivalent: app/Http/Controllers/AuthController.php
 package controllers
 
 import (
@@ -15,7 +15,6 @@ func NewAuthController() *AuthController {
 	return &AuthController{}
 }
 
-// #region login
 // Login exchanges an email and password for a JWT.
 func (r *AuthController) Login(ctx http.Context) http.Response {
 	var request requests.LoginRequest
@@ -50,9 +49,6 @@ func (r *AuthController) Login(ctx http.Context) http.Response {
 	})
 }
 
-// #endregion login
-
-// #region me
 // Me returns the user the token belongs to. The Authenticate middleware has
 // already parsed the token, so User can load them.
 func (r *AuthController) Me(ctx http.Context) http.Response {
@@ -63,8 +59,6 @@ func (r *AuthController) Me(ctx http.Context) http.Response {
 
 	return ctx.Response().Success().Json(http.Json{"data": user})
 }
-
-// #endregion me
 
 // Logout disables the current token until it would have expired.
 func (r *AuthController) Logout(ctx http.Context) http.Response {

@@ -1,4 +1,4 @@
-// Laravel equivalent: tests/Feature/LeagueTest.php - see docs/chapters/13-query-builder.md
+// Laravel equivalent: tests/Feature/LeagueTest.php
 package feature
 
 import (
@@ -58,7 +58,6 @@ func (s *LeagueTestSuite) result(home, away string, homeScore, awayScore int) {
 	}))
 }
 
-// #region test
 func (s *LeagueTestSuite) TestTableRanksClubsFromFinishedFixtures() {
 	response, err := s.Http(s.T()).Get("/api/league/table")
 	s.Require().NoError(err)
@@ -105,8 +104,6 @@ func (s *LeagueTestSuite) TestGoalsTotalsHomeAndAwayGoals() {
 	s.Equal(1, body.Data[1].Goals) // Barnsley 0 + 1
 	s.Equal(1, body.Data[2].Goals) // Crewe 1
 }
-
-// #endregion test
 
 func (s *LeagueTestSuite) TestBuilderGeneratesPortableSql() {
 	sql := facades.DB().Table("fixtures").Where("status", models.Finished).ToSql().Get()

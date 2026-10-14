@@ -1,4 +1,4 @@
-// Laravel equivalent: routes/web.php - see docs/chapters/03-routing.md
+// Laravel equivalent: routes/web.php
 package routes
 
 import (
@@ -14,12 +14,9 @@ func Web() {
 
 	facades.Route().Static("public", "./public")
 
-	// #region health
 	healthController := controllers.NewHealthController()
 	facades.Route().Get("/health", healthController.Show)
-	// #endregion health
 
-	// #region fallback
 	// Without a fallback, the Gin driver answers unknown URLs with an empty
 	// 200: global middleware runs and nothing sets a status. Laravel returns
 	// 404 by default, so match that.
@@ -28,5 +25,4 @@ func Web() {
 			"message": "Not Found",
 		})
 	})
-	// #endregion fallback
 }

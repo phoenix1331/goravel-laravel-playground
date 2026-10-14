@@ -1,4 +1,4 @@
-// Laravel equivalent: tests/Feature/RelationshipsTest.php - see docs/chapters/10-relationships.md
+// Laravel equivalent: tests/Feature/RelationshipsTest.php
 package feature
 
 import (
@@ -44,7 +44,6 @@ func (s *RelationshipsTestSuite) postPlayer(clubID uint, body string) testinghtt
 	return response
 }
 
-// #region test
 func (s *RelationshipsTestSuite) TestClubPlayersAreLoadedInSquadOrder() {
 	club := s.club("Ashford Athletic")
 	other := s.club("Riverside Rovers")
@@ -86,8 +85,6 @@ func (s *RelationshipsTestSuite) TestFixturesEagerLoadBothClubs() {
 	s.Equal("Home Town", body.Data[0].HomeClub.Name)
 	s.Equal("Away Days", body.Data[0].AwayClub.Name)
 }
-
-// #endregion test
 
 func (s *RelationshipsTestSuite) TestStorePlayerSetsClub() {
 	club := s.club("Ashford Athletic")

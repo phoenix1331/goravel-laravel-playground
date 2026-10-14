@@ -1,4 +1,4 @@
-// Laravel equivalent: app/Listeners/ForgetLeagueTable.php - see docs/chapters/18-cache.md
+// Laravel equivalent: app/Listeners/ForgetLeagueTable.php
 package listeners
 
 import (
@@ -8,7 +8,6 @@ import (
 	"goravel/app/services"
 )
 
-// #region listener
 // ForgetLeagueTable clears the cached league table when a result comes in,
 // so the next request rebuilds it. It runs synchronously, so the very next
 // request after recording a result already sees the new table.
@@ -27,5 +26,3 @@ func (l *ForgetLeagueTable) Handle(args ...any) error {
 
 	return nil
 }
-
-// #endregion listener

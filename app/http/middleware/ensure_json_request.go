@@ -1,4 +1,4 @@
-// Laravel equivalent: app/Http/Middleware/EnsureJsonRequest.php - see docs/chapters/08-middleware.md
+// Laravel equivalent: app/Http/Middleware/EnsureJsonRequest.php
 package middleware
 
 import (
@@ -7,7 +7,6 @@ import (
 	"github.com/goravel/framework/contracts/http"
 )
 
-// #region middleware
 // EnsureJsonRequest rejects API writes whose body is not JSON, with 415.
 type EnsureJsonRequest struct{}
 
@@ -40,5 +39,3 @@ func (m *EnsureJsonRequest) Handle(ctx http.Context) {
 
 	request.Next()
 }
-
-// #endregion middleware

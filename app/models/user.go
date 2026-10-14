@@ -1,4 +1,4 @@
-// Laravel equivalent: app/Models/User.php - see docs/chapters/09-models.md
+// Laravel equivalent: app/Models/User.php
 package models
 
 import (
@@ -8,7 +8,6 @@ import (
 	"goravel/database/factories"
 )
 
-// #region user
 type User struct {
 	orm.Model
 	// The club this user administers, or nil
@@ -18,8 +17,6 @@ type User struct {
 	// json:"-" leaves the field out of every JSON response, like $hidden
 	Password string `json:"-"`
 }
-
-// #endregion user
 
 // Factory links the model to its factory, like the HasFactory trait.
 func (u *User) Factory() factory.Factory {

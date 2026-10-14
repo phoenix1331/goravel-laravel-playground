@@ -1,4 +1,4 @@
-// Laravel equivalent: tests/Feature/EnsureJsonRequestTest.php - see docs/chapters/08-middleware.md
+// Laravel equivalent: tests/Feature/EnsureJsonRequestTest.php
 package feature
 
 import (
@@ -25,7 +25,6 @@ func (s *MiddlewareTestSuite) SetupTest() {
 	s.Require().NoError(s.TruncateTables())
 }
 
-// #region test
 func (s *MiddlewareTestSuite) TestRejectsNonJsonWrites() {
 	// No token needed: EnsureJson wraps the whole /api group, so it runs
 	// before the Authenticate middleware on the write routes
@@ -67,5 +66,3 @@ func (s *MiddlewareTestSuite) TestRoutesOutsideTheGroupAreUnaffected() {
 
 	response.AssertOk()
 }
-
-// #endregion test

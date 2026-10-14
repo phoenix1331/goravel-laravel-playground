@@ -1,4 +1,4 @@
-// Laravel equivalent: app/Services/LeagueTable.php - see docs/chapters/05-service-container.md
+// Laravel equivalent: app/Services/LeagueTable.php
 package services
 
 import (
@@ -36,16 +36,12 @@ func (s Standing) GoalDifference() int {
 	return s.GoalsFor - s.GoalsAgainst
 }
 
-// #region interface
 // LeagueTable is what callers depend on. Any type with a matching Standings
 // method satisfies it: there is no "implements" keyword in Go.
 type LeagueTable interface {
 	Standings(results []Result) []Standing
 }
 
-// #endregion interface
-
-// #region implementation
 // PointsLeagueTable ranks clubs by points, then goal difference, then goals scored.
 type PointsLeagueTable struct {
 	win, draw, loss int
@@ -54,8 +50,6 @@ type PointsLeagueTable struct {
 func NewPointsLeagueTable(win, draw, loss int) *PointsLeagueTable {
 	return &PointsLeagueTable{win: win, draw: draw, loss: loss}
 }
-
-// #endregion implementation
 
 func (t *PointsLeagueTable) Standings(results []Result) []Standing {
 	rows := map[uint]*Standing{}

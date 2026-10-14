@@ -1,4 +1,4 @@
-// Laravel equivalent: database/migrations/xxxx_add_kick_off_index_to_fixtures_table.php - see docs/chapters/11-migrations.md
+// Laravel equivalent: database/migrations/xxxx_add_kick_off_index_to_fixtures_table.php
 package migrations
 
 import (

@@ -1,11 +1,10 @@
-// Laravel equivalent: config/club.php - see docs/chapters/02-configuration.md
+// Laravel equivalent: config/club.php
 package config
 
 import (
 	"goravel/app/facades"
 )
 
-// #region club
 // init runs automatically when the config package is imported, before main.
 // Each config file registers its own section, so there is no list to maintain.
 func init() {
@@ -32,5 +31,3 @@ func init() {
 		},
 	})
 }
-
-// #endregion club

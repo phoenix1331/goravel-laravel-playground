@@ -1,4 +1,4 @@
-// Laravel equivalent: tests/Feature/SendResultNotificationsTest.php - see docs/chapters/16-queues.md
+// Laravel equivalent: tests/Feature/SendResultNotificationsTest.php
 package feature
 
 import (
@@ -38,7 +38,6 @@ func (s *QueueTestSuite) SetupTest() {
 	}))
 }
 
-// #region test
 func (s *QueueTestSuite) TestJobHandleWritesNotifications() {
 	// A job is a plain struct: call Handle directly to test the work itself
 	job := &jobs.SendResultNotifications{}
@@ -65,5 +64,3 @@ func (s *QueueTestSuite) TestTestsUseTheSyncQueue() {
 	s.Require().NoError(err)
 	s.Equal(int64(1), count)
 }
-
-// #endregion test

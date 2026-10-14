@@ -1,4 +1,4 @@
-// Laravel equivalent: expecting a specific exception class - see docs/chapters/24-error-handling.md
+// Laravel equivalent: expecting a specific exception class
 package unit
 
 import (
@@ -11,7 +11,6 @@ import (
 	"goravel/app/results"
 )
 
-// #region test
 func TestWrappedErrorsKeepTheirIdentity(t *testing.T) {
 	// What results.Record returns, wrapped once more by a caller
 	err := fmt.Errorf("sync: %w", fmt.Errorf("record fixture 7: %w", results.ErrAlreadyRecorded))
@@ -26,5 +25,3 @@ func TestWrappedErrorsKeepTheirIdentity(t *testing.T) {
 	// Each layer added context to the message
 	assert.Equal(t, "sync: record fixture 7: fixture already has a result", err.Error())
 }
-
-// #endregion test

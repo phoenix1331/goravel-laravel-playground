@@ -1,4 +1,4 @@
-// Laravel equivalent: app/Policies/ClubPolicy.php - see docs/chapters/20-authorisation.md
+// Laravel equivalent: app/Policies/ClubPolicy.php
 package policies
 
 import (
@@ -10,7 +10,6 @@ import (
 	"goravel/app/models"
 )
 
-// #region policy
 // ClubPolicy decides what a user may do to a club. Each method has the gate
 // callback signature, so it can be passed straight to facades.Gate().Define.
 type ClubPolicy struct{}
@@ -45,8 +44,6 @@ func (p *ClubPolicy) Update(ctx context.Context, arguments map[string]any) acces
 
 	return frameworkaccess.NewAllowResponse()
 }
-
-// #endregion policy
 
 func (p *ClubPolicy) Delete(ctx context.Context, arguments map[string]any) access.Response {
 	return p.Update(ctx, arguments)

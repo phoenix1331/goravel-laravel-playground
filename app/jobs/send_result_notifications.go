@@ -1,4 +1,4 @@
-// Laravel equivalent: app/Jobs/SendResultNotifications.php - see docs/chapters/16-queues.md
+// Laravel equivalent: app/Jobs/SendResultNotifications.php
 package jobs
 
 import (
@@ -11,7 +11,6 @@ import (
 	"goravel/app/models"
 )
 
-// #region job
 // SendResultNotifications writes a notification for each admin of the two
 // clubs in a fixture. It takes one argument: the fixture ID.
 type SendResultNotifications struct{}
@@ -60,5 +59,3 @@ func (j *SendResultNotifications) Handle(args ...any) error {
 
 	return nil
 }
-
-// #endregion job

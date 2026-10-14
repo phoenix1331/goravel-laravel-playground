@@ -1,4 +1,4 @@
-// Laravel equivalent: tests/Feature/RoutingTest.php - see docs/chapters/03-routing.md
+// Laravel equivalent: tests/Feature/RoutingTest.php
 package feature
 
 import (
@@ -18,7 +18,6 @@ func TestRoutingTestSuite(t *testing.T) {
 	suite.Run(t, new(RoutingTestSuite))
 }
 
-// #region test
 func (s *RoutingTestSuite) TestClosureRouteInsideApiGroup() {
 	response, err := s.Http(s.T()).Get("/api/league")
 	s.Require().NoError(err)
@@ -43,5 +42,3 @@ func (s *RoutingTestSuite) TestRouteOutsideGroupIsNotPrefixed() {
 	response.AssertNotFound()
 	response.AssertExactJson(map[string]any{"message": "Not Found"})
 }
-
-// #endregion test

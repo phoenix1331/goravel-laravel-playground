@@ -1,4 +1,4 @@
-// Laravel equivalent: tests/Feature/HealthTest.php - see docs/chapters/23-testing.md
+// Laravel equivalent: tests/Feature/HealthTest.php
 package feature
 
 import (
@@ -28,7 +28,6 @@ func (s *HealthTestSuite) SetupTest() {
 	s.Require().NoError(s.TruncateTables())
 }
 
-// #region test
 func (s *HealthTestSuite) TestHealthReportsDatabaseUp() {
 	response, err := s.Http(s.T()).Get("/health")
 	s.Require().NoError(err)
@@ -39,5 +38,3 @@ func (s *HealthTestSuite) TestHealthReportsDatabaseUp() {
 		"database": "up",
 	})
 }
-
-// #endregion test

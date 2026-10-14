@@ -1,4 +1,4 @@
-// Laravel equivalent: tests/Unit/ConfigTest.php - see docs/chapters/02-configuration.md
+// Laravel equivalent: tests/Unit/ConfigTest.php
 package unit
 
 import (
@@ -24,7 +24,6 @@ func TestConfigTestSuite(t *testing.T) {
 	suite.Run(t, new(ConfigTestSuite))
 }
 
-// #region test
 func (s *ConfigTestSuite) TestTypedLookups() {
 	config := facades.Config()
 
@@ -40,5 +39,3 @@ func (s *ConfigTestSuite) TestTypedLookups() {
 	// Missing keys fall back to the default passed in
 	s.Equal(42, config.GetInt("club.does_not_exist", 42))
 }
-
-// #endregion test

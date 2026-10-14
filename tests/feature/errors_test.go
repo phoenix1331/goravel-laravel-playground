@@ -1,4 +1,4 @@
-// Laravel equivalent: tests/Feature/RecordResultTwiceTest.php - see docs/chapters/24-error-handling.md
+// Laravel equivalent: tests/Feature/RecordResultTwiceTest.php
 package feature
 
 import (
@@ -36,7 +36,6 @@ func (s *ErrorsTestSuite) SetupTest() {
 	s.Require().NoError(facades.Orm().Factory().Create(&s.fixture, map[string]any{"HomeClubID": home.ID, "AwayClubID": away.ID}))
 }
 
-// #region test
 func (s *ErrorsTestSuite) TestRecordingTwiceReturnsTheSentinel() {
 	s.Require().NoError(results.Record(&s.fixture, 1, 0))
 
@@ -59,5 +58,3 @@ func (s *ErrorsTestSuite) TestTheApiTurnsTheSentinelInto409() {
 	response.AssertConflict()
 	response.AssertExactJson(map[string]any{"message": "This fixture already has a result."})
 }
-
-// #endregion test

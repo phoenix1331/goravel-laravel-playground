@@ -1,4 +1,4 @@
-// Laravel equivalent: tests/Feature/FixtureResultRecordedTest.php - see docs/chapters/15-events.md
+// Laravel equivalent: tests/Feature/FixtureResultRecordedTest.php
 package feature
 
 import (
@@ -55,7 +55,6 @@ func (s *EventsTestSuite) notificationsFor(user models.User) []models.ResultNoti
 	return notifications
 }
 
-// #region test
 func (s *EventsTestSuite) TestRecordingAResultNotifiesBothClubsAdmins() {
 	response, err := s.LoginAs(s.T(), s.admins["Ashford"]).
 		Post(fmt.Sprintf("/api/fixtures/%d/result", s.fixture.ID), strings.NewReader(`{"home_score":3,"away_score":1}`))
@@ -76,8 +75,6 @@ func (s *EventsTestSuite) TestSyncCommandFiresTheSameEvent() {
 
 	s.Len(s.notificationsFor(s.admins["Ashford"]), 1)
 }
-
-// #endregion test
 
 func (s *EventsTestSuite) TestInvalidScoreIsRejectedAndNothingFires() {
 	response, err := s.LoginAs(s.T(), s.admins["Ashford"]).
