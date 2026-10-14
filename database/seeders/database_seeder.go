@@ -1,4 +1,3 @@
-// Laravel equivalent: database/seeders/DatabaseSeeder.php
 package seeders
 
 import (
@@ -20,6 +19,17 @@ func (s *DatabaseSeeder) Signature() string {
 
 // Run builds a small league: six clubs, a squad and an admin for each, and a
 // full round of fixtures, the first half already played.
+//
+// Laravel:
+//
+//	public function run(): void
+//	{
+//	    $clubs = Club::factory()->count(6)->create();
+//	    // ...
+//	}
+//
+// Goravel: the same idea, with every step returning an error to check.
+// Seeders are listed in bootstrap/seeders.go; make fresh runs this one.
 func (s *DatabaseSeeder) Run() error {
 	// A fixed seed makes the demo data the same on every run
 	if err := gofakeit.Seed(2026); err != nil {

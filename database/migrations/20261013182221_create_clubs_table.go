@@ -1,4 +1,5 @@
-// Laravel equivalent: database/migrations/xxxx_create_clubs_table.php
+// Package migrations holds the schema migrations, registered in
+// bootstrap/migrations.go.
 package migrations
 
 import (
@@ -7,6 +8,27 @@ import (
 	"goravel/app/facades"
 )
 
+// M20261013182221CreateClubsTable creates the clubs table.
+//
+// Laravel:
+//
+//	return new class extends Migration
+//	{
+//	    public function up(): void
+//	    {
+//	        Schema::create('clubs', function (Blueprint $table) {
+//	            $table->id();
+//	            $table->string('name');
+//	            // ...
+//	        });
+//	    }
+//	};
+//
+// Goravel: a named struct, not an anonymous class, so the timestamp is in
+// the type name to keep it unique. Laravel finds migrations by scanning the
+// folder; Goravel lists them in bootstrap/migrations.go, which
+// make:migration updates for you. Up and Down return errors rather than
+// throwing.
 type M20261013182221CreateClubsTable struct{}
 
 // Signature The unique signature for the migration.

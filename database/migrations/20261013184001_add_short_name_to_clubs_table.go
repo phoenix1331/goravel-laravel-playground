@@ -1,4 +1,3 @@
-// Laravel equivalent: database/migrations/xxxx_add_short_name_to_clubs_table.php
 package migrations
 
 import (
@@ -16,7 +15,8 @@ func (r *M20261013184001AddShortNameToClubsTable) Signature() string {
 
 // Up Run the migrations.
 func (r *M20261013184001AddShortNameToClubsTable) Up() error {
-	// Table() alters an existing table, like Schema::table()
+	// Table() alters an existing table.
+	// Laravel: Schema::table('clubs', fn (Blueprint $table) => $table->string('short_name', 10)->nullable());
 	return facades.Schema().Table("clubs", func(table schema.Blueprint) {
 		// Short name for tight spaces such as the league table, e.g. "ASH"
 		table.String("short_name", 10).Nullable()

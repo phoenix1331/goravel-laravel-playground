@@ -1,4 +1,3 @@
-// Laravel equivalent: database/migrations/xxxx_create_fixtures_table.php
 package migrations
 
 import (
@@ -29,7 +28,8 @@ func (r *M20261013183455CreateFixturesTable) Up() error {
 			table.UnsignedTinyInteger("away_score").Nullable()
 			table.TimestampsTz()
 
-			// Two foreign keys to the same table
+			// Two foreign keys to the same table.
+			// Laravel: $table->foreignId('home_club_id')->constrained('clubs')->cascadeOnDelete();
 			table.Foreign("home_club_id").References("id").On("clubs").CascadeOnDelete()
 			table.Foreign("away_club_id").References("id").On("clubs").CascadeOnDelete()
 		})

@@ -1,4 +1,3 @@
-// Laravel equivalent: database/factories/UserFactory.php
 package factories
 
 import (

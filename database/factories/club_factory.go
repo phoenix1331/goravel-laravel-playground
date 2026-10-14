@@ -1,4 +1,5 @@
-// Laravel equivalent: database/factories/ClubFactory.php
+// Package factories holds model factories. A model links to its factory
+// with a Factory() method, the equivalent of the HasFactory trait.
 package factories
 
 import (
@@ -17,6 +18,19 @@ type ClubFactory struct{}
 
 // Definition returns default values keyed by struct field name (not column
 // name). Any key can be overridden when the factory is called.
+//
+// Laravel:
+//
+//	public function definition(): array
+//	{
+//	    return ['name' => fake()->city().' '.fake()->randomElement([...]), ...];
+//	}
+//
+//	Club::factory()->count(3)->create();
+//
+// Goravel: facades.Orm().Factory().Count(3).Create(&clubs). gofakeit stands in
+// for Faker. Keys are field names ("FoundedYear", not "founded_year"), and a
+// misspelt key is silently ignored.
 func (f *ClubFactory) Definition() map[string]any {
 	town := gofakeit.RandomString(towns)
 	suffix := gofakeit.RandomString([]string{"Athletic", "Rovers", "United", "Town", "Wanderers"})

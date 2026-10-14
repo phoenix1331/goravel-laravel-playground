@@ -1,4 +1,3 @@
-// Laravel equivalent: database/migrations/xxxx_create_players_table.php
 package migrations
 
 import (

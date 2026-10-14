@@ -1,4 +1,3 @@
-// Laravel equivalent: database/migrations/xxxx_create_result_notifications_table.php
 package migrations
 
 import (

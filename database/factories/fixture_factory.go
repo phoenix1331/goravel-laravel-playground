@@ -1,4 +1,3 @@
-// Laravel equivalent: database/factories/FixtureFactory.php
 package factories
 
 import (
