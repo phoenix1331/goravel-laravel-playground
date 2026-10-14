@@ -17,7 +17,7 @@
 
 Something to play with: a grassroots football club API (clubs, players, fixtures, a league table) built with Goravel, where each feature sits next to a short note on how you would do it in Laravel and what Go does differently. Run it, poke the endpoints, change the code and watch the tests.
 
-**Project page:** https://phoenix1331.github.io/goravel-laravel-playground (published once the repository is public)
+**Project page:** https://phoenix1331.github.io/goravel-laravel-playground
 
 > **API only.** There is no front end: every endpoint returns JSON. Open http://localhost:8000/ in a browser for a live list of endpoints (JSON clients get the same list as JSON), and use `request.http` to send requests.
 
