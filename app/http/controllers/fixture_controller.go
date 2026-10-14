@@ -1,4 +1,3 @@
-// Laravel equivalent: app/Http/Controllers/FixtureController.php
 package controllers
 
 import (
@@ -19,8 +18,14 @@ func NewFixtureController() *FixtureController {
 	return &FixtureController{}
 }
 
-// Index lists fixtures with both clubs eager loaded, like
-// Fixture::with(['homeClub', 'awayClub'])->orderBy('kick_off_at')->get().
+// Index lists fixtures with both clubs eager loaded.
+//
+// Laravel:
+//
+//	Fixture::with(['homeClub', 'awayClub'])->orderBy('kick_off_at')->get();
+//
+// Goravel: one With per relation, named by struct field. A relation you did
+// not load is nil, so there is no silent lazy loading (and no N+1).
 func (r *FixtureController) Index(ctx http.Context) http.Response {
 	var fixtures []models.Fixture
 	err := facades.Orm().Query().
@@ -37,6 +42,17 @@ func (r *FixtureController) Index(ctx http.Context) http.Response {
 
 // RecordResult sets the final score. results.Record saves it and fires
 // FixtureResultRecorded; the controller does not know who is listening.
+//
+// Laravel:
+//
+//	try {
+//	    app(RecordResult::class)($fixture, $home, $away);
+//	} catch (AlreadyRecorded $e) {
+//	    return response()->json([...], 409);
+//	}
+//
+// Goravel: no exceptions. Record returns an error, and errors.Is picks out
+// the expected failure before anything else becomes a 500.
 func (r *FixtureController) RecordResult(ctx http.Context) http.Response {
 	var fixture models.Fixture
 	err := facades.Orm().Query().FindOrFail(&fixture, ctx.Request().RouteInt("id"))

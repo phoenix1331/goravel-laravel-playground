@@ -1,4 +1,3 @@
-// Laravel equivalent: app/Http/Controllers/AuthController.php
 package controllers
 
 import (
@@ -16,6 +15,17 @@ func NewAuthController() *AuthController {
 }
 
 // Login exchanges an email and password for a JWT.
+//
+// Laravel (Sanctum):
+//
+//	$user = User::where('email', $request->email)->first();
+//	if (! $user || ! Hash::check($request->password, $user->password)) {
+//	    return response()->json(['message' => '...'], 401);
+//	}
+//	return ['access_token' => $user->createToken('api')->plainTextToken];
+//
+// Goravel: the default guard is a JWT. Login issues a signed token; nothing
+// is stored. Auth always takes the request context: facades.Auth(ctx).
 func (r *AuthController) Login(ctx http.Context) http.Response {
 	var request requests.LoginRequest
 	validationErrors, err := ctx.Request().ValidateRequest(&request)
@@ -51,6 +61,8 @@ func (r *AuthController) Login(ctx http.Context) http.Response {
 
 // Me returns the user the token belongs to. The Authenticate middleware has
 // already parsed the token, so User can load them.
+//
+// Laravel: return response()->json(['data' => $request->user()]);
 func (r *AuthController) Me(ctx http.Context) http.Response {
 	var user models.User
 	if err := facades.Auth(ctx).User(&user); err != nil {
@@ -61,6 +73,12 @@ func (r *AuthController) Me(ctx http.Context) http.Response {
 }
 
 // Logout disables the current token until it would have expired.
+//
+// Laravel: $request->user()->currentAccessToken()->delete();
+//
+// Goravel: a JWT cannot be deleted, so it goes on a block list in the cache.
+// Tokens carry no unique ID: two logins by one user in the same second get
+// the same token, and logging one out disables both.
 func (r *AuthController) Logout(ctx http.Context) http.Response {
 	if err := facades.Auth(ctx).Logout(); err != nil {
 		return serverError(ctx, err)

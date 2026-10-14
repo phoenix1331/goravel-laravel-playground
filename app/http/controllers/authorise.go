@@ -1,4 +1,3 @@
-// Laravel equivalent: $this->authorize() / Gate::authorize()
 package controllers
 
 import (
@@ -10,8 +9,13 @@ import (
 
 // authorise loads the logged-in user and asks the gate whether they may
 // perform ability. It returns the user, or a ready-made 401/403 response.
-// The user is added to arguments, because Goravel's gate does not know who
-// is asking: Laravel passes the user to every gate for you.
+//
+// Laravel:
+//
+//	Gate::authorize('update', $club);  // throws AuthorizationException: 403
+//
+// Goravel: the gate is not told who is asking, so the user is added to the
+// arguments here. Inspect returns a response instead of throwing.
 func authorise(ctx http.Context, ability string, arguments map[string]any) (*models.User, http.Response) {
 	var user models.User
 	if err := facades.Auth(ctx).User(&user); err != nil {

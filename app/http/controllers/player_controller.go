@@ -1,4 +1,3 @@
-// Laravel equivalent: app/Http/Controllers/ClubPlayerController.php
 package controllers
 
 import (
@@ -16,7 +15,14 @@ func NewPlayerController() *PlayerController {
 	return &PlayerController{}
 }
 
-// Index returns a club with its squad, like $club->load('players').
+// Index returns a club with its squad.
+//
+// Laravel:
+//
+//	$club->load(['players' => fn ($q) => $q->orderBy('squad_number')]);
+//
+// Goravel: Load takes the relation's struct field name ("Players", not
+// "players") and an optional function to constrain the query.
 func (r *PlayerController) Index(ctx http.Context) http.Response {
 	club, response := findClub(ctx)
 	if response != nil {
@@ -35,6 +41,15 @@ func (r *PlayerController) Index(ctx http.Context) http.Response {
 }
 
 // Store adds a player to the club's squad.
+//
+// Laravel:
+//
+//	Gate::authorize('update', $club);
+//	$player = $club->players()->create($request->validated());
+//	// squad_number unique per club: Rule::unique('players')->where('club_id', $club->id)
+//
+// Goravel: no create-through-relation, so ClubID is set on the struct. The
+// unique rule has no where clause, so the per-club check is a query here.
 func (r *PlayerController) Store(ctx http.Context) http.Response {
 	club, response := findClub(ctx)
 	if response != nil {

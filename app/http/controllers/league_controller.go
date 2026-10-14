@@ -1,4 +1,3 @@
-// Laravel equivalent: app/Http/Controllers/LeagueController.php
 package controllers
 
 import (
@@ -33,6 +32,13 @@ type leagueRow struct {
 const leagueTableTTL = time.Hour
 
 // Table returns the league table, from the cache when possible.
+//
+// Laravel:
+//
+//	$rows = Cache::remember('league_table', now()->addHour(), fn () => $this->build());
+//
+// Goravel: Remember returns any, and the Redis store cannot hold Go structs
+// (Laravel serialises for you), so the rows are cached as a JSON string.
 func (r *LeagueController) Table(ctx http.Context) http.Response {
 	// Remember is Cache::remember(). The callback only runs on a miss.
 	//
@@ -62,6 +68,15 @@ func (r *LeagueController) Table(ctx http.Context) http.Response {
 }
 
 // buildLeagueTable builds the table from finished fixtures.
+//
+// Laravel:
+//
+//	DB::table('fixtures')
+//	    ->select('home_club_id', 'away_club_id', 'home_score', 'away_score')
+//	    ->where('status', 'finished')
+//	    ->get();  // a Collection of stdClass
+//
+// Goravel: rows scan into a typed slice. HomeClubID fills from home_club_id.
 func buildLeagueTable() ([]leagueRow, error) {
 	// facades.DB() is the query builder, like DB::table(). Rows scan into
 	// any struct: column home_club_id fills field HomeClubID by name.
@@ -132,7 +147,15 @@ JOIN clubs ON clubs.id = scored.club_id
 GROUP BY clubs.id, clubs.name
 ORDER BY goals DESC, clubs.name`
 
-// Goals lists clubs by goals scored, using raw SQL like DB::select().
+// Goals lists clubs by goals scored, using raw SQL.
+//
+// Laravel:
+//
+//	DB::select($sql, ['finished', 'finished']);
+//
+// Goravel: facades.DB().Select scans into a slice of structs. Raw SQL is sent
+// as written, so placeholders are driver-specific (? here, $1 on PostgreSQL);
+// PDO accepts ? everywhere.
 func (r *LeagueController) Goals(ctx http.Context) http.Response {
 	var rows []goalsRow
 	if err := facades.DB().Select(&rows, goalsSQL, models.Finished, models.Finished); err != nil {

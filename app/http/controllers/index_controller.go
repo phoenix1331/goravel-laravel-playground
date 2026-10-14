@@ -1,4 +1,3 @@
-// Laravel equivalent: a closure on Route::get('/') returning JSON
 package controllers
 
 import (
