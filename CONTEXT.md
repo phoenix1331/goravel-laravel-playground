@@ -102,6 +102,7 @@ Each chapter delivers working Go code, tests, a docs page and a Laravel comparis
 | Config | `docs/.vitepress/config.mts`, base `/goravel-laravel-playground/` for GitHub Pages |
 | Pages | `index.md`, `go-for-php-devs.md` (first in nav), `reading-the-comparisons.md` (worked example on `/health`), `where-to-find-it.md` (feature to code map), `chapters/NN-<slug>.md` |
 | Go imports | `<<< @/../path/to/file.go#region{go}` pulls a `// #region` block from the real source at build time |
+| Source links | `transformPageData` in `config.mts` reads each page's `<<< @/../file` imports; `docs/.vitepress/theme/SourceLinks.vue` lists them as GitHub links above the page |
 | Runs on | Host Node (`make docs-dev`, `make docs-build`), not the Go container |
 
 ## CI

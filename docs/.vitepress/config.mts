@@ -1,3 +1,5 @@
+import fs from 'node:fs'
+import path from 'node:path'
 import { defineConfig } from 'vitepress'
 
 const repo = 'https://github.com/phoenix1331/goravel-laravel-playground'
@@ -9,7 +11,15 @@ export default defineConfig({
   base: '/goravel-laravel-playground/',
   cleanUrls: true,
   lastUpdated: true,
+  // Lists the Go files a page imports with <<< @/../file.go, so the theme
+  // can link to them. Nothing to maintain by hand.
+  transformPageData(pageData, { siteConfig }) {
+    const source = fs.readFileSync(path.join(siteConfig.srcDir, pageData.relativePath), 'utf8')
+    const files = [...source.matchAll(/<<< @\/\.\.\/([^#{\s]+)/g)].map((m) => m[1])
+    pageData.frontmatter.sourceFiles = [...new Set(files)]
+  },
   themeConfig: {
+    repo,
     nav: [
       { text: 'Go for PHP devs', link: '/go-for-php-devs' },
       { text: 'Chapters', link: '/chapters/01-installation' },
