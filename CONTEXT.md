@@ -1,6 +1,6 @@
 # Context
 
-Teaching repo mapping Laravel concepts to Goravel, one chapter per concept, backed by a working Goravel API for a grassroots football club (clubs, players, fixtures, club-admin users). Audience: Laravel developers learning Go. Clarity beats cleverness. API only: no front end; `GET /` lists endpoints from `facades.Route().GetRoutes()`: HTML with the Goravel logo for browsers (`resources/views/index.tmpl`), JSON otherwise.
+A playground for Laravel developers trying Goravel: a working Goravel API for a grassroots football club (clubs, players, fixtures, club-admin users). Audience: Laravel developers learning Go. Laravel comparisons live in code comments on app-level files, not in separate docs. Clarity beats cleverness. API only: no front end; `GET /` lists endpoints from `facades.Route().GetRoutes()`: HTML with the Goravel logo for browsers (`resources/views/index.tmpl`), JSON otherwise.
 
 ## Stack
 
@@ -12,7 +12,7 @@ Teaching repo mapping Laravel concepts to Goravel, one chapter per concept, back
 | Database (dev) | MySQL 8.4 via `goravel/mysql` |
 | Database (tests) | SQLite in memory via `goravel/sqlite` |
 | Cache / queue / session | Redis via `goravel/redis`. Queue: `redis` in dev, `sync` in tests |
-| Docs | VitePress in `docs/`, deployed to GitHub Pages |
+| Project page | Single static `docs/index.html` for GitHub Pages |
 
 ## Services and ports
 
@@ -41,7 +41,7 @@ Teaching repo mapping Laravel concepts to Goravel, one chapter per concept, back
 | `database/` | Migrations, seeders, factories (Go code, not SQL) |
 | `tests/` | testify suites |
 | `database/factories/`, `database/seeders/` | gofakeit-based factories (keys are struct field names); `DatabaseSeeder` builds a 6-club demo league, admins `admin1..6@example.com` / `password` |
-| `docs/` | VitePress site |
+| `docs/index.html` | Static project page for GitHub Pages |
 
 ## Decisions
 
@@ -67,19 +67,14 @@ Teaching repo mapping Laravel concepts to Goravel, one chapter per concept, back
 | Pool size from `.env` (`DB_MAX_OPEN_CONNS`, `DB_MAX_IDLE_CONNS`) | Lets environments tune the pool without editing `config/database.go` |
 | `gofmt` + `go vet` instead of Pint | Built into the Go toolchain, no config file. `make lint` checks, `make fmt` fixes. Go has no `strict_types` equivalent because it is statically typed |
 
-## Chapter conventions
-
-Each chapter delivers working Go code, tests, a docs page and a Laravel comparison.
+## Comparison conventions
 
 | Piece | Convention |
 |---|---|
-| Laravel snippet | Non-runnable PHP file at `docs/snippets/laravel/chNN/<Name>.php` |
-| Go source | Real code with `// #region <name>` / `// #endregion <name>` markers around the parts shown in docs |
-| Docs page | `docs/chapters/NN-<slug>.md`, VitePress code group: Laravel tab imports the `.php` file, Go tab imports the source region |
-| Go file header | Key files start with `// Laravel equivalent: <path> - see docs/chapters/NN-<slug>.md` |
-| Inline comments | Only where Go behaves differently from what a Laravel developer expects |
-| Evolving code | A region imported by an earlier chapter must not change meaning later. When a later chapter rewrites code (e.g. ch07 validation replacing ch04 `Bind`), the earlier chapter shows the old version as a static code block |
-| Snippet index | `docs/laravel-index.md` renders from `docs/laravel-index.data.js`, a VitePress data loader that pairs each snippet with the Go files in the same code group at build time |
+| Where | App-level code only: routes, controllers, requests, middleware, models, migrations, factories, seeder, commands, events, listeners, jobs, schedule, policies, `config/club.go`, `app/results`. Framework plumbing (bootstrap, providers, facades, container) gets plain Go comments |
+| Shape | Doc comment on the type or function: a `// Laravel:` line, a tab-indented PHP snippet (gofmt renders it as a code block), then one or two lines on what Goravel does differently |
+| Package docs | One `// Package x ...` comment per package, in its main file |
+| Length | A few lines of PHP. Long-form explanations belong in the README's architecture notes, not in comments |
 
 ## Testing
 
@@ -94,25 +89,11 @@ Each chapter delivers working Go code, tests, a docs page and a Laravel comparis
 | Production-like run | `make test-mysql` / CI `test-mysql` job rerun the same suite on MySQL and the Redis cache by overriding env vars (OS env beats `.env.testing`). Uses the `goravel_test` database (`docker/mysql/init.sql`), Redis db 1, and `-p 1`, since packages share one database. Catches SQL dialect drift and memory-vs-Redis cache drift |
 | Base suite | `tests.TestCase` embeds Goravel's `testing.TestCase` (`Http()`, `Seed()`) and adds `TruncateTables()`, `CreateAdmin()` and `LoginAs()` |
 
-## Docs site
-
-| Item | Detail |
-|---|---|
-| Tool | VitePress 1.6 at the repo root `package.json`, `vite` overridden to `^6.4.3` (Vite 5 dev-server advisories have no 5.x fix) |
-| Config | `docs/.vitepress/config.mts`, base `/goravel-laravel-playground/` for GitHub Pages |
-| Pages | `index.md`, `go-for-php-devs.md` (first in nav), `reading-the-comparisons.md` (worked example on `/health`), `where-to-find-it.md` (feature to code map), `chapters/NN-<slug>.md` |
-| Go imports | `<<< @/../path/to/file.go#region{go}` pulls a `// #region` block from the real source at build time |
-| Source links | `transformPageData` in `config.mts` reads each page's `<<< @/../file` imports; `docs/.vitepress/theme/SourceLinks.vue` lists them as GitHub links above the page |
-| Runs on | Host Node (`make docs-dev`, `make docs-build`), not the Go container |
-
 ## CI
 
 | Workflow | Trigger | Jobs |
 |---|---|---|
 | `.github/workflows/ci.yml` | push to `main`, PRs | `lint` (gofmt, vet), `test-sqlite`, `test-mysql` (MySQL 8.4 service). Go version from `go.mod` |
-| `.github/workflows/docs.yml` | push to `main`, manual | `npm ci`, `docs:build`. Pages deploy steps are commented out while the repo is private |
-
-To publish: make the repo public, set Settings > Pages > Source: **GitHub Actions**, and uncomment the marked lines in `docs.yml`.
 
 ## Commands
 

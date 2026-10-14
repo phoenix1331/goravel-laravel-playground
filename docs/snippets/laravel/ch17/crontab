@@ -1,5 +1,0 @@
-# The one cron entry every Laravel server needs
-* * * * * cd /path-to-your-project && php artisan schedule:run >> /dev/null 2>&1
-
-# Or, since Laravel 11, a long-running process instead of cron
-php artisan schedule:work
