@@ -17,48 +17,58 @@
 
 Something to play with: a grassroots football club API (clubs, players, fixtures, a league table) built with Goravel, where each feature sits next to a short note on how you would do it in Laravel and what Go does differently. Run it, poke the endpoints, change the code and watch the tests.
 
-**Docs site:** https://phoenix1331.github.io/goravel-laravel-playground (published once the repository is public; until then run it locally with `make docs-dev`)
+**Project page:** https://phoenix1331.github.io/goravel-laravel-playground (published once the repository is public)
 
 > **API only.** There is no front end: every endpoint returns JSON. Open http://localhost:8000/ in a browser for a live list of endpoints (JSON clients get the same list as JSON), and use `request.http` to send requests.
 
 ## What this demonstrates
 
-Goravel deliberately mirrors Laravel, so a Laravel developer can read most of it on sight. The interesting part is where the resemblance stops, and this repo is built to show exactly that with code you can run:
+Goravel deliberately mirrors Laravel, so a Laravel developer can read most of it on sight. The interesting part is where the resemblance stops:
 
 - **The familiar surface:** routing, controllers, form requests, middleware, an Eloquent-style ORM, migrations, factories, artisan commands, events, queues, scheduling, cache, JWT auth and policies, all in one small app.
 - **Where Go changes the rules:** no exceptions (errors are returned values), no magic methods (every model field is declared and typed), no autowiring (dependencies are wired by hand), and no runtime discovery (routes, migrations, commands, jobs and listeners are registered in code the compiler checks).
-- **Real lessons, not just syntax:** the notes record the surprises this project hit along the way, such as SQLite and MySQL disagreeing about timezones, Redis refusing to cache Go structs, Goravel's JWTs not being unique per login, and a scaffold facade that hid the HTTP fakes.
+- **Surprises worth knowing:** SQLite and MySQL disagreeing about timezones, Redis refusing to cache Go structs, Goravel's JWTs not being unique per login, and a scaffold facade that hid the HTTP fakes. Each is noted in the code where it bit.
 
-Each of the 24 chapters puts the Goravel code from this repo next to a short Laravel snippet. The Go on the docs site is imported from the real source files at build time, so it is always the tested code.
+## How to read it
 
-| # | Chapter | Laravel | Goravel |
-|---|---|---|---|
-| 01 | [Installation and structure](https://phoenix1331.github.io/goravel-laravel-playground/chapters/01-installation) | `laravel new`, `artisan`, directory structure | `goravel new`, `./artisan`, layout |
-| 02 | [Configuration](https://phoenix1331.github.io/goravel-laravel-playground/chapters/02-configuration) | `.env` and `config/*.php` | `.env`, `config/*.go`, `facades.Config()` |
-| 03 | [Routing](https://phoenix1331.github.io/goravel-laravel-playground/chapters/03-routing) | `routes/web.php`, `routes/api.php` | `routes/*.go`, route groups |
-| 04 | [Controllers](https://phoenix1331.github.io/goravel-laravel-playground/chapters/04-controllers) | Controller classes | Controller structs |
-| 05 | [Service container and providers](https://phoenix1331.github.io/goravel-laravel-playground/chapters/05-service-container) | Service container, `register()` / `boot()` | Container bindings, `Register` / `Boot` |
-| 06 | [Facades](https://phoenix1331.github.io/goravel-laravel-playground/chapters/06-facades) | Static proxies via `__callStatic` | `app/facades` package functions |
-| 07 | [Form requests and validation](https://phoenix1331.github.io/goravel-laravel-playground/chapters/07-validation) | Form requests, `$request->validate()` | Form requests, validation rules |
-| 08 | [Middleware](https://phoenix1331.github.io/goravel-laravel-playground/chapters/08-middleware) | Middleware classes with `handle()` | Middleware functions |
-| 09 | [ORM models](https://phoenix1331.github.io/goravel-laravel-playground/chapters/09-models) | Eloquent models | ORM models |
-| 10 | [Relationships](https://phoenix1331.github.io/goravel-laravel-playground/chapters/10-relationships) | Eloquent relationships, `with()` | ORM relationships, `With()` |
-| 11 | [Migrations](https://phoenix1331.github.io/goravel-laravel-playground/chapters/11-migrations) | Migrations with the schema builder | Migrations in Go |
-| 12 | [Factories and seeders](https://phoenix1331.github.io/goravel-laravel-playground/chapters/12-factories-seeders) | Model factories and seeders | Factories and seeders |
-| 13 | [Query builder and raw SQL](https://phoenix1331.github.io/goravel-laravel-playground/chapters/13-query-builder) | `DB::table()`, `DB::select()` | `facades.Orm().Query()`, `facades.DB()` |
-| 14 | [Artisan commands](https://phoenix1331.github.io/goravel-laravel-playground/chapters/14-console-commands) | `make:command`, `handle()` | Console commands (`make:command`) |
-| 15 | [Events and listeners](https://phoenix1331.github.io/goravel-laravel-playground/chapters/15-events) | Events, listeners, `event()` | Events and listeners |
-| 16 | [Jobs and queues](https://phoenix1331.github.io/goravel-laravel-playground/chapters/16-queues) | Jobs, `dispatch()`, queue workers | Jobs and queues |
-| 17 | [Task scheduling](https://phoenix1331.github.io/goravel-laravel-playground/chapters/17-scheduling) | `routes/console.php` schedule | Scheduler |
-| 18 | [Cache](https://phoenix1331.github.io/goravel-laravel-playground/chapters/18-cache) | `Cache::remember()` | Cache facade |
-| 19 | [Authentication](https://phoenix1331.github.io/goravel-laravel-playground/chapters/19-authentication) | Session guard, Sanctum | Auth with the JWT guard |
-| 20 | [Gates and policies](https://phoenix1331.github.io/goravel-laravel-playground/chapters/20-authorisation) | Gates and policies | Authorisation |
-| 21 | [HTTP client](https://phoenix1331.github.io/goravel-laravel-playground/chapters/21-http-client) | `Http::get()`, `Http::fake()` | HTTP client |
-| 22 | [Logging](https://phoenix1331.github.io/goravel-laravel-playground/chapters/22-logging) | `Log::info()`, channels | Logging |
-| 23 | [Testing](https://phoenix1331.github.io/goravel-laravel-playground/chapters/23-testing) | PHPUnit / Pest, HTTP tests, fakes | testify suites, HTTP tests, mocks |
-| 24 | [Error handling](https://phoenix1331.github.io/goravel-laravel-playground/chapters/24-error-handling) | Exceptions, `try` / `catch`, handler | Go errors |
+There are no chapters. Open a file, and the Laravel version is written above the Go in the comments:
 
-For anything the chapters do not cover, the [Goravel documentation](https://www.goravel.dev/getting-started/installation.html) is the reference.
+```go
+// Show returns one club, or 404.
+//
+// Laravel:
+//
+//	public function show(Club $club): JsonResponse  // route model binding
+//	{
+//	    return response()->json(['data' => $club]);
+//	}
+//
+// Goravel: no route model binding, so findClub reads {id} and loads the row.
+func (r *ClubController) Show(ctx http.Context) http.Response {
+	club, response := findClub(ctx)
+	// ...
+}
+```
+
+The comparisons cover the code you write every day. Framework plumbing (bootstrap, providers, the container) has ordinary comments; the [Goravel documentation](https://www.goravel.dev/getting-started/installation.html) covers it properly.
+
+| Start here | What it compares |
+|---|---|
+| [`routes/api.go`](routes/api.go) | Route groups, middleware, closures and handlers, no route model binding |
+| [`app/http/controllers/club_controller.go`](app/http/controllers/club_controller.go) | A full CRUD controller with no constructor injection |
+| [`app/http/requests/store_club_request.go`](app/http/requests/store_club_request.go) | Form requests: familiar rules, typed validated data, the `unique` argument trap |
+| [`app/http/middleware/ensure_json_request.go`](app/http/middleware/ensure_json_request.go) | `Next()` and `Abort()` instead of returning `$next($request)` |
+| [`app/models/fixture.go`](app/models/fixture.go) | Structs instead of `__get`, relations as fields, types instead of `$casts` |
+| [`database/migrations/`](database/migrations) | The schema builder in Go, registered in `bootstrap/migrations.go` |
+| [`database/factories/club_factory.go`](database/factories/club_factory.go) | Factories keyed by struct field name |
+| [`app/policies/club_policy.go`](app/policies/club_policy.go) | Policies whose gate is not told who the user is |
+| [`app/events/`](app/events), [`app/listeners/`](app/listeners), [`app/jobs/`](app/jobs) | Typed arguments instead of serialised models, no `queue:work` |
+| [`app/console/commands/sync_fixtures.go`](app/console/commands/sync_fixtures.go) | Flags as values, errors instead of exit codes |
+| [`bootstrap/schedule.go`](bootstrap/schedule.go) | The scheduler without a cron entry |
+| [`app/results/record.go`](app/results/record.go) | An action that returns a sentinel error instead of throwing |
+| [`tests/test_case.go`](tests/test_case.go) | The test harness: in-memory SQLite, `LoginAs` instead of `actingAs` |
+
+For the full feature-by-feature comparison, read Goravel's [Compare with Laravel](https://www.goravel.dev/prologue/compare-with-laravel.html) page.
 
 ## Tech stack
 
@@ -70,7 +80,6 @@ For anything the chapters do not cover, the [Goravel documentation](https://www.
 | Cache, queue | Redis (the queue is `sync` in tests) |
 | Auth | Goravel's JWT guard |
 | Runtime | Docker Compose, with [air](https://github.com/air-verse/air) for live reload |
-| Docs | VitePress |
 | Quality | `gofmt`, `go vet`, [osv-scanner](https://github.com/google/osv-scanner), Husky git hooks, GitHub Actions |
 
 ## Getting started
@@ -78,8 +87,8 @@ For anything the chapters do not cover, the [Goravel documentation](https://www.
 ### Prerequisites
 
 - Docker with Docker Compose. Port 8000 (app) and 3307 (MySQL) must be free
-- Node.js 24, for the docs site and the git hooks. Run `npm install` once to install VitePress and activate the Husky hooks
-- [osv-scanner](https://github.com/google/osv-scanner), used by the pre-commit hook: `go install github.com/google/osv-scanner/cmd/osv-scanner@latest`
+- Node.js, only for the Husky git hooks: run `npm install` once to activate them (optional if you are just exploring)
+- [osv-scanner](https://github.com/google/osv-scanner), used by the pre-commit hook (also optional for exploring): `go install github.com/google/osv-scanner/cmd/osv-scanner@latest`
 - Go itself is optional on the host: everything runs inside the `app` container
 - Claude Code MCP servers (optional, configured in `.mcp.json`):
   - GitHub MCP authenticates via `gh auth token`; run `gh auth login` once per machine
@@ -96,7 +105,6 @@ For anything the chapters do not cover, the [Goravel documentation](https://www.
 6. `make fresh`: migrates and seeds a demo league
 7. `make test`: runs the suite on SQLite in memory
 8. `make test-mysql`: runs the same suite on MySQL and Redis
-9. `make docs-dev`: serves the notes at http://localhost:5173/goravel-laravel-playground/
 
 `make help` lists every target, including `logs`, `shell`, `lint`, `fmt` and `migrate`.
 
@@ -162,7 +170,7 @@ From the command line: `make artisan cmd="sync:fixtures --dry-run"` previews imp
 - **A second, production-like test run.** `make test-mysql` and the CI job rerun the same tests on MySQL and Redis by overriding environment variables. It caught a timezone difference (SQLite keeps a time's offset, MySQL converts to UTC) and a cache difference (Redis cannot store Go structs, the memory store can) that the SQLite run never would.
 - **One path for recording results.** The API and the `sync:fixtures` command both call `results.Record`, which saves the score, logs it to a JSON channel and fires `FixtureResultRecorded`. Listeners queue the admin notifications and clear the cached league table. Expected failures are sentinel errors (`errors.Is(err, results.ErrAlreadyRecorded)` becomes a 409); unexpected ones are logged with the request and become a 500.
 - **Authorisation is explicit.** Goravel's gate is not told who is asking, so a small `authorise` helper loads the user, passes them to the policy, and turns a denial into a 403.
-- **The docs cannot drift from the code.** Chapter pages import Go code by region (`<<< @/../file.go#region`), each page lists the files it shows, and the Laravel snippet index is generated by a VitePress data loader at build time.
+- **Comparisons live with the code.** The Laravel equivalents are doc comments on the Go they describe, so they change with it and render anywhere the code does, including GitHub. The project page is a single static file in `docs/index.html`.
 - **Dependency hygiene.** The pre-commit hook runs gofmt, `go vet` and osv-scanner. Go 1.26 was chosen over the brief's 1.25 because 1.25 is end of life, and three advisories that cannot be fixed without breaking Goravel 1.18 are documented in `osv-scanner.toml`.
 
 ## Licence
