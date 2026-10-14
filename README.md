@@ -17,68 +17,19 @@
 
 Something to play with: a grassroots football club API (clubs, players, fixtures, a league table) built with Goravel, where each feature sits next to a short note on how you would do it in Laravel and what Go does differently. Run it, poke the endpoints, change the code and watch the tests.
 
-**Docs site:** https://phoenix1331.github.io/goravel-laravel-playground
+**Docs site:** https://phoenix1331.github.io/goravel-laravel-playground (published once the repository is public; until then run it locally with `make docs-dev`)
 
 > **API only.** There is no front end: every endpoint returns JSON. Open http://localhost:8000/ in a browser for a live list of endpoints (JSON clients get the same list as JSON), and use `request.http` to send requests.
 
-## Who it is for
+## What this demonstrates
 
-- Laravel developers who learn best by running and changing real code
-- Anyone wanting a hands-on feel for Goravel before using it for a backend service
+Goravel deliberately mirrors Laravel, so a Laravel developer can read most of it on sight. The interesting part is where the resemblance stops, and this repo is built to show exactly that with code you can run:
 
-The chapters are short notes, not a manual. Each one points at the code in this repo that uses a feature, shows a Laravel snippet for comparison, and calls out the places Go behaves differently: explicit errors, structs instead of classes, no magic methods, compile-time wiring. The Go snippets on the site are pulled from this repo's source at build time, so they are the real, tested code. For anything a chapter does not cover, the [Goravel documentation](https://www.goravel.dev/getting-started/installation.html) is the reference.
+- **The familiar surface:** routing, controllers, form requests, middleware, an Eloquent-style ORM, migrations, factories, artisan commands, events, queues, scheduling, cache, JWT auth and policies, all in one small app.
+- **Where Go changes the rules:** no exceptions (errors are returned values), no magic methods (every model field is declared and typed), no autowiring (dependencies are wired by hand), and no runtime discovery (routes, migrations, commands, jobs and listeners are registered in code the compiler checks).
+- **Real lessons, not just syntax:** the notes record the surprises this project hit along the way, such as SQLite and MySQL disagreeing about timezones, Redis refusing to cache Go structs, Goravel's JWTs not being unique per login, and a scaffold facade that hid the HTTP fakes.
 
-## Stack
-
-| Concern | Choice |
-|---|---|
-| Language | Go 1.26 |
-| Framework | [Goravel](https://www.goravel.dev) 1.18 with the Gin HTTP driver |
-| Database | MySQL 8.4 (dev), SQLite in memory (tests) |
-| Cache / queue | Redis |
-| Runtime | Docker Compose, with [air](https://github.com/air-verse/air) for live reload |
-| Docs | VitePress on GitHub Pages |
-| CI | GitHub Actions: gofmt, go vet, tests on SQLite and MySQL |
-
-## Quick start
-
-### Prerequisites
-
-- Docker with Docker Compose
-- Node.js (for the docs site and git hooks); run `npm install` once to activate the Husky hooks
-- [osv-scanner](https://github.com/google/osv-scanner) for the pre-commit audit: `go install github.com/google/osv-scanner/cmd/osv-scanner@latest`
-- Claude Code MCP servers (optional, configured in `.mcp.json`):
-  - GitHub MCP authenticates via `gh auth token`; run `gh auth login` once per machine
-  - MySQL MCP reads `MYSQL_HOST`, `MYSQL_PORT`, `MYSQL_USER`, `MYSQL_PASSWORD`, `MYSQL_DATABASE`. For this project export `MYSQL_HOST=127.0.0.1 MYSQL_PORT=3307 MYSQL_USER=goravel MYSQL_PASSWORD=secret MYSQL_DATABASE=goravel`
-  - Playwright and Context7 need only `npx`
-
-### Run it
-
-```bash
-cp .env.example .env
-make up                          # app on http://localhost:8000, MySQL on 3307
-make artisan cmd="key:generate"  # sets APP_KEY in .env
-make run                         # restart the app with the new key
-make migrate
-make test                        # SQLite in memory
-make test-mysql                  # same suite on MySQL, to catch dialect drift
-make docs-dev                    # docs on http://localhost:5173
-```
-
-`make help` lists every target.
-
-### Trying the API
-
-| How | What |
-|---|---|
-| Browser | http://localhost:8000/ lists every endpoint. GET endpoints such as `/api/league/table`, `/api/clubs` and `/api/fixtures` open directly |
-| `request.http` | Every endpoint with example bodies, including POST, PUT and DELETE. Open it in VS Code (REST Client extension) or a JetBrains IDE and click "Send Request" |
-| curl | `curl -X POST localhost:8000/api/fixtures/9/result -H 'Content-Type: application/json' -d '{"home_score":2,"away_score":1}'` |
-| Artisan | `make artisan cmd="sync:fixtures --dry-run"`, `make artisan cmd="route:list"`, `make artisan cmd="schedule:list"` |
-
-`make fresh` resets the demo league: six clubs, 96 players, 15 fixtures (seven played) and an admin per club (`admin1@example.com` to `admin6@example.com`, password `password`).
-
-## Chapters
+Each of the 24 chapters puts the Goravel code from this repo next to a short Laravel snippet. The Go on the docs site is imported from the real source files at build time, so it is always the tested code.
 
 | # | Chapter | Laravel | Goravel |
 |---|---|---|---|
@@ -107,6 +58,113 @@ make docs-dev                    # docs on http://localhost:5173
 | 23 | [Testing](https://phoenix1331.github.io/goravel-laravel-playground/chapters/23-testing) | PHPUnit / Pest, HTTP tests, fakes | testify suites, HTTP tests, mocks |
 | 24 | [Error handling](https://phoenix1331.github.io/goravel-laravel-playground/chapters/24-error-handling) | Exceptions, `try` / `catch`, handler | Go errors |
 
+For anything the chapters do not cover, the [Goravel documentation](https://www.goravel.dev/getting-started/installation.html) is the reference.
+
+## Tech stack
+
+| Concern | Choice |
+|---|---|
+| Language | Go 1.26 |
+| Framework | [Goravel](https://www.goravel.dev) 1.18 with the Gin HTTP driver |
+| Database | MySQL 8.4 in development, SQLite in memory for tests |
+| Cache, queue | Redis (the queue is `sync` in tests) |
+| Auth | Goravel's JWT guard |
+| Runtime | Docker Compose, with [air](https://github.com/air-verse/air) for live reload |
+| Docs | VitePress |
+| Quality | `gofmt`, `go vet`, [osv-scanner](https://github.com/google/osv-scanner), Husky git hooks, GitHub Actions |
+
+## Getting started
+
+### Prerequisites
+
+- Docker with Docker Compose. Port 8000 (app) and 3307 (MySQL) must be free
+- Node.js 24, for the docs site and the git hooks. Run `npm install` once to install VitePress and activate the Husky hooks
+- [osv-scanner](https://github.com/google/osv-scanner), used by the pre-commit hook: `go install github.com/google/osv-scanner/cmd/osv-scanner@latest`
+- Go itself is optional on the host: everything runs inside the `app` container
+- Claude Code MCP servers (optional, configured in `.mcp.json`):
+  - GitHub MCP authenticates via `gh auth token`; run `gh auth login` once per machine
+  - MySQL MCP reads `MYSQL_HOST`, `MYSQL_PORT`, `MYSQL_USER`, `MYSQL_PASSWORD` and `MYSQL_DATABASE`. For this project: `export MYSQL_HOST=127.0.0.1 MYSQL_PORT=3307 MYSQL_USER=goravel MYSQL_PASSWORD=secret MYSQL_DATABASE=goravel`
+  - Playwright and Context7 need nothing beyond `npx`
+
+### Run it
+
+1. `cp .env.example .env`
+2. `make up`: builds and starts the app (http://localhost:8000), MySQL (port 3307) and Redis
+3. `make artisan cmd="key:generate"`: sets `APP_KEY`
+4. `make artisan cmd="jwt:secret"`: sets `JWT_SECRET` for logins
+5. `make run`: restarts the app so it picks up both keys
+6. `make fresh`: migrates and seeds a demo league
+7. `make test`: runs the suite on SQLite in memory
+8. `make test-mysql`: runs the same suite on MySQL and Redis
+9. `make docs-dev`: serves the notes at http://localhost:5173/goravel-laravel-playground/
+
+`make help` lists every target, including `logs`, `shell`, `lint`, `fmt` and `migrate`.
+
+The demo league has six clubs, 96 players, 15 fixtures (seven already played) and one admin per club: `admin1@example.com` to `admin6@example.com`, password `password`. Admin N runs club N.
+
+## Environment variables
+
+Unused keys from the Goravel scaffold (mail, gRPC, AI) are left out.
+
+| Key | Purpose | Default in `.env.example` |
+|---|---|---|
+| `APP_NAME` | App name; also prefixes cache keys | `ClubManager` |
+| `APP_ENV` | Environment name | `local` |
+| `APP_KEY` | 32-character encryption key, set by `key:generate` | empty |
+| `APP_DEBUG` | Debug mode | `true` |
+| `APP_URL`, `APP_HOST`, `APP_PORT` | Where the HTTP server listens | `http://localhost:8000`, `0.0.0.0`, `8000` |
+| `APP_DISABLED_RUNNERS` | Space-separated runners to switch off, e.g. `goravel:http` for a worker-only process | empty |
+| `JWT_SECRET` | Signs login tokens, set by `jwt:secret` | empty |
+| `BCRYPT_ROUNDS` | Password hashing cost (`.env.testing` uses 4) | `12` |
+| `LOG_CHANNEL`, `LOG_LEVEL` | Default log channel and level | `stack`, `debug` |
+| `DB_CONNECTION` | `mysql` in development, `sqlite` in tests | `mysql` |
+| `DB_HOST`, `DB_PORT`, `DB_DATABASE`, `DB_USERNAME`, `DB_PASSWORD` | MySQL connection (inside Docker) | `mysql`, `3306`, `goravel`, `goravel`, `secret` |
+| `REDIS_HOST`, `REDIS_PORT`, `REDIS_PASSWORD` | Redis connection | `redis`, `6379`, empty |
+| `CACHE_STORE` | `redis` or `memory` | `redis` |
+| `QUEUE_CONNECTION` | `redis` or `sync` | `redis` |
+| `SESSION_DRIVER`, `SESSION_LIFETIME` | Sessions (unused by the JWT API) | `file`, `120` |
+| `LEAGUE_NAME` | Shown by `GET /api/league` | `Sunday League Division One` |
+| `LEAGUE_POINTS_WIN`, `LEAGUE_POINTS_DRAW`, `LEAGUE_POINTS_LOSS` | League table points | `3`, `1`, `0` |
+| `CLUB_MAX_SQUAD_SIZE` | Largest squad a club may register | `25` |
+| `FIXTURE_FEED_DRIVER` | Where `sync:fixtures` reads results: `file` or `http` | `file` |
+| `FIXTURE_FEED_PATH` | JSON file for the file feed | `database/data/fixture_results.json` |
+| `FIXTURE_FEED_URL` | Base URL for the HTTP feed | `http://localhost:8000/api/demo` |
+
+## Endpoints
+
+http://localhost:8000/ lists every route live. `request.http` has a ready-made request for each one; it works in VS Code (REST Client extension) and JetBrains IDEs. Writes need a token: send the "Log in" request and paste its `access_token` into `@token` at the top of the file.
+
+| Method | Path | Auth | What it does |
+|---|---|---|---|
+| `GET` | `/`, `/health` | No | Endpoint index; database health check |
+| `GET` | `/api/league`, `/api/league/points` | No | League name and points from config |
+| `GET` | `/api/league/table` | No | League table (query builder, cached in Redis) |
+| `GET` | `/api/league/goals` | No | Goals per club (raw SQL) |
+| `GET` | `/api/clubs`, `/api/clubs/{id}` | No | Clubs |
+| `GET` | `/api/clubs/{id}/players` | No | A club with its squad |
+| `GET` | `/api/fixtures` | No | Fixtures with both clubs eager loaded |
+| `GET` | `/api/demo/results` | No | Stand-in results API for `FIXTURE_FEED_DRIVER=http` |
+| `POST` | `/api/auth/login` | No | Email and password for a JWT |
+| `GET`, `POST` | `/api/auth/me`, `/api/auth/logout` | Yes | Current user; disable the token |
+| `POST` | `/api/clubs` | Yes | Create a club; you become its admin (only if you have no club) |
+| `PUT`, `PATCH`, `DELETE` | `/api/clubs/{id}` | Yes, that club's admin | Edit or delete a club |
+| `POST` | `/api/clubs/{id}/players` | Yes, that club's admin | Add a player |
+| `POST` | `/api/fixtures/{id}/result` | Yes, the home club's admin | Record the final score: fires an event, queues notifications, clears the league table cache. A second result returns 409 |
+
+Writes must send `Content-Type: application/json` (415 otherwise), validation failures return 422, and unknown URLs return a JSON 404.
+
+From the command line: `make artisan cmd="sync:fixtures --dry-run"` previews importing results from the feed, and `make artisan cmd="schedule:list"` shows the scheduled tasks.
+
+## Architecture notes
+
+- **One process does everything.** `app.Start()` runs the HTTP server, the Redis queue worker and the scheduler as goroutines in one binary, so there is no `queue:work` and no cron entry. `APP_DISABLED_RUNNERS` splits them apart when you need separate processes. The catch: every copy of the app runs the scheduler unless you use `OnOneServer()`.
+- **Tests run on in-memory SQLite, with a twist.** A plain `:memory:` database is per connection, so a second pooled connection sees an empty database. The suite uses the pure-Go driver's `memdb` file system (`file:/goravel_test.db?vfs=memdb`), migrates once per package in `TestMain`, and deletes rows between tests. No CGO is needed.
+- **A second, production-like test run.** `make test-mysql` and the CI job rerun the same tests on MySQL and Redis by overriding environment variables. It caught a timezone difference (SQLite keeps a time's offset, MySQL converts to UTC) and a cache difference (Redis cannot store Go structs, the memory store can) that the SQLite run never would.
+- **One path for recording results.** The API and the `sync:fixtures` command both call `results.Record`, which saves the score, logs it to a JSON channel and fires `FixtureResultRecorded`. Listeners queue the admin notifications and clear the cached league table. Expected failures are sentinel errors (`errors.Is(err, results.ErrAlreadyRecorded)` becomes a 409); unexpected ones are logged with the request and become a 500.
+- **Authorisation is explicit.** Goravel's gate is not told who is asking, so a small `authorise` helper loads the user, passes them to the policy, and turns a denial into a 403.
+- **The docs cannot drift from the code.** Chapter pages import Go code by region (`<<< @/../file.go#region`), each page lists the files it shows, and the Laravel snippet index is generated by a VitePress data loader at build time.
+- **Dependency hygiene.** The pre-commit hook runs gofmt, `go vet` and osv-scanner. Go 1.26 was chosen over the brief's 1.25 because 1.25 is end of life, and three advisories that cannot be fixed without breaking Goravel 1.18 are documented in `osv-scanner.toml`.
+
 ## Licence
 
-MIT
+MIT. Goravel itself is MIT licensed by its authors.
