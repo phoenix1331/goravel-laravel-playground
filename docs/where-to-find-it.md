@@ -29,4 +29,6 @@ Each feature in this playground, where its code lives, and how to try it. This i
 | Testing harness | [`tests/test_case.go`](https://github.com/phoenix1331/goravel-laravel-playground/blob/main/tests/test_case.go), [`.env.testing`](https://github.com/phoenix1331/goravel-laravel-playground/blob/main/.env.testing) | `make test`, `make test-mysql` | [23](/chapters/23-testing) |
 | Error handling | [`app/results/record.go`](https://github.com/phoenix1331/goravel-laravel-playground/blob/main/app/results/record.go) | Record the same result twice | [24](/chapters/24-error-handling) |
 
+The differences between SQLite, MySQL, the memory cache and Redis that this project ran into are collected in [SQLite is not MySQL](/chapters/23-testing#sqlite-is-not-mysql).
+
 Every Laravel snippet used in the notes, with its Go counterpart, is listed in the [Laravel snippet index](/laravel-index).
