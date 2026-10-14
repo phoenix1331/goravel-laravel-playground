@@ -1,4 +1,5 @@
-// Laravel equivalent: app/Listeners/NotifyClubAdmins.php
+// Package listeners holds event listeners, mapped to events in
+// bootstrap/app.go.
 package listeners
 
 import (
@@ -12,6 +13,17 @@ import (
 )
 
 // NotifyClubAdmins reacts to a new result by queueing the notifications job.
+//
+// Laravel:
+//
+//	public function handle(FixtureResultRecorded $event): void
+//	{
+//	    SendResultNotifications::dispatch($event->fixture);
+//	}
+//
+// Goravel: Handle receives the event's arguments as ...any, in dispatch
+// order, untyped. Queue() decides whether the listener itself is queued, the
+// job of ShouldQueue in Laravel.
 type NotifyClubAdmins struct{}
 
 func (l *NotifyClubAdmins) Signature() string {

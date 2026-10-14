@@ -1,4 +1,4 @@
-// Laravel equivalent: app/Services/FixtureFeed.php
+// Package services holds plain Go services with no framework lookups.
 package services
 
 import (
@@ -17,8 +17,9 @@ type FeedResult struct {
 	AwayScore int    `json:"away_score"`
 }
 
-// FixtureFeed is anywhere results can be read from. Chapter 21 adds an HTTP
-// implementation next to this file-based one.
+// FixtureFeed is anywhere results can be read from: a JSON file or the
+// league's HTTP API. Both types below satisfy it without saying so; Go has
+// no "implements" keyword.
 type FixtureFeed interface {
 	Results() ([]FeedResult, error)
 }
@@ -44,6 +45,13 @@ func (f FileFeed) Results() ([]FeedResult, error) {
 
 // HttpFeed reads results from the league's API. It is given a ready-made
 // request builder, so it never reads config itself and tests can fake it.
+//
+// Laravel:
+//
+//	Http::baseUrl($url)->acceptJson()->get('/results')->throw()->json();
+//
+// Goravel: very close, fakes included. A 4xx or 5xx is not an error, so
+// check response.Failed() where Laravel would call ->throw().
 type HttpFeed struct {
 	Request client.Request
 }

@@ -1,4 +1,3 @@
-// Laravel equivalent: config/club.php
 package config
 
 import (
@@ -7,6 +6,18 @@ import (
 
 // init runs automatically when the config package is imported, before main.
 // Each config file registers its own section, so there is no list to maintain.
+//
+// Laravel (config/club.php):
+//
+//	return [
+//	    'league_name' => env('LEAGUE_NAME', 'Sunday League Division One'),
+//	    'points' => ['win' => (int) env('LEAGUE_POINTS_WIN', 3), ...],
+//	];
+//
+//	config('club.points.win');  // mixed
+//
+// Goravel: facades.Config().GetInt("club.points.win") returns an int, so
+// the casting moves from the config file to the typed getter.
 func init() {
 	config := facades.Config()
 	config.Add("club", map[string]any{

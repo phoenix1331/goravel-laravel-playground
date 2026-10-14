@@ -1,4 +1,4 @@
-// Laravel equivalent: app/Events/FixtureResultRecorded.php
+// Package events holds application events.
 package events
 
 import (
@@ -7,9 +7,20 @@ import (
 
 // FixtureResultRecorded fires when a fixture gets a final score.
 //
-// The event carries its data as a list of typed arguments, not as struct
-// fields: listeners may run on a queue, and the arguments are what gets
-// serialised. Here the only argument is the fixture ID.
+// Laravel:
+//
+//	class FixtureResultRecorded
+//	{
+//	    use Dispatchable, SerializesModels;
+//	    public function __construct(public Fixture $fixture) {}
+//	}
+//
+//	FixtureResultRecorded::dispatch($fixture);
+//
+// Goravel: the event carries no properties. Its payload is a list of typed
+// arguments (here, just the fixture ID), so it can be serialised for queued
+// listeners. Listeners are mapped to events in bootstrap/app.go (WithEvents),
+// not discovered from type hints.
 type FixtureResultRecorded struct{}
 
 // Handle runs before the listeners and can change the arguments they receive.

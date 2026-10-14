@@ -1,4 +1,3 @@
-// Laravel equivalent: app/Services/LeagueTable.php
 package services
 
 import (

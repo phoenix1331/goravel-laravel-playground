@@ -1,4 +1,4 @@
-// Laravel equivalent: app/Console/Commands/SyncFixtures.php
+// Package commands holds artisan commands.
 package commands
 
 import (
@@ -13,6 +13,24 @@ import (
 	"goravel/app/services"
 )
 
+// SyncFixtures records results from the league's fixture feed.
+//
+// Laravel:
+//
+//	class SyncFixtures extends Command
+//	{
+//	    protected $signature = 'sync:fixtures {--file=} {--dry-run}';
+//
+//	    public function handle(): int
+//	    {
+//	        // ...
+//	        return self::SUCCESS;
+//	    }
+//	}
+//
+// Goravel: the signature string is split into Signature() for the name and
+// Extend() for typed flags. Handle returns an error instead of an exit code.
+// Commands are listed in bootstrap/commands.go rather than discovered.
 type SyncFixtures struct{}
 
 // Signature is the command name: ./artisan sync:fixtures

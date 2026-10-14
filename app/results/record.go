@@ -1,4 +1,4 @@
-// Laravel equivalent: app/Actions/RecordResult.php
+// Package results records match results: the one place a score is saved.
 package results
 
 import (
@@ -16,8 +16,22 @@ import (
 var ErrAlreadyRecorded = errors.New("fixture already has a result")
 
 // Record marks a fixture as finished with the given score. Every way a result
-// arrives (the sync command, the API) goes through here, so later chapters
-// have one place to hook in.
+// arrives (the sync command, the API) goes through here.
+//
+// Laravel (an action class):
+//
+//	public function __invoke(Fixture $fixture, int $home, int $away): void
+//	{
+//	    if ($fixture->status === FixtureStatus::Finished) {
+//	        throw new AlreadyRecorded();
+//	    }
+//	    $fixture->update([...]);
+//	    Log::channel('results')->info('Result recorded', [...]);
+//	    FixtureResultRecorded::dispatch($fixture);
+//	}
+//
+// Goravel: a plain function. The expected failure is returned as a wrapped
+// sentinel error, not thrown.
 func Record(fixture *models.Fixture, homeScore, awayScore int) error {
 	if homeScore < 0 || awayScore < 0 {
 		return fmt.Errorf("record fixture %d: scores cannot be negative", fixture.ID)

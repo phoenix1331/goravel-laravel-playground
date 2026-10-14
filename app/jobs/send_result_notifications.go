@@ -1,4 +1,4 @@
-// Laravel equivalent: app/Jobs/SendResultNotifications.php
+// Package jobs holds queued jobs, registered in bootstrap/jobs.go.
 package jobs
 
 import (
@@ -13,6 +13,21 @@ import (
 
 // SendResultNotifications writes a notification for each admin of the two
 // clubs in a fixture. It takes one argument: the fixture ID.
+//
+// Laravel:
+//
+//	class SendResultNotifications implements ShouldQueue
+//	{
+//	    use Queueable;
+//	    public function __construct(public Fixture $fixture) {}
+//	    public function handle(): void { /* ... */ }
+//	}
+//
+//	SendResultNotifications::dispatch($fixture);
+//
+// Goravel: the job is stateless and takes typed arguments:
+// facades.Queue().Job(job, job.Args(id)).Dispatch(). There is no queue:work;
+// the worker runs inside the app process whenever the queue is not sync.
 type SendResultNotifications struct{}
 
 // Signature identifies the job on the queue. The worker looks the job up by

@@ -1,4 +1,3 @@
-// Laravel equivalent: app/Listeners/ForgetLeagueTable.php
 package listeners
 
 import (
@@ -11,6 +10,8 @@ import (
 // ForgetLeagueTable clears the cached league table when a result comes in,
 // so the next request rebuilds it. It runs synchronously, so the very next
 // request after recording a result already sees the new table.
+//
+// Laravel: Cache::forget('league_table');
 type ForgetLeagueTable struct{}
 
 func (l *ForgetLeagueTable) Signature() string {

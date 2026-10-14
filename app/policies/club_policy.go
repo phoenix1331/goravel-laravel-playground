@@ -1,4 +1,5 @@
-// Laravel equivalent: app/Policies/ClubPolicy.php
+// Package policies holds authorisation rules, registered as gates in
+// app/providers/auth_service_provider.go.
 package policies
 
 import (
@@ -12,6 +13,19 @@ import (
 
 // ClubPolicy decides what a user may do to a club. Each method has the gate
 // callback signature, so it can be passed straight to facades.Gate().Define.
+//
+// Laravel:
+//
+//	public function update(User $user, Club $club): Response
+//	{
+//	    return $user->club_id === $club->id
+//	        ? Response::allow()
+//	        : Response::deny('You can only manage your own club.');
+//	}
+//
+// Goravel: the user is not passed in for you; it arrives in the arguments
+// map, along with the club, and needs a type assertion. No policy discovery:
+// each method is registered as a named ability in AuthServiceProvider.
 type ClubPolicy struct{}
 
 func NewClubPolicy() *ClubPolicy {

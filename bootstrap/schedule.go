@@ -1,4 +1,3 @@
-// Laravel equivalent: routes/console.php
 package bootstrap
 
 import (
@@ -10,8 +9,16 @@ import (
 	"goravel/app/models"
 )
 
-// Schedule lists the recurring tasks. The scheduler runner started by
-// app.Start() checks them every second; there is no cron entry to add.
+// Schedule lists the recurring tasks.
+//
+// Laravel (routes/console.php):
+//
+//	Schedule::command('sync:fixtures')->everyFifteenMinutes()->saturdays()->withoutOverlapping();
+//	Schedule::call(fn () => ...)->dailyAt('03:00')->name('prune-old-notifications');
+//
+// Goravel: the same fluent API. The scheduler runs inside the app process,
+// started by app.Start(), so there is no cron entry. Every running copy of
+// the app runs it, so add OnOneServer() before running several.
 func Schedule() []schedule.Event {
 	return []schedule.Event{
 		// Pull results in every fifteen minutes on match day. If one run is

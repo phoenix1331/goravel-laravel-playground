@@ -1,4 +1,3 @@
-// Laravel equivalent: app/Policies/FixturePolicy.php
 package policies
 
 import (
